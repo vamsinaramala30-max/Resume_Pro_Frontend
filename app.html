@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Resume PRO | Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --royal-gold: #c5a059;
+            --royal-navy: #0a192f;
+            --white: #ffffff;
+            --slate: #64748b;
+            --bg-gradient: linear-gradient(135deg, #020617 0%, #0a192f 100%);
+            --card-bg: #112240;
+            --box-bg: #1e293b;
+            --premium-gradient: linear-gradient(45deg, #ffd700, #c5a059);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-gradient); color: white; overflow-x: hidden; }
+
+        nav { background: var(--royal-navy); padding: 12px 24px; display: flex; align-items: center; border-bottom: 3px solid var(--royal-gold); position: sticky; top: 0; z-index: 1000; }
+        nav button { background: rgba(255,255,255,0.05); border: 1px solid var(--royal-gold); color: var(--royal-gold); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; margin-right: 10px; transition: 0.3s; }
+        nav button.active { background: var(--royal-gold) !important; color: var(--royal-navy) !important; }
+        
+        .user-profile { margin-left: auto; display: flex; align-items: center; gap: 15px; position: relative; }
+        .premium-launcher { background: var(--premium-gradient); color: var(--royal-navy); border: none !important; font-weight: 800; animation: glow 2s infinite; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+        @keyframes glow { 0% { box-shadow: 0 0 5px #ffd700; } 50% { box-shadow: 0 0 15px #ffd700; } 100% { box-shadow: 0 0 5px #ffd700; } }
+
+        .page { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 140px; }
+        .page.active { display: block; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 20px; margin-bottom: 30px; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .sec-head { color: var(--royal-gold); border-left: 5px solid var(--royal-gold); padding-left: 15px; margin: 30px 0 20px; text-transform: uppercase; font-size: 1rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+
+        .ai-btn { background: #3b82f6; color: white; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; border: none; display: none; font-weight: 600; }
+
+        .input-group { margin-bottom: 18px; background: var(--box-bg); padding: 15px; border-radius: 12px; border: 1px solid rgba(197, 160, 89, 0.1); }
+        .input-group label { display: block; font-size: 0.8rem; color: var(--royal-gold); font-weight: 800; margin-bottom: 8px; }
+        .input-group input, .input-group textarea, .input-group select { background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 1rem; font-family: inherit; }
+        .input-group.full input, .input-group.full textarea { width: 100%; }
+        .input-group textarea { resize: vertical; min-height: 80px; }
+
+        #resumeArea { background: white; color: #333; width: 210mm; min-height: 297mm; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.4); transform-origin: top center; font-family: 'Inter', sans-serif; }
+        .royal-header { background: var(--royal-navy); color: white; padding: 45px; display: flex; align-items: center; gap: 30px; border-bottom: 8px solid var(--royal-gold); }
+        .pfp-round { width: 120px; height: 120px; border-radius: 50%; border: 5px solid var(--royal-gold); overflow: hidden; background: #f0f0f0; flex-shrink: 0; }
+        .pfp-round img { width: 100%; height: 100%; object-fit: cover; }
+        .header-content h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 5px; }
+        .resume-body { display: grid; grid-template-columns: 280px 1fr; min-height: calc(297mm - 100px); }
+        .side-col { background: #f8fafc; padding: 35px; border-right: 1px solid #e2e8f0; }
+        .main-col { padding: 45px; }
+        .r-title { color: var(--royal-navy); font-weight: 800; border-bottom: 3px solid var(--royal-gold); margin: 25px 0 15px; text-transform: uppercase; font-size: 0.9rem; padding-bottom: 8px; letter-spacing: 1px; }
+
+        .premium-mode #resumeArea { border: 20px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(45deg, var(--royal-gold), #ffd700) border-box; box-shadow: 0 0 60px rgba(197, 160, 89, 0.6); }
+
+        .action-bar { position: fixed; bottom: 0; width: 100%; background: var(--royal-navy); padding: 20px; display: flex; justify-content: center; gap: 15px; border-top: 3px solid var(--royal-gold); z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
+        .btn-act { padding: 14px 28px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 0.95rem; transition: all 0.3s; min-width: 140px; }
+
+        #userMenu { display: none; position: absolute; right: 0; top: 50px; background: var(--card-bg); border: 1px solid var(--royal-gold); border-radius: 12px; padding: 15px; width: 240px; z-index: 1001; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        #userMenu p { font-size: 0.85rem; margin-bottom: 12px; color: var(--slate); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+
+        .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 25px; }
+        .template-card { background: var(--box-bg); padding: 25px; border-radius: 15px; border: 2px solid transparent; cursor: pointer; transition: all 0.3s; text-align: center; }
+        .template-card:hover { border-color: var(--royal-gold); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(197, 160, 89, 0.3); }
+        .template-card h4 { color: var(--royal-gold); margin-bottom: 10px; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <nav id="mainNav">
+        <button onclick="setTab(1)" id="t1" class="active"><i class="fa-solid fa-edit"></i> Builder</button>
+        <button onclick="setTab(2)" id="t2"><i class="fa-solid fa-eye"></i> Preview</button>
+        <button onclick="setTab(3)" id="t3"><i class="fa-solid fa-gem"></i> Templates</button>
+
+        <div class="user-profile">
+            <span id="userStatus"></span>
+            <button onclick="startPayment()" id="upgradeBtn" class="premium-launcher">🚀 Premium</button>
+            <div style="position: relative;">
+                <i class="fa-solid fa-user-circle" onclick="toggleUserMenu()" style="font-size:28px; color: var(--royal-gold); cursor:pointer;"></i>
+                <div id="userMenu">
+                    <p id="menuEmail"></p>
+                    <button onclick="logout()" style="width:100%; padding:10px; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; border-radius:8px; cursor:pointer; font-weight:bold;">
+                        <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="page1" class="page active">
+        <div class="card">
+            <h3 class="sec-head">👑 Personal Information <button class="ai-btn" onclick="askAI('profile','iName')">🤖 Auto Fill</button></h3>
+            <div class="input-group"><label>Profile Photo</label><input type="file" id="profileImg" onchange="processImage(event)" accept="image/*"></div>
+            <div class="input-group"><label>Full Name *</label><input type="text" id="iName" placeholder="John Doe" required></div>
+            <div class="input-group"><label>Phone</label><input type="tel" id="iPhone" placeholder="+1 (555) 123-4567"></div>
+            <div class="input-group"><label>Email</label><input type="email" id="iEmail" placeholder="john.doe@email.com"></div>
+            <div class="input-group"><label>LinkedIn/Portfolio</label><input type="url" id="iLink" placeholder="linkedin.com/in/johndoe"></div>
+
+            <h3 class="sec-head">🎯 Career Objective <button class="ai-btn" onclick="askAI('objective','iObj')">🤖 Generate</button></h3>
+            <div class="input-group full"><textarea id="iObj" rows="4" placeholder="Seeking challenging Software Engineering role..."></textarea></div>
+
+            <h3 class="sec-head">🎓 Education</h3>
+            <div class="input-group"><label>Degree / Major</label><input type="text" id="iDeg" placeholder="B.S. Computer Science"></div>
+            <div class="input-group"><label>Institution</label><input type="text" id="iCol" placeholder="Massachusetts Institute of Technology"></div>
+            <div class="input-group"><label>Graduation & GPA</label><input type="text" id="iStats" placeholder="2023 • 3.9/4.0"></div>
+            <div class="input-group full"><label>High School</label><input type="text" id="i12" placeholder="High School Diploma • 98%"></div>
+
+            <h3 class="sec-head">💻 Technical Skills</h3>
+            <div class="input-group full"><label>Skills</label><textarea id="iSkT" rows="2" placeholder="React, Node.js, Python, AWS, Docker, Git..."></textarea></div>
+            <div class="input-group full"><label>Tools & Platforms</label><textarea id="iTools" rows="2" placeholder="VS Code, Figma, Postman, Jira, MongoDB..."></textarea></div>
+
+            <h3 class="sec-head">🚀 Projects <button class="ai-btn" onclick="askAI('projects','iP1')">🤖 Generate</button></h3>
+            <div class="input-group full"><label>Featured Project 1</label><textarea id="iP1" rows="3"></textarea></div>
+            <div class="input-group full"><label>Project 2</label><textarea id="iP2" rows="3"></textarea></div>
+
+            <h3 class="sec-head">💼 Experience</h3>
+            <div class="input-group"><label>Current Role</label><input id="iExpRole" placeholder="Software Engineer at TechCorp"></div>
+            <div class="input-group"><label>Duration</label><input id="iExpDur" placeholder="2022 - Present (2 yrs)"></div>
+            <div class="input-group full"><label>Key Responsibilities</label><textarea id="iExpWork" rows="4"></textarea></div>
+
+            <h3 class="sec-head">ℹ️ Additional</h3>
+            <div class="input-group"><label>Languages</label><input id="iLang" placeholder="English (Native), Spanish (Conversational)"></div>
+            <div class="input-group"><label>Hobbies</label><input id="iHobby" placeholder="Coding, Reading, Tennis"></div>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div id="resumeArea" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+            <header class="royal-header">
+                <div class="pfp-round"><img id="oImg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjYwIiBmaWxsPSIjRTVFNUVFIi8+CjxjaXJjbGUgY3g9IjQwIiBjeT0iMzUiIHI9IjgiIGZpbGw9IiM5OTk5OTkiLz4KPGNpcmNsZSBjeD0iODAiIGN5PSIzNSIgcj0iOCIgZmlsbD0iIzk5OTk5OSIvPgo8cGF0aCBkPSJNIDM1IDY1IEwgODUgNjUiIHN0cm9rZT0iIzk5OTk5OSIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=" alt="Profile"></div>
+                <div class="header-content">
+                    <h1 id="oName">John Doe</h1>
+                    <div id="oContactBar" style="font-size:0.8rem;"></div>
+                </div>
+            </header>
+            <div class="resume-body">
+                <aside class="side-col">
+                    <div class="r-title">Technical Skills</div>
+                    <div id="oSkT" style="font-size:0.85rem; line-height:1.5;"></div>
+                    <div class="r-title">Tools</div>
+                    <div id="oTools" style="font-size:0.85rem; line-height:1.5;"></div>
+                    <div class="r-title">Languages</div>
+                    <div id="oLang" style="font-size:0.85rem;"></div>
+                </aside>
+                <main class="main-col">
+                    <div class="r-title">Professional Summary</div>
+                    <div id="oObj" style="font-size:0.9rem; line-height:1.6; color:#475569; margin-bottom:25px;"></div>
+                    
+                    <div class="r-title">Experience</div>
+                    <div id="oExpDisp" style="font-size:0.95rem; font-weight:800; margin-bottom:8px;"></div>
+                    <div id="oExpWork" style="font-size:0.85rem; line-height:1.6; color:#475569;"></div>
+                    
+                    <div class="r-title">Featured Projects</div>
+                    <div id="oP1" style="font-size:0.85rem; margin-bottom:12px;"></div>
+                    <div id="oP2" style="font-size:0.85rem;"></div>
+                    
+                    <div class="r-title">Education</div>
+                    <div id="oEduDisp" style="font-weight:800; font-size:0.9rem; margin-bottom:8px;"></div>
+                    <div id="o12Disp" style="font-size:0.8rem; color:#64748b;"></div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div id="page3" class="page">
+        <div class="card">
+            <h3 class="sec-head" style="justify-content:center;">📄 Premium Templates</h3>
+            <div class="template-grid">
+                <div class="template-card" onclick="applyTemplate('classic')">
+                    <i class="fa-solid fa-briefcase" style="font-size:3rem; color:var(--royal-gold); margin-bottom:15px;"></i>
+                    <h4>Classic Professional</h4>
+                    <p>Traditional clean design for corporate roles</p>
+                </div>
+                <div class="template-card" onclick="applyTemplate('modern')">
+                    <i class="fa-solid fa-laptop-code" style="font-size:3rem; color:var(--royal-gold); margin-bottom:15px;"></i>
+                    <h4>Modern Tech</h4>
+                    <p>Bold modern styling for developers</p>
+                </div>
+                <div class="template-card" onclick="applyTemplate('creative')">
+                    <i class="fa-solid fa-palette" style="font-size:3rem; color:var(--royal-gold); margin-bottom:15px;"></i>
+                    <h4>Creative</h4>
+                    <p>Vibrant design for designers/marketers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-bar" id="actionBar">
+        <button onclick="loadDemoData()" class="btn-act" style="background:var(--royal-navy); color:white; border:1px solid var(--royal-gold);"><i class="fa-solid fa-magic"></i> Demo Data</button>
+        <button onclick="saveCloud()" class="btn-act" style="background:var(--royal-gold); color:var(--royal-navy);"><i class="fa-solid fa-cloud-arrow-up"></i> Save Cloud</button>
+        <button onclick="downloadPDF()" class="btn-act" style="background:#3b82f6; color:white;"><i class="fa-solid fa-download"></i> PDF Export</button>
+        <button onclick="shareResume()" class="btn-act" style="background:#10b981; color:white;"><i class="fa-solid fa-share"></i> Share</button>
+    </div>
+
+<script>
+let token = localStorage.getItem('royalToken');
+let isPremium = localStorage.getItem('royalPremium') === 'true';
+let syncTimer = null;
+
+window.onload = initApp;
+
+async function initApp() {
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    document.getElementById('userStatus').textContent = isPremium ? '👑 PREMIUM' : 'FREE USER';
+    document.getElementById('menuEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    
+    if (isPremium) enablePremium();
+    
+    await loadResumeData();
+    instantPreview();
+}
+
+function enablePremium() {
+    document.body.classList.add('premium-mode');
+    document.querySelectorAll('.ai-btn').forEach(btn => btn.style.display = 'inline-flex');
+}
+
+function setTab(tabNum) {
+    document.querySelectorAll('.page').forEach((page, i) => page.classList.toggle('active', i + 1 === tabNum));
+    document.querySelectorAll('#mainNav button').forEach((btn, i) => btn.classList.toggle('active', i + 1 === tabNum));
+}
+
+function toggleUserMenu() {
+    const menu = document.getElementById('userMenu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function processImage(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => document.getElementById('oImg').src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+}
+
+document.addEventListener('input', debounceInput);
+
+function debounceInput(e) {
+    if (e.target.closest('#page1')) {
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => {
+            instantPreview();
+            if (token) saveCloudData();
+        }, 600);
+    }
+}
+
+function getValue(id) {
+    return document.getElementById(id)?.value || '';
+}
+
+function instantPreview() {
+    document.getElementById('oName').textContent = getValue('iName') || 'Your Name';
+    document.getElementById('oContactBar').innerHTML = `
+        <span>${getValue('iEmail') || 'email@example.com'}</span>
+        <span>${getValue('iPhone') || '(555) 123-4567'}</span>
+        ${getValue('iLink') ? `<a href="${getValue('iLink')}" style="color:inherit;">Portfolio</a>` : ''}
+    `;
+    
+    document.getElementById('oObj').textContent = getValue('iObj') || 'Add your professional summary...';
+    document.getElementById('oSkT').innerHTML = (getValue('iSkT') || 'Your skills...').replace(/\n/g, '<br>');
+    document.getElementById('oTools').innerHTML = (getValue('iTools') || 'Your tools...').replace(/\n/g, '<br>');
+    document.getElementById('oLang').textContent = getValue('iLang') || 'Languages';
+    
+    document.getElementById('oExpDisp').textContent = `${getValue('iExpRole')} ${getValue('iExpDur') ? `(${getValue('iExpDur')})` : ''}`;
+    document.getElementById('oExpWork').textContent = getValue('iExpWork') || 'Experience details...';
+    
+    document.getElementById('oP1').textContent = getValue('iP1') || 'Project 1 description';
+    document.getElementById('oP2').textContent = getValue('iP2') || 'Project 2 description';
+    
+    document.getElementById('oEduDisp').textContent = `${getValue('iDeg')} • ${getValue('iCol')} • ${getValue('iStats')}`;
+    document.getElementById('o12Disp').textContent = getValue('i12') || '';
+}
+
+function saveCloudData() {
+    const data = Object.fromEntries(
+        Array.from(document.querySelectorAll('#page1 [id]')).map(el => [el.id, el.value])
+    );
+    localStorage.setItem('resumeData', JSON.stringify(data));
+    
+    if (token) {
+        fetch(`${API_BASE}/resume/save`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        }).catch(console.log);
+    }
+}
+
+async function loadResumeData() {
+    try {
+        const res = await fetch(`${API_BASE}/resume/get`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+            const { data } = await res.json();
+            Object.entries(data || {}).forEach(([key, value]) => {
+                const el = document.getElementById(key);
+                if (el) el.value = value;
+            });
+        }
+    } catch (e) {
+        console.log('Cloud load failed, using local');
+    }
+    
+    const localData = JSON.parse(localStorage.getItem('resumeData') || '{}');
+    Object.entries(localData).forEach(([key, value]) => {
+        const el = document.getElementById(key);
+        if (el) el.value = value;
+    });
+    instantPreview();
+}
+
+async function downloadPDF() {
+    const preview = document.getElementById('resumeArea');
+    const filename = (getValue('iName') || 'Resume').replace(/[^a-zA-Z0-9]/g, '_') + '_Resume.pdf';
+    
+    if (!isPremium) {
+        const watermark = document.createElement('div');
+        watermark.textContent = 'PREMIUM VERSION';
+        Object.assign(watermark.style, {
+            position: 'absolute',
+            top: '35%',
+            left: '15%',
+            fontSize: '48px',
+            color: 'rgba(220, 53, 69, 0.15)',
+            transform: 'rotate(-25deg)',
+            zIndex: '10000',
+            pointerEvents: 'none',
+            fontWeight: 'bold',
+            fontFamily: 'serif'
+        });
+        preview.appendChild(watermark);
+    }
+    
+    try {
+        await html2pdf().from(preview).set({
+            margin: [10, 15, 10, 15],
+            filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).save();
+    } catch (error) {
+        alert('PDF generation failed. Try refreshing.');
+    }
+}
+
+function startPayment() {
+    if (!isPremium) {
+        alert('Premium features: No watermark PDF, AI content, unlimited templates\\nDemo login: test@test.com / 123456');
+    }
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
+
+// Expose global functions
+window.setTab = setTab;
+window.toggleUserMenu = toggleUserMenu;
+window.processImage = processImage;
+window.downloadPDF = downloadPDF;
+window.startPayment = startPayment;
+window.logout = logout;
+</script>
+</body>
+</html>

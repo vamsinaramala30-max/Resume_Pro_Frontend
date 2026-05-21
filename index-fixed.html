@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Resume PRO | SaaS</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --royal-gold: #c5a059;
+            --royal-navy: #0a192f;
+            --white: #ffffff;
+            --slate: #64748b;
+            --bg-gradient: linear-gradient(135deg, #020617 0%, #0a192f 100%);
+            --card-bg: #112240;
+            --box-bg: #1e293b;
+            --premium-gradient: linear-gradient(45deg, #ffd700, #c5a059);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-gradient); color: white; min-height: 100vh; overflow-x: hidden; }
+
+        nav { background: var(--royal-navy); padding: 12px 24px; display: none; align-items: center; border-bottom: 3px solid var(--royal-gold); position: sticky; top: 0; z-index: 1000; }
+        nav button { background: rgba(255,255,255,0.05); border: 1px solid var(--royal-gold); color: var(--royal-gold); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; margin-right: 10px; transition: 0.3s; }
+        nav button.active { background: var(--royal-gold) !important; color: var(--royal-navy) !important; }
+        
+        .user-profile { margin-left: auto; display: flex; align-items: center; gap: 15px; position: relative; }
+        .premium-launcher { background: var(--premium-gradient); color: var(--royal-navy); border: none !important; font-weight: 800; animation: glow 2s infinite; }
+        @keyframes glow { 0% { box-shadow: 0 0 5px #ffd700; } 50% { box-shadow: 0 0 15px #ffd700; } 100% { box-shadow: 0 0 5px #ffd700; } }
+
+        #loginBox { max-width: 400px; margin: 100px auto; padding: 40px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--royal-gold); text-align: center; }
+        .auth-input { width: 100%; padding: 12px; margin-bottom: 15px; background: var(--box-bg); border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; color: white; outline: none; }
+        .auth-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; margin-bottom: 10px; }
+
+        .page { display: none; padding: 20px; max-width: 1000px; margin: 0 auto; padding-bottom: 120px; }
+        .page.active { display: block; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 20px; margin-bottom: 30px; }
+        .sec-head { color: var(--royal-gold); border-left: 5px solid var(--royal-gold); padding-left: 15px; margin: 30px 0 20px; text-transform: uppercase; font-size: 1rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+
+        .ai-btn { background: #3b82f6; color: white; font-size: 0.7rem; padding: 4px 10px; border-radius: 5px; cursor: pointer; border: none; display: none; }
+
+        .input-group { margin-bottom: 15px; background: var(--box-bg); padding: 12px; border-radius: 10px; }
+        .input-group label { display: block; font-size: 0.75rem; color: var(--royal-gold); font-weight: 800; margin-bottom: 5px; }
+        .input-group input, .input-group textarea { background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 1rem; }
+
+        #resumeArea { background: white; color: #333; width: 210mm; min-height: 297mm; margin: 20px auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform-origin: top center; }
+        .royal-header { background: var(--royal-navy); color: white; padding: 40px; display: flex; align-items: center; gap: 30px; border-bottom: 8px solid var(--royal-gold); }
+        .pfp-round { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--royal-gold); overflow: hidden; background: #eee; }
+        .pfp-round img { width: 100%; height: 100%; object-fit: cover; }
+        .resume-body { display: grid; grid-template-columns: 260px 1fr; min-height: 230mm; }
+        .side-col { background: #f8fafc; padding: 30px; border-right: 1px solid #e2e8f0; }
+        .main-col { padding: 40px; background: white; }
+        .r-title { color: var(--royal-navy); font-weight: 800; border-bottom: 2px solid var(--royal-gold); margin: 20px 0 10px; text-transform: uppercase; font-size: 0.85rem; }
+
+        .premium-mode #resumeArea { border: 15px solid #000; box-shadow: 0 0 50px rgba(197, 160, 89, 0.5); }
+
+        .action-bar { position: fixed; bottom: 0; width: 100%; background: var(--royal-navy); padding: 15px; display: none; justify-content: center; gap: 15px; border-top: 2px solid var(--royal-gold); z-index: 999; }
+        .btn-act { padding: 12px 24px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; }
+
+        #userMenu { display: none; position: absolute; right: 0; top: 45px; background: var(--card-bg); border: 1px solid var(--royal-gold); border-radius: 10px; padding: 15px; width: 220px; z-index: 1001; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+<div id="loginBox">
+        <h2 style="margin-bottom:20px; color: var(--royal-gold);">Royal Access</h2>
+        <input type="email" id="email" class="auth-input" placeholder="Email Address">
+        <input type="password" id="password" class="auth-input" placeholder="Secure Password">
+        <button onclick="handleRegister()" class="auth-btn" style="background:var(--royal-gold); color:white;">Register Account</button>
+        <button onclick="handleLogin()" class="auth-btn" style="background:var(--royal-navy); color:white; border: 1px solid var(--royal-gold);">Login Securely</button>
+        <p id="authMsg" style="font-size: 0.8rem; margin-top: 10px; color: #ff6b6b;"></p>
+    </div>
+
+    <nav id="mainNav">
+        <button onclick="setTab(1)" id="t1" class="active">Royal Builder</button>
+        <button onclick="setTab(2)" id="t2">Live Preview</button>
+        <button onclick="setTab(3)" id="t3">About</button>
+
+        <div class="user-profile">
+            <span id="userStatus" style="font-size: 11px; color: var(--royal-gold); font-weight: bold;"></span>
+            <button onclick="startPayment()" id="upgradeBtn" class="premium-launcher">Upgrade</button>
+            <div style="position: relative;">
+                <i class="fa-solid fa-user-circle" onclick="toggleUserMenu()" style="font-size:28px; color: var(--royal-gold); cursor:pointer;"></i>
+                <div id="userMenu">
+                    <p id="menuEmail" style="font-size: 0.8rem; margin-bottom:10px; color: var(--slate); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:10px;">User</p>
+                    <button onclick="logout()" style="width:100%; padding:8px; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; border-radius:5px; cursor:pointer; font-weight:bold;">
+                        <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<div id="page1" class="page">
+        <div class="card">
+            <h3 class="sec-head">👑 Identity & Contact</h3>
+            <div class="input-group"><label>Profile Image</label><input type="file" onchange="processImage(event)"></div>
+            <div class="input-group"><label>Full Name</label><input type="text" id="iName" placeholder="Ex: Rahul Sharma"></div>
+            <div class="input-group"><label>Phone</label><input type="text" id="iPhone"></div>
+            <div class="input-group"><label>Email</label><input type="text" id="iEmail"></div>
+            <div class="input-group"><label>LinkedIn</label><input type="text" id="iLink"></div>
+
+            <h3 class="sec-head">👑 Career Objective <button class="ai-btn" onclick="askAI('objective','iObj')">🤖 AI</button></h3>
+            <div class="input-group full"><textarea id="iObj" rows="3"></textarea></div>
+
+            <h3 class="sec-head">👑 Academic History</h3>
+            <div class="input-group"><label>Degree / Branch</label><input type="text" id="iDeg"></div>
+            <div class="input-group"><label>College / University</label><input type="text" id="iCol"></div>
+            <div class="input-group"><label>Year & CGPA / %</label><input type="text" id="iStats"></div>
+            <div class="input-group full"><label>Intermediate Info</label><input type="text" id="i12"></div>
+            <div class="input-group full"><label>SSC Info</label><input type="text" id="i10"></div>
+
+            <h3 class="sec-head">👑 Expertise & Tools</h3>
+            <div class="input-group full"><label>Technical Skills</label><input id="iSkT"></div>
+            <div class="input-group full"><label>Tools & Platforms</label><input id="iTools"></div>
+            <div class="input-group"><label>Languages</label><input id="iLang"></div>
+
+            <h3 class="sec-head">👑 Key Projects <button class="ai-btn" onclick="askAI('projects','iP1')">🤖 AI</button></h3>
+            <div class="input-group full"><label>Project 1</label><textarea id="iP1" rows="2"></textarea></div>
+            <div class="input-group full"><label>Project 2</label><textarea id="iP2" rows="2"></textarea></div>
+
+            <h3 class="sec-head">👑 Work Experience</h3>
+            <div class="input-group"><label>Role / Company</label><input id="iExpRole"></div>
+            <div class="input-group"><label>Duration</label><input id="iExpDur"></div>
+            <div class="input-group full"><label>Main Responsibilities</label><textarea id="iExpWork" rows="2"></textarea></div>
+
+            <h3 class="sec-head">👑 Personal</h3>
+            <div class="input-group"><label>DOB</label><input id="iDob"></div>
+            <div class="input-group"><label>Hobbies</label><input id="iHobby"></div>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div id="resumeArea">
+            <header class="royal-header">
+                <div class="pfp-round"><img id="oImg" src="" alt=""></div>
+                <div class="header-content">
+                    <h1 id="oName">YOUR NAME</h1>
+                    <div id="oContactBar" style="font-size:0.75rem; margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+                </div>
+            </header>
+            <div class="resume-body">
+                <aside class="side-col">
+                    <div class="r-title" style="margin-top:0;">Expertise</div>
+                    <p id="oSkT" style="font-size:0.8rem; line-height:1.4;"></p>
+                    <div class="r-title">Tools</div>
+                    <p id="oTools" style="font-size:0.8rem; line-height:1.4;"></p>
+                    <div class="r-title">Languages</div>
+                    <p id="oLang" style="font-size:0.8rem;"></p>
+                    <div class="r-title">Personal</div>
+                    <p style="font-size:0.7rem;"><b>DOB:</b> <span id="oDobDisp"></span></p>
+                    <p style="font-size:0.7rem;"><b>Hobbies:</b> <span id="oHobbyDisp"></span></p>
+                </aside>
+                <main class="main-col">
+                    <div class="r-title">Professional Objective</div>
+                    <p id="oObj" style="font-size:0.8rem; line-height:1.5; color:#475569;"></p>
+                    <div class="r-title">Work Experience</div>
+                    <p id="oExpDisp" style="font-size:0.85rem; font-weight:800;"></p>
+                    <p id="oExpWork" style="font-size:0.8rem;"></p>
+                    <div class="r-title">Key Projects</div>
+                    <p id="oP1" style="font-size:0.8rem; margin-bottom:5px;"></p>
+                    <p id="oP2" style="font-size:0.8rem; margin-bottom:5px;"></p>
+                    <div class="r-title">Education</div>
+                    <p id="oEduDisp" style="font-size:0.8rem; font-weight:800;"></p>
+                    <p id="o12Disp" style="font-size:0.75rem; color:#64748b;"></p>
+                    <p id="o10Disp" style="font-size:0.75rem; color:#64748b;"></p>
+                </main>
+            </div>
+        </div>
+    </div>
+
+       <div class="action-bar" id="actionBar">
+        <button onclick="saveCloud()" class="btn-act" style="background:var(--royal-navy); color:white; border: 1px solid var(--royal-gold);">💾 save Cloud</button>
+        <button onclick="downloadPDF()" class="btn-act" style="background:var(--royal-gold); color:var(--royal-navy);">🖨️ Download PDF</button>
+    </div>
+
+<script>
+/* ================= CONFIG ================= */
+const API_BASE = "http://localhost:5000/api";
+
+let token = localStorage.getItem("royalToken");
+let isPremium = localStorage.getItem("royalPremium") === "true";
+let syncTimer;
+
+/* ================= INIT ================= */
+window.onload = async () => {
+    if (!token) return;
+    showApp();
+    await loadResume();
+    if (isPremium) enablePremiumUI();
+    instantSync();
+    updatePreview();
+};
+
+/* ================= UI ================= */
+function showMessage(msg) {
+    const el = document.getElementById("authMsg");
+    if (el) el.innerText = msg;
+}
+
+function showApp() {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("mainNav").style.display = "flex";
+    document.getElementById("actionBar").style.display = "flex";
+    document.getElementById("userStatus").innerText = isPremium ? "👑 PREMIUM" : "FREE MEMBER";
+}
+
+/* ================= AUTH ================= */
+window.registerUser = async (email, password) => { try { const res = await fetch(`${API_BASE}/auth/register`, { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({email, password}) }); const data = await res.json(); if (res.ok) { saveAuth(data.token, data.isPremium, email); location.reload(); } else { showMessage(data.msg || "Error"); } } catch (e) { showMessage("Server Error"); } };
+
+window.loginUser = async (email, password) => { try { const res = await fetch(`${API_BASE}/auth/login`, { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({email, password}) }); const data = await res.json(); if (res.ok) { saveAuth(data.token, data.isPremium, email); location.reload(); } else { showMessage(data.msg || "Error"); } } catch (e) { showMessage("Server Error"); } };
+
+function saveAuth(tokenVal, premium, email) {
+    localStorage.setItem("royalToken", tokenVal);
+    localStorage.setItem("royalPremium", premium || "false");
+    localStorage.setItem("userEmail", email);
+}
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+function handleRegister() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    if (!email || !password) return showMessage("Fill all fields");
+    registerUser(email, password);
+}
+
+function handleLogin() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    if (!email || !password) return showMessage("Fill all fields");
+    loginUser(email, password);
+}
+
+async function authFetch(url, options = {}) {
+    try {
+        const res = await fetch(url, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+                ...options.headers
+            }
+        });
+        if (res.status === 401) {
+            alert("Session expired. Please login again.");
+            localStorage.clear();
+            location.reload();
+            return;
+        }
+        return res;
+    } catch (err) {
+        console.error("API Error:", err);
+        alert("Server connection failed");
+        return null;
+    }
+}
+
+/* ================= INPUT ================= */
+document.addEventListener("input", (e) => {
+    if (e.target.closest("#page1")) {
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => { instantSync(); updatePreview(); saveCloud(); }, 500);
+    }
+});
+
+function instantSync() {
+    const get = id => document.getElementById(id)?.value || "";
+    document.getElementById("oName").innerText = get("iName") || "YOUR NAME";
+    document.getElementById("oContactBar").innerHTML = `${get("iEmail") || ''} | ${get("iPhone") || ''} | ${get("iLink") || ''}`;
+    document.getElementById("oObj").innerText = get("iObj");
+    document.getElementById("oSkT").innerText = get("iSkT");
+    document.getElementById("oTools").innerText = get("iTools");
+    document.getElementById("oLang").innerText = get("iLang");
+    document.getElementById("oExpDisp").innerText = `${get("iExpRole")} ${get("iExpDur") ? `(${get("iExpDur")})` : ''}`;
+    document.getElementById("oExpWork").innerText = get("iExpWork");
+    document.getElementById("oEduDisp").innerText = `${get("iDeg")} - ${get("iCol")} (${get("iStats")})`;
+    document.getElementById("o12Disp").innerText = get("i12");
+    document.getElementById("o10Disp").innerText = get("i10");
+    document.getElementById("oP1").innerText = get("iP1");
+    document.getElementById("oP2").innerText = get("iP2");
+    const dob = get("iDob");
+    document.getElementById("oDobDisp").innerText = dob;
+    document.getElementById("oHobbyDisp").innerText = get("iHobby");
+}
+
+function updatePreview() {
+    const preview = document.getElementById("resumeArea");
+    if (preview) {
+        preview.style.transition = "all 0.2s ease";
+        preview.style.opacity = "0.7";
+        setTimeout(() => { preview.style.opacity = "1"; }, 150);
+    }
+}
+
+/* ================= SAVE/LOAD ================= */
+async function saveCloud() {
+    const data = {};
+    document.querySelectorAll("#page1 input, #page1 textarea").forEach(f => { if (f.id) data[f.id] = f.value; });
+    localStorage.setItem("resumeBackup", JSON.stringify(data));
+    if (token) await authFetch(`${API_BASE}/resume/save`, { method: "POST", body: JSON.stringify(data) });
+}
+
+async function loadResume() {
+    try {
+        const data = JSON.parse(localStorage.getItem("resumeBackup") || "{}");
+        Object.entries(data).forEach(([key, val]) => {
+            const el = document.getElementById(key);
+            if (el) el.value = val;
+        });
+        if (token) {
+            const res = await authFetch(`${API_BASE}/resume/get`);
+            if (res) {
+                const json = await res.json();
+                Object.entries(json.data || {}).forEach(([key, val]) => {
+                    const el = document.getElementById(key);
+                    if (el) el.value = val;
+                });
+            }
+        }
+        instantSync();
+    } catch (e) {
+        console.log("Load failed, using local");
+    }
+}
+
+/* ================= PREMIUM ================= */
+function enablePremiumUI() {
+    document.body.classList.add("premium-mode");
+    document.querySelectorAll(".ai-btn").forEach(btn => btn.style.display = "inline-block");
+}
+
+/* ================= STUBS ================= */
+function setTab(n) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page${n}`).classList.add('active');
+    document.querySelectorAll('nav button').forEach((b, i) => b.classList.toggle('active', i+1 === n));
+}
+
+function toggleUserMenu() {
+    const menu = document.getElementById('userMenu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function processImage(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => document.getElementById('oImg').src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+}
+
+/* ================= PAYMENT ================= */
+async function startPayment() {
+    try {
+        const res = await fetch("http://10.234.15.32:5000/api/payment/create-order", {
+            method: "POST",
+            headers:{"Content-Type": "application/json"},
+            body: JSON.stringify({amount: 500})
+        });
+        const order = await res.json();
+        const options = {
+            "key": "rzp_test_Sc4E7WwAev4QVI",
+            "amount": order.amount,
+            "currency": "INR",
+            "order_id": order.id,
+            "handler": async (response) => {
+                const verifyRes = await authFetch("http://10.234.15.32:5000/api/payment/verify-payment", {
+                    method: "POST",
+                    body: JSON.stringify(response)
+                });
+                if (verifyRes?.ok) {
+                    localStorage.setItem("royalPremium", "true");
+                    alert("Premium activated!");
+                    location.reload();
+                }
+            }
+        };
+        new Razorpay(options).open();
+    } catch (e) {
+        alert("Payment init failed");
+    }
+}
+
+/* ================= AI ================= */
+async function askAI(field, targetId) {
+    if (!isPremium) return alert("Upgrade for AI");
+    try {
+        const res = await authFetch("http://10.234.15.32:5000/api/ai/generate", {
+            method: "POST",
+            body: JSON.stringify({field})
+        });
+        const data = await res.json();
+        if (data.text) {
+            document.getElementById(targetId).value = data.text;
+            instantSync();
+        }
+    } catch (e) {
+        alert("AI unavailable");
+    }
+}
+
+/* ================= PDF ================= */
+async function downloadPDF() {
+    const element = document.getElementById("resumeArea");
+    if (!element || !token) return alert("Login first");
+    
+    const name = (document.getElementById("oName").innerText || "resume").replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    
+    instantSync();
+    
+    if (!isPremium) {
+        const watermark = document.createElement("div");
+        watermark.innerText = "FREE VERSION";
+        watermark.style.cssText = "position:absolute;top:40%;left:20%;font-size:50px;color:rgba(200,0,0,0.2);transform:rotate(-30deg);z-index:9999;pointer-events:none;";
+        element.appendChild(watermark);
+    }
+    
+    try {
+        await html2pdf().from(element).set({
+            margin: 0,
+            filename: `${name}.pdf`,
+            image: {type: 'jpeg', quality: 0.98},
+            html2canvas: {scale: 2, useCORS: true},
+            jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'}
+        }).save();
+        
+        if (!isPremium) element.removeChild(element.querySelector('div[style*="FREE VERSION"]'));
+        alert(isPremium ? "Downloaded!" : "Downloaded with watermark. Upgrade to remove.");
+    } catch (e) {
+        alert("PDF failed");
+    }
+}
+</script>
+</body>
+</html>

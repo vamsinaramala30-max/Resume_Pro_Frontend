@@ -1,0 +1,97 @@
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { ChevronDown, UserCircle2, LogOut, Settings, Bookmark, User, Moon, Sun } from 'lucide-react'
+
+const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Plans', to: '/select' },
+  { label: 'Builder', to: '/normal' },
+  { label: 'Premium', to: '/premium' },
+]
+
+export default function TopNav({ user, onLogout, theme, toggleTheme }) {
+  const [open, setOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const wrapRef = useRef(null)
+
+  useEffect(() => {
+    const onDoc = (e) => {
+      if (!wrapRef.current) return
+      if (!wrapRef.current.contains(e.target)) setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [])
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-[1500] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mt-3 rounded-[32px] border border-white/10 bg-slate-950/85 backdrop-blur-3xl shadow-2xl px-5 py-4">
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-3 text-base font-black uppercase tracking-[0.25em] text-white">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-royal-gold/15 text-royal-gold">R</span>
+              Resume PRO
+            </Link>
+
+            <div className="hidden md:flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-300">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-royal-gold/15 text-royal-gold">✨</span>
+              Futuristic SaaS resume builder
+            </div>
+
+            <div className="ml-auto flex items-center gap-2">
+              <nav className="hidden lg:flex items-center gap-3">
+                {navItems.map((item) => (
+                  <Link key={item.to} to={item.to} className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/5 hover:text-white">
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-slate-200 transition hover:border-royal-gold"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setMenuOpen((value) => !value)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-slate-200 transition hover:border-royal-gold lg:hidden"
+                aria-label="Open menu"
+              >
+                <ChevronDown className={`h-5 w-5 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {menuOpen ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                ref={wrapRef}
+                className="mt-4 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 p-4 shadow-2xl lg:hidden"
+              >
+                <div className="flex flex-col gap-2">
+                  {navItems.map((item) => (
+                    <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)} className="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/5">
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+
