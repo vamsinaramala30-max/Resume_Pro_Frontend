@@ -182,6 +182,41 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <section className="px-4 pb-24 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-2">
+            <div id="company" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">About Company</div>
+              <h3 className="mt-4 text-3xl font-black text-white">Career</h3>
+              <p className="mt-4 text-slate-300 leading-7">Explore open roles, career paths, and premium resume services built for ambitious professionals. We help you present your story with clarity and confidence.</p>
+            </div>
+            <div id="blog" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">About Company</div>
+              <h3 className="mt-4 text-3xl font-black text-white">Blog</h3>
+              <p className="mt-4 text-slate-300 leading-7">Read expert guidance, resume tips, interview strategies, and product updates designed to help your application stand out.</p>
+            </div>
+            <div id="help-center" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">Resources</div>
+              <h3 className="mt-4 text-3xl font-black text-white">Help Center</h3>
+              <p className="mt-4 text-slate-300 leading-7">Need help building a resume? Use our step-by-step guides and support resources for every stage of your resume creation journey.</p>
+            </div>
+            <div id="resume-guide" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">Resources</div>
+              <h3 className="mt-4 text-3xl font-black text-white">How to create resume</h3>
+              <p className="mt-4 text-slate-300 leading-7">Start with contact details, add a strong objective, list experience and skills, then polish with formatting and export to PDF for a professional finish.</p>
+            </div>
+            <div id="privacy" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">Resources</div>
+              <h3 className="mt-4 text-3xl font-black text-white">Privacy</h3>
+              <p className="mt-4 text-slate-300 leading-7">Your resume information stays secure. We save data only when you choose to store it or export it, and never share without permission.</p>
+            </div>
+            <div id="terms" className="rounded-[32px] border border-white/10 bg-slate-900/80 p-8 shadow-2xl">
+              <div className="text-sm uppercase tracking-[0.35em] text-royal-gold">Resources</div>
+              <h3 className="mt-4 text-3xl font-black text-white">Terms</h3>
+              <p className="mt-4 text-slate-300 leading-7">By using Resume PRO, you agree to our service terms. Please review these terms before saving or sharing any resume content.</p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )

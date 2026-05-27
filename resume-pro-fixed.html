@@ -61,6 +61,10 @@
         .btn-act { padding: 12px 24px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; }
 
         #userMenu { display: none; position: absolute; right: 0; top: 45px; background: var(--card-bg); border: 1px solid var(--royal-gold); border-radius: 10px; padding: 15px; width: 220px; z-index: 1001; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        #userMenu .menu-section { margin-bottom: 12px; }
+        #userMenu .menu-title { font-size: 0.75rem; color: var(--royal-gold); font-weight: 800; margin: 10px 0 8px; }
+        #userMenu a { display: block; color: white; text-decoration: none; margin: 4px 0; font-size: 0.88rem; }
+        #userMenu a:hover { color: #ffd700; }
     </style>
 </head>
 <body>
@@ -85,6 +89,18 @@
                 <i class="fa-solid fa-user-circle" onclick="toggleUserMenu()" style="font-size:28px; color: var(--royal-gold); cursor:pointer;"></i>
                 <div id="userMenu">
                     <p id="menuEmail" style="font-size: 0.8rem; margin-bottom:10px; color: var(--slate); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:10px;">User</p>
+                    <div class="menu-section">
+                        <div class="menu-title">About Company</div>
+                        <a href="#company" onclick="toggleUserMenu()">Career</a>
+                        <a href="#blog" onclick="toggleUserMenu()">Blog</a>
+                    </div>
+                    <div class="menu-section">
+                        <div class="menu-title">Resources</div>
+                        <a href="#help-center" onclick="toggleUserMenu()">Help Center</a>
+                        <a href="#resume-guide" onclick="toggleUserMenu()">How to create resume</a>
+                        <a href="#privacy" onclick="toggleUserMenu()">Privacy</a>
+                        <a href="#terms" onclick="toggleUserMenu()">Terms</a>
+                    </div>
                     <button onclick="logout()" style="width:100%; padding:8px; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; border-radius:5px; cursor:pointer; font-weight:bold;">
                         <i class="fa-solid fa-sign-out-alt"></i> Logout
                     </button>
@@ -188,6 +204,38 @@
                     <p>Clean layout for leadership positions</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="companyInfo" class="card">
+        <h3 class="sec-head">About Company</h3>
+        <div id="company">
+            <h4>Career</h4>
+            <p>Explore open roles, internships, and career growth opportunities with Royal Resume PRO.</p>
+        </div>
+        <div id="blog" style="margin-top: 20px;">
+            <h4>Blog</h4>
+            <p>Read the latest posts on resume building, interview advice, and professional growth.</p>
+        </div>
+    </div>
+
+    <div id="resourcesInfo" class="card">
+        <h3 class="sec-head">Resources</h3>
+        <div id="help-center">
+            <h4>Help Center</h4>
+            <p>Find quick answers and support for building, editing, and exporting your resume successfully.</p>
+        </div>
+        <div id="resume-guide" style="margin-top: 20px;">
+            <h4>How to create resume</h4>
+            <p>Step 1: Add your contact details. Step 2: Write a clear objective. Step 3: Add experience, skills, and projects. Step 4: Review, format, and export as PDF.</p>
+        </div>
+        <div id="privacy" style="margin-top: 20px;">
+            <h4>Privacy</h4>
+            <p>We protect your resume data and only save it to the cloud when you choose to do so.</p>
+        </div>
+        <div id="terms" style="margin-top: 20px;">
+            <h4>Terms</h4>
+            <p>By using this platform, you agree to our terms of use and consent to the data handling described in our privacy policy.</p>
         </div>
     </div>
 
