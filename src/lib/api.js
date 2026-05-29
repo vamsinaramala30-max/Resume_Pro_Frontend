@@ -4,7 +4,17 @@ let portDetected = false;
 
 // Auto-detect backend port ONLY in development
 async function getApiBase() {
-  if (API_BASE) return API_BASE;
+  if (API_BASE) {
+    // Clean up trailing slash
+    if (API_BASE.endsWith('/')) {
+      API_BASE = API_BASE.slice(0, -1);
+    }
+    // Auto-append /api if user forgot it
+    if (!API_BASE.endsWith('/api')) {
+      API_BASE = `${API_BASE}/api`;
+    }
+    return API_BASE;
+  }
   
   if (import.meta.env.DEV && !portDetected) {
     const hostname = window.location.hostname || 'localhost';
