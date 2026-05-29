@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import LoadingButton from '../components/LoadingButton.jsx'
-import FloatingInput from '../components/FloatingInput.jsx'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '../components/ui/Button'
+import { Input } from '../components/ui/Input'
+import { Label } from '../components/ui/Label'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card'
+import { Eye, EyeOff, ShieldCheck, Sparkles, Save } from 'lucide-react'
 
 import { apiLogin, apiRegister } from '../lib/api.js'
 import { isValidEmail } from '../lib/validators.js'
@@ -20,9 +23,9 @@ function strengthScore(pw) {
 }
 
 function barColor(score) {
-  if (score >= 80) return 'bg-green-500'
-  if (score >= 50) return 'bg-royal-gold'
-  return 'bg-red-500'
+  if (score >= 80) return 'bg-success'
+  if (score >= 50) return 'bg-warning'
+  return 'bg-error'
 }
 
 export default function Auth({ onAuthed }) {
@@ -38,9 +41,9 @@ export default function Auth({ onAuthed }) {
   const [forgot, setForgot] = useState(false)
 
   const [to, setTo] = useState({ type: '', title: '', message: '' })
+  const [errors, setErrors] = useState({})
 
   const score = useMemo(() => strengthScore(password), [password])
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -53,21 +56,29 @@ export default function Auth({ onAuthed }) {
   }, [])
 
   const validate = () => {
-    if (!email.trim()) return 'Email is required'
-    if (!isValidEmail(email)) return 'Enter a valid email'
-    if (!password.trim()) return 'Password is required'
-    if (mode === 'register' && !name.trim()) return 'Name is required'
-    if (mode === 'register' && password.length < 6) return 'Password must be at least 6 characters'
-    return ''
+    const newErrors = {}
+    if (!email.trim()) newErrors.email = 'Email is required'
+    else if (!isValidEmail(email)) newErrors.email = 'Enter a valid email'
+    
+    if (!password.trim()) newErrors.password = 'Password is required'
+    else if (mode === 'register' && password.length < 6) newErrors.password = 'Password must be at least 6 characters'
+    
+    if (mode === 'register' && !name.trim()) newErrors.name = 'Name is required'
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length > 0
   }
 
   const showMsg = (type, title, message) => setTo({ type, title, message })
 
-  async function submit() {
-    const err = validate()
-    if (err) return showMsg('error', 'Validation', err)
+  async function submit(e) {
+    if (e) e.preventDefault()
+    
+    if (validate()) return
 
     setLoading(true)
+    setTo({ type: '', title: '', message: '' })
+    
     try {
       if (mode === 'register') {
         await apiRegister({ name, email, password })
@@ -94,185 +105,226 @@ export default function Auth({ onAuthed }) {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(197,160,89,0.12),transparent_35%),radial-gradient(circle_at_20%_30%,rgba(96,165,250,0.12),transparent_25%),linear-gradient(180deg,#020617,#050b17)] text-white">
-      <div className="mx-auto max-w-6xl px-4 py-20">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] items-center">
-          <div className="space-y-8">
-            <div className="inline-flex rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-slate-200">
-              Premium resume workspace
-            </div>
-            <div className="space-y-4 max-w-xl">
-              <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl">
-                Secure login for your modern resume workflow.
-              </h1>
-              <p className="text-lg text-slate-300 leading-relaxed">
-                Sign in to access your saved drafts, premium templates, instant preview, and polished PDF export. Built for professionals who want a better job application experience.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                { title: 'Live Preview', description: 'See resume updates instantly.' },
-                { title: 'Premium Templates', description: 'Choose polished designs.' },
-                { title: 'Secure Save', description: 'Your draft restores on refresh.' },
-              ].map((item) => (
-                <div key={item.title} className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-xl">
-                  <div className="text-3xl">✨</div>
-                  <div className="mt-3 text-sm font-bold text-white">{item.title}</div>
-                  <p className="mt-2 text-sm text-slate-300">{item.description}</p>
-                </div>
-              ))}
-            </div>
+    <div className="flex-1 flex w-full justify-center py-[var(--section-spacing-desktop)] px-[var(--page-padding-inline)] z-10 relative">
+      <div className="max-w-6xl w-full grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
+        
+        {/* Left Side Details */}
+        <div className="space-y-8 text-center lg:text-left">
+          <div className="inline-flex items-center gap-2 rounded-full bg-surface-elevated px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary border border-primary/20 shadow-elevation-1">
+            <Sparkles className="h-4 w-4" /> Premium Workspace
+          </div>
+          <div className="space-y-4">
+            <h1 className="text-h2 sm:text-h1 font-black tracking-tight text-foreground">
+              Secure login for your modern resume workflow.
+            </h1>
+            <p className="text-body-large text-foreground/70 max-w-xl mx-auto lg:mx-0">
+              Sign in to access your saved drafts, premium templates, instant preview, and polished PDF export. Built for professionals who want a better job application experience.
+            </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: 'easeOut' }}
-            className="rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 shadow-2xl backdrop-blur-2xl"
-          >
-            <div className="mb-6 space-y-3">
-              <div className="text-3xl font-black text-white">{mode === 'register' ? 'Create an account' : 'Welcome back'}</div>
-              <p className="text-sm text-slate-300">
-                {mode === 'register'
-                  ? 'Register to unlock saved resumes, premium layouts, and export features.'
-                  : 'Login to continue editing your resume and download polished PDF exports.'}
-              </p>
-            </div>
-
-            <div className="flex gap-3 mb-6 rounded-3xl bg-slate-950/70 p-2 border border-white/10">
-              <button
-                className={`flex-1 rounded-2xl py-3 text-sm font-bold transition ${
-                  mode === 'login'
-                    ? 'bg-royal-gold text-royal-navy shadow-lg'
-                    : 'text-slate-200 hover:text-white'
-                }`}
-                onClick={() => {
-                  setMode('login')
-                  setForgot(false)
-                }}
-              >
-                Login
-              </button>
-              <button
-                className={`flex-1 rounded-2xl py-3 text-sm font-bold transition ${
-                  mode === 'register'
-                    ? 'bg-royal-gold text-royal-navy shadow-lg'
-                    : 'text-slate-200 hover:text-white'
-                }`}
-                onClick={() => {
-                  setMode('register')
-                  setForgot(false)
-                }}
-              >
-                Register
-              </button>
-            </div>
-
-            {forgot ? (
-              <div className="space-y-5">
-                <div className="text-xl font-black">Forgot Password</div>
-                <p className="text-slate-300 text-sm">
-                  This demo stores users locally in the browser. Password resets are not wired in this snapshot.
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <LoadingButton onClick={() => setForgot(false)} loading={false} type="button">
-                    Back to login
-                  </LoadingButton>
-                  <button
-                    type="button"
-                    onClick={() => showMsg('success', 'Info', 'Reset flow is disabled in this version.')}
-                    className="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-sm font-bold text-white hover:border-royal-gold transition"
-                  >
-                    Request reset
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {mode === 'register' ? (
-                  <FloatingInput
-                    label="Full Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder=" "
-                    autoComplete="name"
-                  />
-                ) : null}
-
-                <FloatingInput
-                  label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder=" "
-                  type="email"
-                  autoComplete="email"
-                />
-
-                <div className="space-y-3">
-                  <label className="block relative">
-                    <span className={`absolute left-4 top-1/2 -translate-y-1/2 text-xs font-bold transition-all pointer-events-none ${
-                      password ? '-top-2.5 text-royal-gold' : 'text-slate-400'
-                    }`}>
-                      Password
-                    </span>
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder=" "
-                      className="w-full rounded-2xl bg-black/20 border border-white/15 px-4 pt-6 pb-3 text-white outline-none focus:border-royal-gold"
-                      autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((s) => !s)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-200 hover:text-white transition"
-                    >
-                      {showPassword ? 'Hide' : 'Show'}
-                    </button>
-                  </label>
-                  <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                    <div style={{ width: `${score}%` }} className={`h-2 ${barColor(score)}`} />
+          <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto lg:mx-0">
+            {[
+              { icon: Eye, title: 'Live Preview', description: 'See updates instantly.' },
+              { icon: Sparkles, title: 'Premium Layouts', description: 'Polished ATS designs.' },
+              { icon: Save, title: 'Secure Save', description: 'Drafts restore instantly.' },
+            ].map((item) => (
+              <Card key={item.title} className="bg-surface/50 border-white/5 shadow-none">
+                <CardContent className="p-4 flex flex-col items-center lg:items-start text-center lg:text-left">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3">
+                    <item.icon className="h-5 w-5" />
                   </div>
-                  <p className="text-xs text-slate-300">Password strength: {score}%</p>
-                </div>
-
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <label className="flex items-center gap-3 text-sm text-slate-200/90 select-none">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      className="h-4 w-4 accent-royal-gold"
-                    />
-                    Remember me
-                  </label>
-                  <button
-                    onClick={() => setForgot(true)}
-                    className="text-sm text-slate-200/90 hover:text-royal-gold transition"
-                    type="button"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-
-                <LoadingButton onClick={submit} loading={loading} type="button" disabled={loading}>
-                  {mode === 'register' ? 'Create Account' : 'Login'}
-                </LoadingButton>
-
-                {to?.type ? (
-                  <div className={`text-sm ${to.type === 'error' ? 'text-red-300' : to.type === 'success' ? 'text-emerald-300' : 'text-slate-200'}`}>
-                    <span className="font-semibold">{to.title}:</span> {to.message}
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </motion.div>
+                  <div className="text-sm font-bold text-foreground">{item.title}</div>
+                  <p className="mt-1 text-xs text-foreground/70">{item.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
+
+        {/* Right Side Form */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Card className="shadow-elevation-4 border-border overflow-hidden">
+            <CardHeader className="pb-0 pt-6 px-6">
+              <div className="flex gap-2 rounded-xl bg-surface-elevated p-1.5 border border-border">
+                <button
+                  type="button"
+                  className={`flex-1 rounded-lg py-2.5 text-sm font-bold transition-all ${
+                    mode === 'login'
+                      ? 'bg-surface text-foreground shadow-elevation-1'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
+                  onClick={() => { setMode('login'); setForgot(false); setErrors({}); setTo({}); }}
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className={`flex-1 rounded-lg py-2.5 text-sm font-bold transition-all ${
+                    mode === 'register'
+                      ? 'bg-surface text-foreground shadow-elevation-1'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
+                  onClick={() => { setMode('register'); setForgot(false); setErrors({}); setTo({}); }}
+                >
+                  Register
+                </button>
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6">
+              <AnimatePresence mode="wait">
+                {forgot ? (
+                  <motion.div
+                    key="forgot"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-2 text-center">
+                      <CardTitle>Forgot Password</CardTitle>
+                      <CardDescription>
+                        This demo stores users locally. Password resets are disabled.
+                      </CardDescription>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <Button type="button" variant="outline" onClick={() => setForgot(false)}>
+                        Back to login
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => showMsg('success', 'Info', 'Reset flow is disabled.')}
+                      >
+                        Request reset
+                      </Button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    onSubmit={submit}
+                    className="space-y-5"
+                    noValidate
+                  >
+                    <div className="space-y-2 text-center pb-2">
+                      <CardTitle className="text-h4">{mode === 'register' ? 'Create an account' : 'Welcome back'}</CardTitle>
+                      <CardDescription>
+                        {mode === 'register'
+                          ? 'Register to unlock saved resumes and premium features.'
+                          : 'Login to continue editing and download your PDF.'}
+                      </CardDescription>
+                    </div>
+
+                    <div className="space-y-4">
+                      {mode === 'register' && (
+                        <div className="space-y-1.5">
+                          <Label htmlFor="name">Full Name</Label>
+                          <Input
+                            id="name"
+                            value={name}
+                            onChange={(e) => { setName(e.target.value); setErrors(prev => ({...prev, name: ''})) }}
+                            placeholder="John Doe"
+                            autoComplete="name"
+                            error={errors.name}
+                          />
+                        </div>
+                      )}
+
+                      <div className="space-y-1.5">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          value={email}
+                          onChange={(e) => { setEmail(e.target.value); setErrors(prev => ({...prev, email: ''})) }}
+                          placeholder="name@example.com"
+                          type="email"
+                          autoComplete="email"
+                          error={errors.email}
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label htmlFor="password">Password</Label>
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={(e) => { setPassword(e.target.value); setErrors(prev => ({...prev, password: ''})) }}
+                            placeholder="••••••••"
+                            autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                            error={errors.password}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-2.5 text-foreground/50 hover:text-foreground transition-colors focus-visible:outline-none"
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
+                        {mode === 'register' && password && (
+                          <div className="pt-3 pb-1">
+                            <div className="h-1.5 rounded-full bg-surface-elevated overflow-hidden">
+                              <div style={{ width: `${score}%` }} className={`h-full transition-all duration-300 ${barColor(score)}`} />
+                            </div>
+                            <p className="mt-1.5 text-xs text-foreground/60">Strength: {score}%</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <div className="relative flex items-center justify-center">
+                          <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                            className="peer sr-only"
+                          />
+                          <div className="h-4 w-4 rounded border border-border bg-surface transition-colors peer-checked:bg-primary peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background"></div>
+                          {rememberMe && <ShieldCheck className="absolute h-3 w-3 text-primary-foreground" />}
+                        </div>
+                        <span className="text-sm text-foreground/80 group-hover:text-foreground transition-colors">Remember me</span>
+                      </label>
+                      <button
+                        onClick={() => setForgot(true)}
+                        className="text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+                        type="button"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+
+                    {to?.type && (
+                      <div className={`text-sm p-3 rounded-md border ${
+                        to.type === 'error' ? 'bg-error/10 border-error/20 text-error' : 
+                        to.type === 'success' ? 'bg-success/10 border-success/20 text-success' : 
+                        'bg-surface-elevated border-border text-foreground'
+                      }`}>
+                        <span className="font-semibold">{to.title}:</span> {to.message}
+                      </div>
+                    )}
+
+                    <Button type="submit" isLoading={loading} className="w-full mt-2">
+                      {mode === 'register' ? 'Create Account' : 'Login'}
+                    </Button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   )
 }
-
-

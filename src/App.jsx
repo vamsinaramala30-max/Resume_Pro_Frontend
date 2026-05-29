@@ -15,6 +15,7 @@ import TopNav from './components/TopNav.jsx'
 import Footer from './components/Footer.jsx'
 import AuthGuard from './components/AuthGuard.jsx'
 import ToastLayer from './components/ToastLayer.jsx'
+import { cn } from './components/ui/Button'
 
 import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
 
@@ -77,20 +78,18 @@ function AppShell() {
   const isAuthRoute = location.pathname === '/auth'
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-royal-gold/25 blur-3xl animate-blob" />
-        <div className="absolute right-[-5rem] top-24 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute left-1/2 top-1/3 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl animate-blob animation-delay-4000" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(197,160,89,0.18),transparent_18%),radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.18),transparent_22%)]" />
-      </div>
-
-      <div className="relative z-10">
+    <div className="relative min-h-screen flex flex-col overflow-hidden">
+      <div className="relative z-10 flex flex-col min-h-screen">
         {!isAuthRoute ? (
           <TopNav user={user} theme={theme} toggleTheme={toggleTheme} onLogout={onLogout} />
         ) : null}
 
-        <main className="relative">
+        <main
+          className={cn(
+            'relative flex-1',
+            !isAuthRoute && 'pt-[calc(var(--nav-height)+var(--section-spacing-mobile))] md:pt-[calc(var(--nav-height)+var(--section-spacing-tablet))] lg:pt-[calc(var(--nav-height)+var(--section-spacing-desktop))] pb-[var(--section-spacing-mobile)] md:pb-[var(--section-spacing-tablet)] lg:pb-[var(--section-spacing-desktop)] layout-container'
+          )}
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={location.pathname}
@@ -98,7 +97,7 @@ function AppShell() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="relative"
+              className={cn("relative w-full", isAuthRoute && "flex-1 flex flex-col")}
             >
               <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-slate-300">Loading page…</div>}>
                 <Routes location={location}>

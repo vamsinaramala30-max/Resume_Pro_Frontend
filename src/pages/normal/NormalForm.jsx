@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { User, Target, GraduationCap, Brain, Lightbulb, Briefcase, Award, Languages, Heart } from 'lucide-react'
 
 import FloatingInput from '../../components/FloatingInput.jsx'
 import FloatingTextArea from '../../components/FloatingTextArea.jsx'
@@ -70,7 +71,7 @@ export default function NormalForm() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full">
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,17 +79,17 @@ export default function NormalForm() {
       >
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="text-royal-gold font-black text-4xl">Normal Resume Builder</div>
-            <div className="text-slate-200/90 mt-2">Step 1/3 — Form only. No preview here.</div>
+            <div className="text-primary font-black text-h2">Normal Resume Builder</div>
+            <div className="text-foreground/70 mt-2 font-medium">Step 1/3 — Form only. No preview here.</div>
           </div>
           <div className="w-full sm:w-[340px]">
-            <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+            <div className="h-2 rounded-full bg-surface-elevated overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-royal-gold to-yellow-300"
+                className="h-full bg-primary transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="text-xs text-slate-200/70 mt-2">Completion: {progress}%</div>
+            <div className="text-xs text-foreground/50 font-bold tracking-widest uppercase mt-2">Completion: {progress}%</div>
           </div>
         </div>
       </motion.div>
@@ -103,7 +104,7 @@ export default function NormalForm() {
 
         <div className="space-y-6">
           <SectionCard
-            icon="👑"
+            icon={<User className="w-5 h-5" />}
             title="Personal Information"
             subtitle="Identity, contact, and links"
           >
@@ -142,7 +143,7 @@ export default function NormalForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="👑" title="Career Objective" subtitle="ATS-friendly professional goal">
+          <SectionCard icon={<Target className="w-5 h-5" />} title="Career Objective" subtitle="ATS-friendly professional goal">
             <FloatingTextArea
               label="Career Objective"
               value={data.careerObjective}
@@ -152,7 +153,7 @@ export default function NormalForm() {
             />
           </SectionCard>
 
-          <SectionCard icon="👑" title="Education" subtitle="Degree, college, year, and grades">
+          <SectionCard icon={<GraduationCap className="w-5 h-5" />} title="Education" subtitle="Degree, college, year, and grades">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput
                 label="Degree / Branch"
@@ -184,7 +185,7 @@ export default function NormalForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="👑" title="Skills" subtitle="Technical, tools, and soft skills">
+          <SectionCard icon={<Brain className="w-5 h-5" />} title="Skills" subtitle="Technical, tools, and soft skills">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput
                 label="Technical Skills (comma separated)"
@@ -206,7 +207,7 @@ export default function NormalForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="👑" title="Projects" subtitle="High-impact results">
+          <SectionCard icon={<Lightbulb className="w-5 h-5" />} title="Projects" subtitle="High-impact results">
             <div className="grid md:grid-cols-3 gap-4">
               <FloatingTextArea
                 label="Project 1"
@@ -230,7 +231,7 @@ export default function NormalForm() {
           </SectionCard>
 
           <SectionCard
-            icon="👑"
+            icon={<Briefcase className="w-5 h-5" />}
             title="Internship / Experience"
             subtitle="Role, duration, and achievements"
           >
@@ -261,7 +262,7 @@ export default function NormalForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="👑" title="Certifications" subtitle="Credibility boosters">
+          <SectionCard icon={<Award className="w-5 h-5" />} title="Certifications" subtitle="Credibility boosters">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput
                 label="Certifications"
@@ -276,7 +277,7 @@ export default function NormalForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="👑" title="Languages" subtitle="Multilingual readiness">
+          <SectionCard icon={<Languages className="w-5 h-5" />} title="Languages" subtitle="Multilingual readiness">
             <FloatingInput
               label="Languages"
               value={data.personalLanguages}
@@ -284,7 +285,7 @@ export default function NormalForm() {
             />
           </SectionCard>
 
-          <SectionCard icon="👑" title="Hobbies" subtitle="Human + balanced profile">
+          <SectionCard icon={<Heart className="w-5 h-5" />} title="Hobbies" subtitle="Human + balanced profile">
             <FloatingInput
               label="Hobbies"
               value={data.personalHobbies}
@@ -292,7 +293,7 @@ export default function NormalForm() {
             />
           </SectionCard>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-end">
+          <div className="flex flex-col sm:flex-row gap-3 justify-end mt-8">
             <LoadingButton
               type="button"
               onClick={() => {
@@ -300,7 +301,7 @@ export default function NormalForm() {
                 writeJSON(DRAFT_KEY, data)
                 navigate('/normal/preview')
               }}
-              className="bg-royal-gold text-royal-navy hover:brightness-110"
+              className="w-full sm:w-auto"
             >
               Continue to Preview
             </LoadingButton>

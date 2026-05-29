@@ -2,67 +2,166 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-  color: #e2e8f0;
-  background-color: #020617;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+@layer base {
+  :root {
+    /* Light Mode Tokens */
+    --background: #f8fafc;
+    --foreground: #020617;
+
+    --surface: #ffffff;
+    --surface-elevated: #f1f5f9;
+
+    --primary: #c5a059;
+    /* Royal Gold */
+    --primary-foreground: #020617;
+
+    --secondary: #0a192f;
+    /* Royal Navy */
+    --secondary-foreground: #ffffff;
+
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #c5a059;
+
+    --radius: 0.5rem;
+
+    /* Layout Tokens */
+    --nav-height: 80px;
+    --page-max-width: 1280px;
+    --page-padding-inline: 24px;
+    
+    --section-spacing-desktop: 64px;
+    --section-spacing-tablet: 48px;
+    --section-spacing-mobile: 32px;
+  }
+
+  .dark {
+    /* Dark Mode Tokens */
+    --background: #020617;
+    --foreground: #f8fafc;
+
+    --surface: #0f172a;
+    --surface-elevated: #1e293b;
+
+    --primary: #c5a059;
+    /* Royal Gold */
+    --primary-foreground: #020617;
+
+    --secondary: #0a192f;
+    /* Royal Navy */
+    --secondary-foreground: #ffffff;
+
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #c5a059;
+
+    /* Layout Tokens */
+    --nav-height: 80px;
+    --page-max-width: 1280px;
+    --page-padding-inline: 24px;
+    
+    --section-spacing-desktop: 64px;
+    --section-spacing-tablet: 48px;
+    --section-spacing-mobile: 32px;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(197, 160, 89, 0.2);
+    /* primary/20 */
+    color: var(--primary);
+  }
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  min-height: 100vh;
-  margin: 0;
-  color: #e2e8f0;
-  overflow-x: hidden;
-  background: radial-gradient(circle at top left, rgba(197, 160, 89, 0.16), transparent 24%),
-    radial-gradient(circle at 85% 20%, rgba(59, 130, 246, 0.14), transparent 18%),
-    linear-gradient(180deg, #020617 0%, #040b19 100%);
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-surface/70 backdrop-blur-xl border border-white/10 dark:border-white/5;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  /* Global Layout Container */
+  .layout-container {
+    width: 100%;
+    max-width: var(--page-max-width);
+    margin-inline: auto;
+    padding-inline: var(--page-padding-inline);
+  }
+
+  /* Section Spacing Utilities */
+  .section-spacing-y {
+    padding-top: var(--section-spacing-mobile);
+    padding-bottom: var(--section-spacing-mobile);
+  }
+  @media (min-width: 768px) {
+    .section-spacing-y {
+      padding-top: var(--section-spacing-tablet);
+      padding-bottom: var(--section-spacing-tablet);
+    }
+  }
+  @media (min-width: 1024px) {
+    .section-spacing-y {
+      padding-top: var(--section-spacing-desktop);
+      padding-bottom: var(--section-spacing-desktop);
+    }
+  }
 }
 
-body.light {
-  color: #111827;
-  background: radial-gradient(circle at top left, rgba(245, 158, 11, 0.12), transparent 28%),
-    radial-gradient(circle at 90% 30%, rgba(37, 99, 235, 0.1), transparent 24%),
-    linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
+/* Base gradients to keep the original aesthetic but less intrusive */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -20;
-  background: radial-gradient(circle at 20% 10%, rgba(197, 160, 89, 0.18), transparent 20%),
-    radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.14), transparent 18%),
-    radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.08), transparent 22%);
+  background: radial-gradient(circle at 20% 10%, rgba(197, 160, 89, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.05), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.03), transparent 40%);
+  pointer-events: none;
 }
 
-@keyframes gradient-pan {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+body.light::before {
+  background: radial-gradient(circle at 20% 10%, rgba(197, 160, 89, 0.05), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.03), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.02), transparent 40%);
 }
-
-@keyframes blob {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(12px, -18px) scale(1.05); }
-  66% { transform: translate(-20px, 16px) scale(0.95); }
-}
-
-.animate-blob {
-  animation: blob 8s infinite ease-in-out;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-.royal-gold { color: #c5a059; }
-.royal-navy { color: #0a192f; }
-

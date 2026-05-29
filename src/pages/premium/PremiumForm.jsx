@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { User, Sparkles, Target, Brain, Palette, Award, Pin } from 'lucide-react'
 import SectionCard from '../../components/SectionCard.jsx'
 import FloatingInput from '../../components/FloatingInput.jsx'
 import FloatingTextArea from '../../components/FloatingTextArea.jsx'
@@ -72,19 +73,19 @@ export default function PremiumForm() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full">
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="text-royal-gold font-black text-4xl">Premium Builder</div>
-            <div className="text-slate-200/90 mt-2">Form + AI + premium customization (draft autosave)</div>
+            <div className="text-primary font-black text-h2 tracking-tight">Premium Builder</div>
+            <div className="text-foreground/70 mt-2 font-medium">Form + AI + premium customization (draft autosave)</div>
           </div>
 
           <div className="w-full sm:w-[360px]">
-            <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-royal-gold to-yellow-300" style={{ width: `${completion}%` }} />
+            <div className="h-2 rounded-full bg-surface-elevated overflow-hidden">
+              <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${completion}%` }} />
             </div>
-            <div className="text-xs text-slate-200/70 mt-2">Completion: {completion}%</div>
+            <div className="text-xs text-foreground/50 tracking-widest uppercase font-bold mt-2">Completion: {completion}%</div>
           </div>
         </div>
       </motion.div>
@@ -93,7 +94,7 @@ export default function PremiumForm() {
         <AIAssistantButton mode="premium" onAutofill={(patch) => setData((p) => mergeResume(p, patch))} />
 
         <div className="space-y-6 mt-6">
-          <SectionCard icon="👑" title="Personal Information" subtitle="Premium formatting + clean layout">
+          <SectionCard icon={<User className="w-5 h-5" />} title="Personal Information" subtitle="Premium formatting + clean layout">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput label="Full Name" value={data.fullName} onChange={(e) => setData((p) => ({ ...p, fullName: e.target.value }))} error={errors.fullName} />
               <FloatingInput label="Phone" value={data.phone} onChange={(e) => setData((p) => ({ ...p, phone: e.target.value }))} error={errors.phone} />
@@ -102,7 +103,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="✨" title="Premium Highlights" subtitle="Focus on the sections that make your resume stand out">
+          <SectionCard icon={<Sparkles className="w-5 h-5" />} title="Premium Highlights" subtitle="Focus on the sections that make your resume stand out">
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {[
                 { title: 'AI Wording', description: 'Smart phrasing for career summaries and bullets.' },
@@ -118,11 +119,11 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="⭐" title="Career Objective" subtitle="AI-ready ATS wording">
+          <SectionCard icon={<Target className="w-5 h-5" />} title="Career Objective" subtitle="AI-ready ATS wording">
             <FloatingTextArea label="Career Objective" value={data.careerObjective} rows={5} onChange={(e) => setData((p) => ({ ...p, careerObjective: e.target.value }))} error={errors.careerObjective} />
           </SectionCard>
 
-          <SectionCard icon="🧠" title="Skills" subtitle="Technical + Tools + Soft">
+          <SectionCard icon={<Brain className="w-5 h-5" />} title="Skills" subtitle="Technical + Tools + Soft">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput label="Technical Skills" value={data.skillsTechnical} onChange={(e) => setData((p) => ({ ...p, skillsTechnical: e.target.value }))} />
               <FloatingInput label="Tools & Platforms" value={data.skillsTools} onChange={(e) => setData((p) => ({ ...p, skillsTools: e.target.value }))} />
@@ -132,7 +133,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="🎨" title="Premium Template" subtitle="Choose the style and preview image">
+          <SectionCard icon={<Palette className="w-5 h-5" />} title="Premium Template" subtitle="Choose the style and preview image">
             <div className="space-y-5">
               <TemplateSelector template={templateId} setTemplate={setTemplateId} />
               <div className="grid gap-4 sm:grid-cols-[1fr_140px]">
@@ -151,7 +152,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="🧾" title="Bonus Details" subtitle="Add certifications, achievements, and personal highlights">
+          <SectionCard icon={<Award className="w-5 h-5" />} title="Bonus Details" subtitle="Add certifications, achievements, and personal highlights">
             <div className="grid gap-4 md:grid-cols-2">
               <FloatingInput label="Portfolio URL" value={data.portfolio} onChange={(e) => setData((p) => ({ ...p, portfolio: e.target.value }))} />
               <FloatingInput label="Certifications" value={data.personalCertifications} onChange={(e) => setData((p) => ({ ...p, personalCertifications: e.target.value }))} />
@@ -161,7 +162,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="📌" title="Projects" subtitle="Premium-impact bullets">
+          <SectionCard icon={<Pin className="w-5 h-5" />} title="Projects" subtitle="Premium-impact bullets">
             <div className="grid md:grid-cols-3 gap-4">
               <FloatingTextArea label="Project 1" value={data.projects1} rows={4} onChange={(e) => setData((p) => ({ ...p, projects1: e.target.value }))} />
               <FloatingTextArea label="Project 2" value={data.projects2} rows={4} onChange={(e) => setData((p) => ({ ...p, projects2: e.target.value }))} />
@@ -217,7 +218,7 @@ export default function PremiumForm() {
                 }
               }}
               loading={saving}
-              className="bg-royal-gold text-royal-navy hover:brightness-110"
+              className="w-full sm:w-auto"
             >
               Save & Continue
             </LoadingButton>
