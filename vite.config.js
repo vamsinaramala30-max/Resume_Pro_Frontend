@@ -5,10 +5,34 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true,
+    open: false,
+    proxy: {
+      // Proxy API requests to backend (runs on port 5000 by default)
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        rewrite: (path) => path, // keep /api prefix
+      },
+    },
   },
   build: {
+    emptyOutDir: true,
     chunkSizeWarningLimit: 800,
   },
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -179,15 +179,18 @@ export default function PremiumUpgradeModal({ open, onClose }) {
         return
       }
 
-      const order = await apiPaymentCreateOrder({ amount, provider })
-      const verify = await apiPaymentVerify({ orderId: order?.id, provider })
+      const plan = planKey.startsWith('pro') ? 'PRO' : planKey === 'enterprise' ? 'TEAM' : 'FREE'
+      const order = await apiPaymentCreateOrder({ token, plan })
+      const verify = await apiPaymentVerify({ token, orderId: order?.orderId, paymentId: order?.paymentId || '', razorpaySignature: order?.razorpaySignature || '', plan })
 
       if (verify?.ok) {
         addToast('success', 'Premium activated', 'Your subscription is now active. Enjoy premium features!')
-        // In this demo snapshot, the backend/payment routes may simulate premium.
-        // Consumer pages can read token claims or local premium flag later.
-        localStorage.setItem('royalPremium', 'true')
-        localStorage.setItem('royalPlan', planKey)
+        const auth = JSON.parse(localStorage.getItem('royalAuth') || 'null')
+        if (auth?.token) {
+          const updatedAuth = { ...auth, user: { ...auth.user, plan: 'PRO', subscriptionStatus: 'active' } }
+          localStorage.setItem('royalAuth', JSON.stringify(updatedAuth))
+          window.dispatchEvent(new Event('royal-auth-updated'))
+        }
         onClose?.()
       } else {
         addToast('error', 'Payment failed', verify?.message || 'Please try again')

@@ -208,23 +208,48 @@ export default function NormalDownload() {
           </div>
         </div>
 
-        <div className="mt-6 grid md:grid-cols-5 gap-3">
-          <button onClick={downloadPdf} className="md:col-span-1 px-4 py-3 rounded-2xl font-bold bg-royal-gold text-royal-navy hover:brightness-110 transition inline-flex items-center justify-center gap-2">
-            <Download className="w-4 h-4" /> PDF
-          </button>
-          <button onClick={print} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2">
-            <Printer className="w-4 h-4" /> Print
-          </button>
-          <button onClick={saveLocal} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2">
-            <Save className="w-4 h-4" /> Save
-          </button>
-          <button onClick={share} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2">
-            <Share2 className="w-4 h-4" /> Share
-          </button>
-          <button onClick={exportHighQualityPdf} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2">
-            <FileText className="w-4 h-4" /> Export
-          </button>
+        <div className="mt-6 space-y-4">
+          {/* Primary + secondary CTAs (enterprise pattern) */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={downloadPdf}
+              className="flex-1 px-4 py-3 rounded-2xl font-bold bg-royal-gold text-royal-navy hover:brightness-110 transition inline-flex items-center justify-center gap-2"
+            >
+              <Download className="w-4 h-4" /> PDF
+            </button>
+
+            <button
+              onClick={saveLocal}
+              className="flex-1 px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2"
+            >
+              <Save className="w-4 h-4" /> Save
+            </button>
+          </div>
+
+          {/* Remaining actions grouped to avoid multiple competing primary CTAs */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button
+              onClick={print}
+              className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2 text-sm"
+            >
+              <Printer className="w-4 h-4" /> Print
+            </button>
+            <button
+              onClick={share}
+              className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2 text-sm"
+            >
+              <Share2 className="w-4 h-4" /> Share
+            </button>
+            <button
+              onClick={exportHighQualityPdf}
+              className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition inline-flex items-center justify-center gap-2 text-sm"
+            >
+              <FileText className="w-4 h-4" /> Export
+            </button>
+            <div className="hidden sm:block" aria-hidden="true" />
+          </div>
         </div>
+
       </motion.div>
 
       <div className="mt-7 flex justify-center">

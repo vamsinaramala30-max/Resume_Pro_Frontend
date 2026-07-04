@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Check, Wand2 } from 'lucide-react'
 import TemplateSelector from '../../components/TemplateSelector.jsx'
+import SectionCard from '../../components/SectionCard.jsx'
 import { TEMPLATE_SAMPLES } from '../../lib/templateSamples.js'
 import { RESUME_DEFAULTS } from '../../lib/resumeDefaults.js'
-import { readJSON, STORAGE_KEYS } from '../../lib/storage.js'
+import { readJSON, writeJSON, STORAGE_KEYS } from '../../lib/storage.js'
 import { splitSkillString } from '../../lib/formatters.js'
 
-const DRAFT_KEY = STORAGE_KEYS.resumeDraftNormal
+const DRAFT_KEY = STORAGE_KEYS.resumeDraftNormal ?? 'royalResumeDraftNormal'
 
 function mergeResume(prev, patch) {
   return { ...prev, ...patch }
@@ -181,7 +181,6 @@ function PreviewResume({ data, templateId }) {
 }
 
 export default function NormalPreview() {
-  const navigate = useNavigate()
   const [templateId, setTemplateId] = useState('modern')
   const [data, setData] = useState(() => {
     const saved = readJSON(DRAFT_KEY, null)
@@ -197,7 +196,7 @@ export default function NormalPreview() {
     <div className="flex items-center justify-between gap-4 flex-wrap">
       <button
         type="button"
-        onClick={() => navigate('/normal')}
+        onClick={() => (window.location.href = '/normal')}
         className="px-4 py-2 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition text-sm inline-flex items-center gap-2"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -207,15 +206,7 @@ export default function NormalPreview() {
       <div className="flex items-center gap-3">
         <button
           type="button"
-          onClick={() => navigate('/normal')}
-          className="px-4 py-2 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition text-sm"
-        >
-          Back
-        </button>
-
-        <button
-          type="button"
-          onClick={() => navigate('/normal/download')}
+          onClick={() => (window.location.href = '/normal/download')}
           className="px-4 py-2 rounded-2xl font-bold bg-royal-gold text-royal-navy hover:brightness-110 transition text-sm inline-flex items-center gap-2"
         >
           <Check className="w-4 h-4" />
@@ -242,19 +233,13 @@ export default function NormalPreview() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1.3fr_360px]">
-          <div>{completionActions}</div>
-          <div className="rounded-3xl border border-white/15 bg-black/10 p-5">
-            <div className="text-sm font-bold uppercase tracking-[0.18em] text-slate-300">Live template image</div>
-            <div
-              className="mt-4 h-44 rounded-3xl bg-cover bg-center border border-white/10 shadow-inner"
-              style={{ backgroundImage: `url(${TEMPLATE_SAMPLES[templateId]?.image || TEMPLATE_SAMPLES.modern.bg})` }}
-            />
-            <div className="mt-4 text-sm text-slate-300 leading-relaxed">
-              Your selected layout is shown here. Switch templates to preview premium resume designs instantly before download.
-            </div>
-          </div>
+      <div className="mt-6">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>{/* keep */}</div>
+          {completionActions}
         </div>
+      </div>
+
       </motion.div>
 
       <div className="mt-7">

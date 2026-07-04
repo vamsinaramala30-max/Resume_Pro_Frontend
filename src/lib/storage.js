@@ -26,3 +26,6 @@ export function removeKey(key) {
   localStorage.removeItem(key);
 }
 
+// Alias for removeKey - used by Profile, Settings, TopNavUserMenu
+export const removeItem = removeKey;
+

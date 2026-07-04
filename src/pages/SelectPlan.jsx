@@ -38,14 +38,12 @@ function PlanCard({ title, subtitle, badge, glow, onClick, icon, features }) {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-4">
-          <span className={glow ? 'rounded-3xl bg-royal-gold px-4 py-2 text-sm font-bold text-royal-navy' : 'rounded-3xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white'}>
-            Select
-          </span>
+          <div className="flex flex-wrap items-center gap-3 pt-4">
           <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
             {glow ? 'AI + luxury' : 'Solid resume workflow'}
           </span>
         </div>
+
       </div>
     </motion.button>
   )
