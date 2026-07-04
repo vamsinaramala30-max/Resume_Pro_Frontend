@@ -1,34 +1,46 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Crown, Sparkles, BadgeCheck, Zap, ShieldCheck } from 'lucide-react'
+import { Button } from '../components/ui/Button'
+import { Card, CardContent, CardHeader } from '../components/ui/Card'
+import { cn } from '../components/ui/Button'
 
 function PlanCard({ title, subtitle, badge, glow, onClick, icon, features }) {
   return (
-    <motion.button
-      type="button"
-      whileHover={{ y: -8, scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
-      onClick={onClick}
-      className="group relative overflow-hidden rounded-[32px] border border-white/10 bg-slate-950/85 p-7 text-left shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-royal-gold/40"
+    <motion.div
+      whileHover={{ y: -8 }}
+      className="h-full"
     >
-      {glow ? (
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(197,160,89,0.22),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_40%)]" />
-      ) : null}
+      <Card className={cn("h-full flex flex-col relative overflow-hidden transition-all duration-300", glow ? "border-primary/40 shadow-elevation-3" : "border-border hover:border-primary/20 shadow-elevation-2")}>
+        {glow && (
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50" />
+        )}
 
-      <div className="relative z-10 space-y-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-slate-400">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-3xl bg-white/10 text-royal-gold">{icon}</span>
-              <span className="font-bold text-white">{badge}</span>
+        <CardHeader className="pb-4 relative z-10 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className={cn("inline-flex h-10 w-10 items-center justify-center rounded-xl", glow ? "bg-primary/20 text-primary" : "bg-surface-elevated text-foreground")}>
+                {icon}
+              </span>
+              <span className="text-xs uppercase tracking-widest font-bold text-foreground/60">{badge}</span>
             </div>
-            <div className="text-3xl font-black text-white">{title}</div>
+            {glow ? <Zap className="h-6 w-6 text-primary" /> : <ShieldCheck className="h-6 w-6 text-foreground/40" />}
           </div>
-          {glow ? <Zap className="h-7 w-7 text-royal-gold" /> : <ShieldCheck className="h-7 w-7 text-slate-300" />}
-        </div>
+          <h2 className="text-h3 font-black text-foreground">{title}</h2>
+          <p className="text-body text-foreground/70">{subtitle}</p>
+        </CardHeader>
 
-        <p className="text-slate-300 leading-7">{subtitle}</p>
+        <CardContent className="flex-1 flex flex-col relative z-10 pt-2 space-y-6">
+          <div className="space-y-3 flex-1">
+            {features.map((feature, idx) => (
+              <div key={idx} className="flex items-center gap-3 text-sm text-foreground/80">
+                <BadgeCheck className={cn("h-5 w-5 shrink-0", glow ? "text-primary" : "text-foreground/40")} />
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
 
+<<<<<<< HEAD
         <div className="space-y-3">
           {features.map((feature, idx) => (
             <div key={idx} className="flex items-center gap-3 text-sm text-slate-300">
@@ -46,6 +58,19 @@ function PlanCard({ title, subtitle, badge, glow, onClick, icon, features }) {
 
       </div>
     </motion.button>
+=======
+          <div className="pt-6 border-t border-border mt-auto flex flex-col sm:flex-row items-center gap-4">
+            <Button onClick={onClick} className="w-full sm:w-auto" variant={glow ? "default" : "secondary"}>
+              Select {badge}
+            </Button>
+            <span className="text-xs uppercase tracking-widest text-foreground/50 font-medium">
+              {glow ? 'AI + luxury' : 'Solid resume workflow'}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
   )
 }
 
@@ -53,32 +78,33 @@ export default function SelectPlan() {
   const navigate = useNavigate()
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 py-14 sm:px-6 lg:px-8">
-      <div className="absolute inset-x-0 top-0 h-44 bg-[radial-gradient(circle_at_top_left,rgba(197,160,89,0.14),transparent_28%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_25%)]" />
-      <div className="relative z-10 space-y-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="rounded-[36px] border border-white/10 bg-slate-950/80 p-8 shadow-2xl backdrop-blur-3xl">
-          <div className="inline-flex items-center gap-3 rounded-full bg-white/5 px-4 py-2 text-sm text-slate-300">
-            <Crown className="h-5 w-5 text-royal-gold" /> Pick the workflow that fits your career.
-          </div>
-          <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_0.9fr] lg:items-end">
-            <div>
-              <h1 className="text-5xl font-black tracking-tight text-white">Choose your resume experience.</h1>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
-                From fast form-based creation to premium AI-guided resume design, select the plan that brings your story to life.
-              </p>
+    <div className="flex-1 flex flex-col relative z-10 w-full">
+      <div className="space-y-12">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Card className="bg-surface/50 border-border p-8 lg:p-12">
+            <div className="inline-flex items-center gap-3 rounded-full bg-surface-elevated border border-border px-4 py-2 text-sm text-foreground mb-8">
+              <Crown className="h-4 w-4 text-primary" /> Pick the workflow that fits your career.
             </div>
-            <div className="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
-              <div className="text-sm uppercase tracking-[0.3em] text-slate-400">Why choose</div>
-              <div className="mt-4 space-y-3 text-slate-300">
-                <p>⟶ Speed through setup with structured flow.</p>
-                <p>⟶ Unlock richer resume formats and premium visuals.</p>
-                <p>⟶ Keep your workflow modern and production-ready.</p>
+            <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+              <div>
+                <h1 className="text-h2 font-black tracking-tight text-foreground">Choose your resume experience.</h1>
+                <p className="mt-4 max-w-xl text-body-large text-foreground/70">
+                  From fast form-based creation to premium AI-guided resume design, select the plan that brings your story to life.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-surface-elevated/50 p-6 border border-border">
+                <div className="text-xs uppercase tracking-widest text-primary font-bold mb-4">Why choose</div>
+                <div className="space-y-3 text-sm text-foreground/80 font-medium">
+                  <p className="flex gap-2"><span>⟶</span> Speed through setup with structured flow.</p>
+                  <p className="flex gap-2"><span>⟶</span> Unlock richer formats and premium visuals.</p>
+                  <p className="flex gap-2"><span>⟶</span> Keep your workflow production-ready.</p>
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
         </motion.div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="grid gap-6 lg:grid-cols-2 lg:gap-8">
           <PlanCard
             title="Normal Resume"
             subtitle="Clean templates, fast form workflow, and export-ready preview for every job application."
@@ -97,9 +123,8 @@ export default function SelectPlan() {
             features={['AI writing assistance', 'Premium visual templates', 'Keyword optimization', 'Advanced export options']}
             onClick={() => navigate('/premium')}
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   )
 }
-

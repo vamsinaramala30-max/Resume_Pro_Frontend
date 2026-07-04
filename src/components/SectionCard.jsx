@@ -1,19 +1,22 @@
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/Card'
+
 export default function SectionCard({ icon, title, subtitle, children }) {
   return (
-    <section className="rounded-3xl border border-white/15 bg-black/15 backdrop-blur-xl p-6 shadow-2xl">
-      <div className="flex items-start justify-between gap-4 mb-5">
-        <div>
-          <div className="text-royal-gold text-lg font-black flex items-center gap-3">
-            <span className="inline-flex w-10 h-10 rounded-2xl bg-white/5 border border-white/15 items-center justify-center">
-              {icon}
-            </span>
-            <h2 className="m-0">{title}</h2>
-          </div>
-          {subtitle ? <p className="text-slate-200/90 text-sm mt-2">{subtitle}</p> : null}
+    <Card className="border-border shadow-elevation-2 overflow-hidden bg-surface/50">
+      <CardHeader className="flex flex-row items-start gap-4 pb-4">
+        <div className="inline-flex w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 items-center justify-center shrink-0">
+          <span className="text-xl">{icon}</span>
         </div>
-      </div>
-      {children}
-    </section>
+        <div className="space-y-1">
+          <CardTitle className="text-h4 text-foreground flex items-center gap-2">
+            {title}
+          </CardTitle>
+          {subtitle && <CardDescription className="text-sm font-medium">{subtitle}</CardDescription>}
+        </div>
+      </CardHeader>
+      <CardContent>
+        {children}
+      </CardContent>
+    </Card>
   )
 }
-

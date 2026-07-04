@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Backend API wrapper with proper environment configuration
 // Uses VITE_API_URL for explicit API URL or falls back to Vite proxy
 
@@ -47,7 +48,65 @@ async function ensureApiBase() {
 export async function getApiBase() {
   await ensureApiBase()
   return API_BASE
+=======
+// Minimal backend API wrapper
+let API_BASE = import.meta.env.VITE_API_BASE;
+let portDetected = false;
+
+// Auto-detect backend port ONLY in development
+async function getApiBase() {
+  if (API_BASE) {
+    // Clean up trailing slash
+    if (API_BASE.endsWith('/')) {
+      API_BASE = API_BASE.slice(0, -1);
+    }
+    // Auto-append /api if user forgot it
+    if (!API_BASE.endsWith('/api')) {
+      API_BASE = `${API_BASE}/api`;
+    }
+    return API_BASE;
+  }
+  
+  if (import.meta.env.DEV && !portDetected) {
+    const hostname = window.location.hostname || 'localhost';
+    const protocol = window.location.protocol || 'http:';
+    
+    // Try ports 5000-5020 to find the local backend
+    for (let port = 5000; port <= 5020; port++) {
+      try {
+        const testUrl = `${protocol}//${hostname}:${port}/api/test`;
+        const res = await fetch(testUrl, { 
+          method: 'GET',
+          signal: AbortSignal.timeout(500)
+        });
+        if (res.ok) {
+          API_BASE = `${protocol}//${hostname}:${port}/api`;
+          portDetected = true;
+          console.log(`✅ Backend detected on port ${port}`);
+          return API_BASE;
+        }
+      } catch (e) {
+        // Ignore
+      }
+    }
+    
+    // Fallback default
+    API_BASE = `${protocol}//${hostname}:5000/api`;
+    portDetected = true;
+    console.warn(`⚠️ Backend not auto-detected, defaulting to: ${API_BASE}`);
+    return API_BASE;
+  }
+  
+  // In production, if VITE_API_BASE is missing, it will hit relative /api
+  if (!API_BASE) {
+    console.warn("⚠️ VITE_API_BASE is missing in production. Falling back to '/api'.");
+    API_BASE = '/api';
+  }
+  return API_BASE;
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 }
+
+export { getApiBase };
 
 async function safeFetch(url, options) {
   const res = await fetch(url, options)
@@ -59,7 +118,8 @@ async function safeFetch(url, options) {
 }
 
 export async function apiRegister({ name, email, password }) {
-  return safeFetch(`${API_BASE}/auth/register`, {
+  const base = await getApiBase();
+  return safeFetch(`${base}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password }),
@@ -67,14 +127,21 @@ export async function apiRegister({ name, email, password }) {
   })
 }
 
+<<<<<<< HEAD
 export async function apiLogin({ email, password, rememberMe }) {
   return safeFetch(`${API_BASE}/auth/login`, {
+=======
+export async function apiLogin({ email, password }) {
+  const base = await getApiBase();
+  return safeFetch(`${base}/auth/login`, {
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, rememberMe }),
     credentials: 'include',
   })
 }
+<<<<<<< HEAD
 
 // Verify email with OTP (after registration)
 export async function apiVerifyEmail({ email, otp }) {
@@ -246,3 +313,5 @@ export async function apiChangePassword(token, { currentPassword, newPassword })
     credentials: 'include',
   })
 }
+=======
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react'
 import { Mail, Phone, MapPin, MessageCircle, Send, Loader2, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import { useSeo, injectJsonLd } from '../lib/seo.js'
@@ -25,6 +26,10 @@ const contactInfo = [
     href: null,
   },
 ]
+=======
+import React from 'react'
+import { Crown } from 'lucide-react'
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -182,6 +187,7 @@ export default function Contact() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen px-4 py-28 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
@@ -454,6 +460,14 @@ export default function Contact() {
             </div>
           </div>
         </div>
+=======
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="text-primary font-black text-4xl flex items-center gap-3">
+        <Crown className="w-8 h-8" /> Contact Me
+      </div>
+      <div className="text-slate-200/90 mt-4">
+        This page is ready for integration with your backend/CRM. For now, it’s a premium contact UI.
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
       </div>
 
       {/* Toast Notification */}

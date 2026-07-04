@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Download, Share2, Printer, Save, FileText } from 'lucide-react'
+import { Download, Share2, Printer, Save, FileText, ArrowLeft, Loader2, CheckCircle2, User } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { RESUME_DEFAULTS } from '../../lib/resumeDefaults.js'
 import { TEMPLATE_SAMPLES } from '../../lib/templateSamples.js'
 import { readJSON, writeJSON, STORAGE_KEYS } from '../../lib/storage.js'
@@ -34,7 +35,7 @@ function PreviewResumeMini({ data, templateId }) {
             {data.profileImageDataUrl ? (
               <img src={data.profileImageDataUrl} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-2xl">👤</span>
+              <User className="w-6 h-6 text-primary-foreground" />
             )}
           </div>
           <div className="min-w-0 flex-1">
@@ -177,9 +178,9 @@ export default function NormalDownload() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="w-full">
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-        <div className="text-royal-gold font-black text-4xl">Download & Share</div>
+        <div className="text-primary font-black text-4xl">Download & Share</div>
         <div className="text-slate-200/90 mt-2">Step 3/3 — PDF, print, save, share, and high-quality export.</div>
 
         <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_320px]">
@@ -208,6 +209,7 @@ export default function NormalDownload() {
           </div>
         </div>
 
+<<<<<<< HEAD
         <div className="mt-6 space-y-4">
           {/* Primary + secondary CTAs (enterprise pattern) */}
           <div className="flex flex-col sm:flex-row gap-3">
@@ -248,6 +250,24 @@ export default function NormalDownload() {
             </button>
             <div className="hidden sm:block" aria-hidden="true" />
           </div>
+=======
+        <div className="mt-6 grid md:grid-cols-5 gap-3">
+          <button onClick={downloadPdf} className="md:col-span-1 px-4 py-3 rounded-2xl font-bold bg-primary text-primary-foreground hover:brightness-110 transition inline-flex items-center justify-center gap-2">
+            <Download className="w-4 h-4" /> PDF
+          </button>
+          <button onClick={print} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
+            <Printer className="w-4 h-4" /> Print
+          </button>
+          <button onClick={saveLocal} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
+            <Save className="w-4 h-4" /> Save
+          </button>
+          <button onClick={share} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
+            <Share2 className="w-4 h-4" /> Share
+          </button>
+          <button onClick={exportHighQualityPdf} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
+            <FileText className="w-4 h-4" /> Export
+          </button>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         </div>
 
       </motion.div>

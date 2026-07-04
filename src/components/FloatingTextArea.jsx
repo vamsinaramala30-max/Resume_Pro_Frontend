@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from './ui/Button'
 
 export default function FloatingTextArea({
   label,
@@ -11,11 +11,11 @@ export default function FloatingTextArea({
   const hasValue = String(value ?? '').length > 0
 
   return (
-    <label className="block relative">
+    <label className="block relative w-full">
       <span
-        className={clsx(
+        className={cn(
           'absolute left-4 top-4 text-xs font-bold transition-all pointer-events-none',
-          hasValue ? '-top-2.5 text-royal-gold' : 'text-slate-300',
+          hasValue ? '-top-2.5 text-primary' : 'text-foreground/50'
         )}
       >
         {label}
@@ -25,13 +25,14 @@ export default function FloatingTextArea({
         onChange={onChange}
         placeholder={placeholder}
         rows={rows}
-        className={
-          'w-full rounded-2xl bg-black/20 border px-4 pt-6 pb-3 text-white outline-none transition-all resize-y ' +
-          (error ? 'border-red-500/80 focus:border-red-500/80' : 'border-white/15 focus:border-royal-gold')
-        }
+        className={cn(
+          'w-full rounded-xl bg-surface border px-4 pt-6 pb-3 text-foreground outline-none transition-all resize-y focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-background',
+          error 
+            ? 'border-error focus-visible:ring-error focus:border-error' 
+            : 'border-border focus:border-primary focus-visible:ring-primary'
+        )}
       />
-      {error ? <div className="mt-2 text-xs text-red-300">{error}</div> : null}
+      {error && <div className="mt-1 text-xs text-error font-medium">{error}</div>}
     </label>
   )
 }
-

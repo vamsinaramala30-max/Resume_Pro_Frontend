@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import html2pdf from "html2pdf.js";
 import { Download } from "lucide-react";
+=======
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import html2pdf from 'html2pdf.js'
+import { Download, Crown, Star, User, Camera, Target, GraduationCap, Brain, Lightbulb, Briefcase, Award, Palette } from 'lucide-react'
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 
 import SectionCard from "../components/SectionCard.jsx";
 import FloatingInput from "../components/FloatingInput.jsx";
@@ -93,7 +100,11 @@ function ResumePreview({ data, templateId }) {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-white">
+<<<<<<< HEAD
                   👑
+=======
+                  <User className="w-8 h-8" />
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 </div>
               )}
             </div>
@@ -116,8 +127,12 @@ function ResumePreview({ data, templateId }) {
                   <>
                     <span className="opacity-60">•</span>
                     <span>
+<<<<<<< HEAD
                       LinkedIn:{" "}
                       <span className="text-royal-gold">{data.linkedIn}</span>
+=======
+                      LinkedIn: <span className="text-primary">{data.linkedIn}</span>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                     </span>
                   </>
                 ) : null}
@@ -125,8 +140,12 @@ function ResumePreview({ data, templateId }) {
 
               {data.portfolio ? (
                 <div className="text-xs mt-1 text-slate-300">
+<<<<<<< HEAD
                   Portfolio:{" "}
                   <span className="text-royal-gold">{data.portfolio}</span>
+=======
+                  Portfolio: <span className="text-primary">{data.portfolio}</span>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 </div>
               ) : null}
             </div>
@@ -135,9 +154,13 @@ function ResumePreview({ data, templateId }) {
           {/* Skill sidebar (left) + content */}
           <div className="mt-6 grid md:grid-cols-[240px_1fr] gap-6">
             <aside>
+<<<<<<< HEAD
               <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-3">
                 Skills
               </div>
+=======
+              <div className="text-primary font-black text-sm uppercase tracking-wider mb-3">Skills</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
               <div className="space-y-4">
                 <div>
                   <div className="text-sm font-bold text-white/90 mb-2">
@@ -149,6 +172,7 @@ function ResumePreview({ data, templateId }) {
                         <div key={s}>
                           <div className="flex items-center justify-between text-xs text-slate-200">
                             <span className="truncate pr-3">{s}</span>
+<<<<<<< HEAD
                             <span className="text-royal-gold/90">
                               {Math.min(95, 45 + s.length * 2)}%
                             </span>
@@ -159,6 +183,14 @@ function ResumePreview({ data, templateId }) {
                               style={{
                                 width: `${Math.min(95, 45 + s.length * 2)}%`,
                               }}
+=======
+                            <span className="text-primary/90">{Math.min(95, 45 + s.length * 2)}%</span>
+                          </div>
+                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-primary rounded-full"
+                              style={{ width: `${Math.min(95, 45 + s.length * 2)}%` }}
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                             />
                           </div>
                         </div>
@@ -208,10 +240,14 @@ function ResumePreview({ data, templateId }) {
                   </div>
                   <div className="text-xs text-slate-200/90 leading-relaxed">
                     <div>
+<<<<<<< HEAD
                       <span className="text-slate-300">DOB:</span>{" "}
                       <span className="text-royal-gold">
                         {data.personalDOB || "—"}
                       </span>
+=======
+                      <span className="text-slate-300">DOB:</span> <span className="text-primary">{data.personalDOB || '—'}</span>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                     </div>
                     <div>
                       <span className="text-slate-300">Hobbies:</span>{" "}
@@ -232,8 +268,8 @@ function ResumePreview({ data, templateId }) {
 
             <main className="space-y-5">
               <div className="border-t border-white/10 pt-5">
-                <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <span>Career Objective</span> <span>⭐</span>
+                <div className="text-primary font-black text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <span>Career Objective</span> <Target className="w-4 h-4 ml-1" />
                 </div>
                 <p className="text-sm text-slate-200/95 leading-relaxed whitespace-pre-wrap">
                   {data.careerObjective || "Add your career objective..."}
@@ -241,9 +277,13 @@ function ResumePreview({ data, templateId }) {
               </div>
 
               <div className="border-t border-white/10 pt-5">
+<<<<<<< HEAD
                 <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-2">
                   Education
                 </div>
+=======
+                <div className="text-primary font-black text-sm uppercase tracking-wider mb-2">Education</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 <div className="space-y-2">
                   <div className="font-bold text-white/95">
                     {data.educationDegree || "Degree / Branch"}
@@ -264,9 +304,13 @@ function ResumePreview({ data, templateId }) {
               </div>
 
               <div className="border-t border-white/10 pt-5">
+<<<<<<< HEAD
                 <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-2">
                   Projects
                 </div>
+=======
+                <div className="text-primary font-black text-sm uppercase tracking-wider mb-2">Projects</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 <div className="space-y-3">
                   {[data.projects1, data.projects2, data.projects3].map(
                     (p, idx) => (
@@ -284,9 +328,13 @@ function ResumePreview({ data, templateId }) {
               </div>
 
               <div className="border-t border-white/10 pt-5">
+<<<<<<< HEAD
                 <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-2">
                   Internship / Experience
                 </div>
+=======
+                <div className="text-primary font-black text-sm uppercase tracking-wider mb-2">Internship / Experience</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 <div>
                   <div className="font-bold text-white/95 text-sm">
                     {data.experienceRole || "Role / Company"}
@@ -304,6 +352,7 @@ function ResumePreview({ data, templateId }) {
               </div>
 
               <div className="border-t border-white/10 pt-5">
+<<<<<<< HEAD
                 <div className="text-royal-gold font-black text-sm uppercase tracking-wider mb-2">
                   Certifications & Personal
                 </div>
@@ -334,11 +383,20 @@ function ResumePreview({ data, templateId }) {
                     <span className="text-royal-gold font-bold">Hobbies:</span>{" "}
                     {data.personalHobbies || "—"}
                   </div>
+=======
+                <div className="text-primary font-black text-sm uppercase tracking-wider mb-2">Certifications & Personal</div>
+                <div className="space-y-2">
+                  <div className="text-sm text-slate-200/90"><span className="text-primary font-bold">Certifications:</span> {data.personalCertifications || '—'}</div>
+                  <div className="text-sm text-slate-200/90"><span className="text-primary font-bold">Achievements:</span> {data.personalAchievements || '—'}</div>
+                  <div className="text-sm text-slate-200/90"><span className="text-primary font-bold">Languages:</span> {data.personalLanguages || '—'}</div>
+                  <div className="text-sm text-slate-200/90"><span className="text-primary font-bold">DOB:</span> {data.personalDOB || '—'}</div>
+                  <div className="text-sm text-slate-200/90"><span className="text-primary font-bold">Hobbies:</span> {data.personalHobbies || '—'}</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                 </div>
               </div>
 
               <div className="mt-4 text-xs text-slate-300/80">
-                Template: <span className="text-royal-gold">{templateId}</span>
+                Template: <span className="text-primary">{templateId}</span>
               </div>
             </main>
           </div>
@@ -386,15 +444,19 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
   return (
     <div className="space-y-6">
       {/* Royal Profile */}
+<<<<<<< HEAD
       <SectionCard
         icon="👑"
         title="Royal Profile Info"
         subtitle="Identity & contact (premium formatting)"
       >
+=======
+      <SectionCard icon={<User className="w-5 h-5" />} title="Royal Profile Info" subtitle="Identity & contact (premium formatting)" >
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-2 gap-5">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-3xl bg-white/5 border border-royal-gold/40 overflow-hidden flex-shrink-0">
+              <div className="w-16 h-16 rounded-3xl bg-white/5 border border-primary/40 overflow-hidden flex-shrink-0">
                 {data.profileImageDataUrl ? (
                   <img
                     src={data.profileImageDataUrl}
@@ -402,8 +464,13 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
                     className="w-full h-full object-cover"
                   />
                 ) : (
+<<<<<<< HEAD
                   <div className="w-full h-full flex items-center justify-center text-royal-gold">
                     📷
+=======
+                  <div className="w-full h-full flex items-center justify-center text-primary">
+                    <Camera className="w-6 h-6" />
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
                   </div>
                 )}
               </div>
@@ -425,7 +492,7 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:border-royal-gold transition text-sm font-bold"
+                  className="w-full px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:border-primary transition text-sm font-bold"
                 >
                   Upload Profile Image
                 </button>
@@ -467,6 +534,7 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Career Objective */}
+<<<<<<< HEAD
       <SectionCard
         icon="⭐"
         title="Career Objective"
@@ -486,6 +554,14 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
         title="Education History"
         subtitle="Degree, college, and summary"
       >
+=======
+      <SectionCard icon={<Target className="w-5 h-5" />} title="Career Objective" subtitle="Auto-formatted and live preview synced">
+        <FloatingTextArea label="Career Objective" value={data.careerObjective} onChange={(e) => set({ careerObjective: e.target.value })} rows={4} />
+      </SectionCard>
+
+      {/* Education */}
+      <SectionCard icon={<GraduationCap className="w-5 h-5" />} title="Education History" subtitle="Degree, college, and summary">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-2 gap-4">
           <FloatingInput
             label="Degree / Branch"
@@ -518,11 +594,15 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Skills */}
+<<<<<<< HEAD
       <SectionCard
         icon="🧠"
         title="Skills & Expertise"
         subtitle="Technical + tools + soft skills"
       >
+=======
+      <SectionCard icon={<Brain className="w-5 h-5" />} title="Skills & Expertise" subtitle="Technical + tools + soft skills">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-2 gap-4">
           <FloatingInput
             label="Technical Skills (comma separated)"
@@ -545,11 +625,15 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Projects */}
+<<<<<<< HEAD
       <SectionCard
         icon="💡"
         title="Projects (Key Impact)"
         subtitle="Add what you built and impact"
       >
+=======
+      <SectionCard icon={<Lightbulb className="w-5 h-5" />} title="Projects (Key Impact)" subtitle="Add what you built and impact">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-3 gap-4">
           <FloatingTextArea
             label="Project 1"
@@ -573,11 +657,15 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Internship / Experience */}
+<<<<<<< HEAD
       <SectionCard
         icon="🧑‍💼"
         title="Internship / Experience"
         subtitle="Role, duration and responsibilities"
       >
+=======
+      <SectionCard icon={<Briefcase className="w-5 h-5" />} title="Internship / Experience" subtitle="Role, duration and responsibilities">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-2 gap-4">
           <FloatingInput
             label="Role / Company"
@@ -606,11 +694,15 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Personal */}
+<<<<<<< HEAD
       <SectionCard
         icon="✨"
         title="Accomplishments & Personal"
         subtitle="Certifications, languages, DOB and hobbies"
       >
+=======
+      <SectionCard icon={<Award className="w-5 h-5" />} title="Accomplishments & Personal" subtitle="Certifications, languages, DOB and hobbies">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="grid md:grid-cols-2 gap-4">
           <FloatingInput
             label="Certifications"
@@ -643,11 +735,15 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
       </SectionCard>
 
       {/* Template + actions */}
+<<<<<<< HEAD
       <SectionCard
         icon="🎨"
         title="Resume Theme & Export"
         subtitle="Templates + PDF/Print"
       >
+=======
+      <SectionCard icon={<Palette className="w-5 h-5" />} title="Resume Theme & Export" subtitle="Templates + PDF/Print">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         <div className="space-y-5">
           <div>
             <div className="text-sm font-bold text-slate-100 mb-2">
@@ -664,8 +760,9 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
               onClick={exportPdf}
               loading={false}
               type="button"
-              className="bg-royal-gold text-royal-navy hover:brightness-110"
+              className="bg-primary text-royal-navy hover:brightness-110"
             >
+<<<<<<< HEAD
               <Download className="w-5 h-5" /> Download PDF
             </LoadingButton>
 
@@ -694,6 +791,22 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
                 Print
               </button>
             </div>
+=======
+              Save to Cloud
+            </LoadingButton>
+
+            <LoadingButton onClick={exportPdf} loading={false} type="button" className="bg-white/5 border border-white/10 text-white hover:border-primary">
+              <Download className="w-5 h-5" /> Download PDF
+            </LoadingButton>
+
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="px-6 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 text-white hover:border-primary transition"
+            >
+              Print Resume
+            </button>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
           </div>
 
 
@@ -736,41 +849,60 @@ export default function Builder({ user, showToast = (type, title, message) => {
     tabMode === "preview" ? "Royal Preview" : "Royal Builder";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-8">
+    <div className="relative z-10 w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-10">
         <div>
+<<<<<<< HEAD
           <div className="text-royal-gold font-black text-3xl">
             {previewTitle}
           </div>
           <div className="text-slate-200/90 mt-1">
             Real-time synchronization, templates, and premium export.
           </div>
+=======
+          <h1 className="text-primary font-black text-h2 tracking-tight">{previewTitle}</h1>
+          <p className="text-foreground/70 mt-2 text-body-large">Real-time synchronization, templates, and premium export.</p>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3 bg-surface-elevated/50 p-1.5 rounded-2xl border border-border">
           <button
             type="button"
             onClick={() => setTabMode("builder")}
             className={
+<<<<<<< HEAD
               "px-4 py-2 rounded-2xl font-bold text-sm border transition-all " +
               (tabMode === "builder"
                 ? "bg-royal-gold text-royal-navy border-royal-gold"
                 : "bg-white/5 text-white border-white/10 hover:border-royal-gold")
+=======
+              'px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ' +
+              (tabMode === 'builder'
+                ? 'bg-surface text-foreground shadow-elevation-1'
+                : 'text-foreground/60 hover:text-foreground')
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
             }
           >
-            👑 Builder
+            <Crown className="w-4 h-4 text-primary" /> Builder
           </button>
           <button
             type="button"
             onClick={() => setTabMode("preview")}
             className={
+<<<<<<< HEAD
               "px-4 py-2 rounded-2xl font-bold text-sm border transition-all " +
               (tabMode === "preview"
                 ? "bg-royal-gold text-royal-navy border-royal-gold"
                 : "bg-white/5 text-white border-white/10 hover:border-royal-gold")
+=======
+              'px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ' +
+              (tabMode === 'preview'
+                ? 'bg-surface text-foreground shadow-elevation-1'
+                : 'text-foreground/60 hover:text-foreground')
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
             }
           >
-            👑 Preview
+            <Crown className="w-4 h-4 text-primary" /> Preview
           </button>
         </div>
       </div>

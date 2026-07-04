@@ -1,4 +1,8 @@
 .env
+<<<<<<< HEAD
 node_modules
+=======
+.env.local
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 dist
 build

@@ -35,6 +35,7 @@ const NormalPreview = lazy(() => import('./pages/normal/NormalPreview.jsx'))
 const NormalDownload = lazy(() => import('./pages/normal/NormalDownload.jsx'))
 const PremiumDashboard = lazy(() => import('./pages/premium/PremiumDashboard.jsx'))
 const PremiumForm = lazy(() => import('./pages/premium/PremiumForm.jsx'))
+<<<<<<< HEAD
 const About = lazy(() => import('./pages/About.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
 const BlogIndex = lazy(() => import('./pages/blog/BlogIndex.jsx'))
@@ -54,6 +55,16 @@ const RefundPolicy = lazy(() => import('./pages/policies/RefundPolicy.jsx'))
 const SecurityPolicy = lazy(() => import('./pages/policies/SecurityPolicy.jsx'))
 const Builder = lazy(() => import('./pages/Builder.jsx'))
 const ChatBotAIAssistant = lazy(() => import('./components/ai/ChatBotAIAssistant.jsx'))
+=======
+
+import TopNav from './components/TopNav.jsx'
+import Footer from './components/Footer.jsx'
+import AuthGuard from './components/AuthGuard.jsx'
+import ToastLayer from './components/ToastLayer.jsx'
+import { cn } from './components/ui/Button'
+
+import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 
 import './index.css'
 
@@ -163,6 +174,7 @@ function AppShell() {
 
   // Main render - ALL hooks called before this point
   return (
+<<<<<<< HEAD
     <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-royal-gold/25 blur-3xl animate-blob" />
@@ -177,6 +189,20 @@ function AppShell() {
           onLogout={onLogout}
         />
         <main className="relative">
+=======
+    <div className="relative min-h-screen flex flex-col overflow-hidden">
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {!isAuthRoute ? (
+          <TopNav user={user} theme={theme} toggleTheme={toggleTheme} onLogout={onLogout} />
+        ) : null}
+
+        <main
+          className={cn(
+            'relative flex-1',
+            !isAuthRoute && 'pt-[calc(var(--nav-height)+var(--section-spacing-mobile))] md:pt-[calc(var(--nav-height)+var(--section-spacing-tablet))] lg:pt-[calc(var(--nav-height)+var(--section-spacing-desktop))] pb-[var(--section-spacing-mobile)] md:pb-[var(--section-spacing-tablet)] lg:pb-[var(--section-spacing-desktop)] layout-container'
+          )}
+        >
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={location.pathname}
@@ -184,7 +210,7 @@ function AppShell() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="relative"
+              className={cn("relative w-full", isAuthRoute && "flex-1 flex flex-col")}
             >
               <Suspense
                 fallback={

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -12,6 +13,23 @@ import { isValidEmail } from '../../lib/validators.js';
 import { readJSON, writeJSON, STORAGE_KEYS } from '../../lib/storage.js';
 import AIAssistantButton from '../../components/ai/AIAssistantButton.jsx';
 import { apiSaveResume } from '../../lib/apiResume.js';
+=======
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { User, Sparkles, Target, Brain, Palette, Award, Pin } from 'lucide-react'
+import SectionCard from '../../components/SectionCard.jsx'
+import FloatingInput from '../../components/FloatingInput.jsx'
+import FloatingTextArea from '../../components/FloatingTextArea.jsx'
+import LoadingButton from '../../components/LoadingButton.jsx'
+import TemplateSelector from '../../components/TemplateSelector.jsx'
+import { RESUME_DEFAULTS } from '../../lib/resumeDefaults.js'
+import { TEMPLATE_SAMPLES } from '../../lib/templateSamples.js'
+import { isValidEmail } from '../../lib/validators.js'
+import { readJSON, writeJSON, STORAGE_KEYS } from '../../lib/storage.js'
+import AIAssistantButton from '../../components/ai/AIAssistantButton.jsx'
+import { apiSaveResume } from '../../lib/apiResume.js'
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 
 
 const DRAFT_KEY = STORAGE_KEYS.resumeDraftPremium ?? 'royalResumeDraftPremium';
@@ -72,6 +90,7 @@ export default function PremiumForm() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Premium Header with glassmorphism and gold accents */}
       <motion.div 
@@ -114,6 +133,21 @@ export default function PremiumForm() {
                 <div className="text-xs font-bold text-amber-400">Premium Active</div>
               </div>
             </div>
+=======
+    <div className="w-full">
+      <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <div className="text-primary font-black text-h2 tracking-tight">Premium Builder</div>
+            <div className="text-foreground/70 mt-2 font-medium">Form + AI + premium customization (draft autosave)</div>
+          </div>
+
+          <div className="w-full sm:w-[360px]">
+            <div className="h-2 rounded-full bg-surface-elevated overflow-hidden">
+              <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${completion}%` }} />
+            </div>
+            <div className="text-xs text-foreground/50 tracking-widest uppercase font-bold mt-2">Completion: {completion}%</div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
           </div>
         </div>
       </motion.div>
@@ -122,7 +156,7 @@ export default function PremiumForm() {
         <AIAssistantButton mode="premium" onAutofill={(patch) => setData((p) => mergeResume(p, patch))} />
 
         <div className="space-y-6 mt-6">
-          <SectionCard icon="👑" title="Personal Information" subtitle="Premium formatting + clean layout">
+          <SectionCard icon={<User className="w-5 h-5" />} title="Personal Information" subtitle="Premium formatting + clean layout">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput label="Full Name" value={data.fullName} onChange={(e) => setData((p) => ({ ...p, fullName: e.target.value }))} error={errors.fullName} />
               <FloatingInput label="Phone" value={data.phone} onChange={(e) => setData((p) => ({ ...p, phone: e.target.value }))} error={errors.phone} />
@@ -131,6 +165,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
+<<<<<<< HEAD
           <SectionCard icon="✨" title="Premium Highlights" subtitle="Focus on the sections that make your resume stand out">
             <div className="grid md:grid-cols-2 gap-4">
               <FloatingInput label="Job Title" value={data.jobTitle} onChange={(e) => setData((p) => ({ ...p, jobTitle: e.target.value }))} />
@@ -152,10 +187,39 @@ export default function PremiumForm() {
               <FloatingTextArea label="Technical Skills" value={data.skillsTechnical} rows={3} onChange={(e) => setData((p) => ({ ...p, skillsTechnical: e.target.value }))} />
               <FloatingTextArea label="Tools & Software" value={data.skillsTools} rows={3} onChange={(e) => setData((p) => ({ ...p, skillsTools: e.target.value }))} />
               <FloatingTextArea label="Soft Skills" value={data.skillsSoft} rows={3} onChange={(e) => setData((p) => ({ ...p, skillsSoft: e.target.value }))} />
+=======
+          <SectionCard icon={<Sparkles className="w-5 h-5" />} title="Premium Highlights" subtitle="Focus on the sections that make your resume stand out">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {[
+                { title: 'AI Wording', description: 'Smart phrasing for career summaries and bullets.' },
+                { title: 'Premium Templates', description: 'Choose from high-end modern resume designs.' },
+                { title: 'ATS Ready', description: 'Structured sections optimized for recruiters.' },
+                { title: 'Fast Export', description: 'Download polished PDF and print-ready resumes.' },
+              ].map((item) => (
+                <div key={item.title} className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
+                  <div className="text-sm font-bold text-white">{item.title}</div>
+                  <p className="text-xs text-slate-300 mt-2">{item.description}</p>
+                </div>
+              ))}
             </div>
           </SectionCard>
 
-          <SectionCard icon="🎨" title="Premium Template" subtitle="Choose the style and preview image">
+          <SectionCard icon={<Target className="w-5 h-5" />} title="Career Objective" subtitle="AI-ready ATS wording">
+            <FloatingTextArea label="Career Objective" value={data.careerObjective} rows={5} onChange={(e) => setData((p) => ({ ...p, careerObjective: e.target.value }))} error={errors.careerObjective} />
+          </SectionCard>
+
+          <SectionCard icon={<Brain className="w-5 h-5" />} title="Skills" subtitle="Technical + Tools + Soft">
+            <div className="grid md:grid-cols-2 gap-4">
+              <FloatingInput label="Technical Skills" value={data.skillsTechnical} onChange={(e) => setData((p) => ({ ...p, skillsTechnical: e.target.value }))} />
+              <FloatingInput label="Tools & Platforms" value={data.skillsTools} onChange={(e) => setData((p) => ({ ...p, skillsTools: e.target.value }))} />
+              <div className="md:col-span-2">
+                <FloatingInput label="Soft Skills" value={data.skillsSoft} onChange={(e) => setData((p) => ({ ...p, skillsSoft: e.target.value }))} />
+              </div>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+            </div>
+          </SectionCard>
+
+          <SectionCard icon={<Palette className="w-5 h-5" />} title="Premium Template" subtitle="Choose the style and preview image">
             <div className="space-y-5">
               <TemplateSelector template={templateId} setTemplate={setTemplateId} />
               <div className="grid gap-4 sm:grid-cols-[1fr_140px]">
@@ -174,7 +238,11 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
+<<<<<<< HEAD
           <SectionCard icon="🎖" title="Bonus Details" subtitle="Add certifications, achievements, and personal highlights">
+=======
+          <SectionCard icon={<Award className="w-5 h-5" />} title="Bonus Details" subtitle="Add certifications, achievements, and personal highlights">
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
             <div className="grid gap-4 md:grid-cols-2">
               <FloatingInput label="Portfolio URL" value={data.portfolio} onChange={(e) => setData((p) => ({ ...p, portfolio: e.target.value }))} />
               <FloatingInput label="Certifications" value={data.personalCertifications} onChange={(e) => setData((p) => ({ ...p, personalCertifications: e.target.value }))} />
@@ -184,7 +252,7 @@ export default function PremiumForm() {
             </div>
           </SectionCard>
 
-          <SectionCard icon="📌" title="Projects" subtitle="Premium-impact bullets">
+          <SectionCard icon={<Pin className="w-5 h-5" />} title="Projects" subtitle="Premium-impact bullets">
             <div className="grid md:grid-cols-3 gap-4">
               <FloatingTextArea label="Project 1" value={data.projects1} rows={4} onChange={(e) => setData((p) => ({ ...p, projects1: e.target.value }))} />
               <FloatingTextArea label="Project 2" value={data.projects2} rows={4} onChange={(e) => setData((p) => ({ ...p, projects2: e.target.value }))} />
@@ -240,7 +308,11 @@ export default function PremiumForm() {
                 }
               }}
               loading={saving}
+<<<<<<< HEAD
               className="bg-gradient-to-r from-amber-500 to-amber-400 text-royal-navy hover:brightness-110"
+=======
+              className="w-full sm:w-auto"
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
             >
               Save & Continue
             </LoadingButton>

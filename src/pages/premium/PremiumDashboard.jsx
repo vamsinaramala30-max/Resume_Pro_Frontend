@@ -7,16 +7,16 @@ import { readJSON, STORAGE_KEYS } from '../../lib/storage.js'
 
 function Meter({ label, value, hint }) {
   return (
-    <div className="rounded-3xl border border-white/15 bg-black/15 backdrop-blur-xl p-5">
+    <div className="rounded-3xl border border-border bg-surface-elevated/50 p-5 shadow-elevation-1">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <div className="text-sm font-bold text-white">{label}</div>
-          {hint ? <div className="text-xs text-slate-200/70 mt-1">{hint}</div> : null}
+          <div className="text-sm font-bold text-foreground">{label}</div>
+          {hint && <div className="text-xs text-foreground/50 mt-1 font-medium">{hint}</div>}
         </div>
-        <div className="text-royal-gold font-black text-xl">{value}%</div>
+        <div className="text-primary font-black text-xl">{value}%</div>
       </div>
-      <div className="mt-4 h-2 bg-white/10 rounded-full overflow-hidden">
-        <div className="h-full bg-gradient-to-r from-royal-gold to-yellow-300" style={{ width: `${value}%` }} />
+      <div className="mt-4 h-2 bg-surface rounded-full overflow-hidden">
+        <div className="h-full bg-primary transition-all duration-500 ease-out" style={{ width: `${value}%` }} />
       </div>
     </div>
   )
@@ -57,29 +57,25 @@ export default function PremiumDashboard() {
   const navigate = useNavigate()
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="relative z-10 w-full">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-        className="relative overflow-hidden rounded-3xl border border-white/15 bg-black/10 backdrop-blur-xl shadow-2xl p-8"
-        style={{
-          background:
-            'radial-gradient(circle at 20% 0%, rgba(197,160,89,0.22), rgba(197,160,89,0) 40%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))',
-        }}
+        className="relative overflow-hidden rounded-3xl border border-border bg-surface/50 shadow-elevation-3 p-8 lg:p-12"
       >
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10">
-              <Crown className="w-4 h-4 text-royal-gold" />
-              <span className="text-xs font-bold text-slate-200/90">Premium Dashboard</span>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-elevated border border-border shadow-elevation-1">
+              <Crown className="w-4 h-4 text-primary" />
+              <span className="text-xs font-bold tracking-widest uppercase text-foreground/80">Premium Dashboard</span>
             </div>
-            <h1 className="mt-4 text-4xl font-black tracking-tight">Luxury tools for your next resume</h1>
-            <p className="mt-3 text-slate-200/90 max-w-2xl leading-relaxed">
+            <h1 className="mt-6 text-h2 md:text-h1 font-black tracking-tight text-foreground">Luxury tools for your next resume</h1>
+            <p className="mt-4 text-body-large text-foreground/70 max-w-2xl">
               AI scoring, ATS optimization, premium templates, and smarter resume decisions for every application.
             </p>
 
-            <div className="mt-6 grid sm:grid-cols-2 gap-4">
+            <div className="mt-10 grid sm:grid-cols-2 gap-4">
               <Meter label="Completion" value={completion} hint="Form coverage based on your draft" />
               <Meter label="Resume Strength" value={strength} hint="Content depth + keyword signals" />
             </div>

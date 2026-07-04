@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Check, Wand2 } from 'lucide-react'
+import { ArrowLeft, Check, User } from 'lucide-react'
+import { Button } from '../../components/ui/Button'
+import { Card } from '../../components/ui/Card'
 import TemplateSelector from '../../components/TemplateSelector.jsx'
 import SectionCard from '../../components/SectionCard.jsx'
 import { TEMPLATE_SAMPLES } from '../../lib/templateSamples.js'
@@ -47,8 +49,8 @@ function PreviewResume({ data, templateId }) {
             {data.profileImageDataUrl ? (
               <img src={data.profileImageDataUrl} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <span style={{ color: st.accent }} className="text-2xl">
-                👤
+              <span style={{ color: st.accent }}>
+                <User className="w-8 h-8" />
               </span>
             )}
           </div>
@@ -193,50 +195,84 @@ export default function NormalPreview() {
   }, [])
 
   const completionActions = (
+<<<<<<< HEAD
     <div className="flex items-center justify-between gap-4 flex-wrap">
       <button
         type="button"
         onClick={() => (window.location.href = '/normal')}
         className="px-4 py-2 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition text-sm inline-flex items-center gap-2"
+=======
+    <div className="flex items-center justify-between gap-4 flex-wrap mt-8">
+      <Button
+        variant="outline"
+        onClick={() => navigate('/normal')}
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4 mr-2" />
         Edit
-      </button>
+      </Button>
 
       <div className="flex items-center gap-3">
+<<<<<<< HEAD
         <button
           type="button"
           onClick={() => (window.location.href = '/normal/download')}
           className="px-4 py-2 rounded-2xl font-bold bg-royal-gold text-royal-navy hover:brightness-110 transition text-sm inline-flex items-center gap-2"
+=======
+        <Button
+          variant="secondary"
+          onClick={() => navigate('/normal')}
         >
-          <Check className="w-4 h-4" />
+          Back
+        </Button>
+
+        <Button
+          onClick={() => navigate('/normal/download')}
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+        >
+          <Check className="w-4 h-4 mr-2" />
           Confirm
-        </button>
+        </Button>
       </div>
     </div>
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="relative z-10 w-full">
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-        <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-start justify-between gap-6 flex-wrap">
           <div>
-            <div className="text-royal-gold font-black text-4xl">Normal Resume Preview</div>
-            <div className="text-slate-200/90 mt-2">Step 2/3 — A4 preview + template switch.</div>
+            <div className="text-primary font-black text-h2 tracking-tight">Normal Resume Preview</div>
+            <div className="text-foreground/70 mt-2 font-medium">Step 2/3 — A4 preview + template switch.</div>
           </div>
 
           <div className="w-full sm:w-[420px]">
-            <div className="rounded-3xl border border-white/15 bg-black/10 backdrop-blur-xl p-5">
-              <div className="text-sm font-bold text-slate-100">Template</div>
+            <Card className="bg-surface/50 p-5 border-border shadow-elevation-2">
+              <div className="text-sm font-bold text-foreground mb-3">Template</div>
               <TemplateSelector template={templateId} setTemplate={setTemplateId} />
-            </div>
+            </Card>
           </div>
         </div>
 
+<<<<<<< HEAD
       <div className="mt-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>{/* keep */}</div>
           {completionActions}
+=======
+        <div className="mt-8 grid gap-5 lg:grid-cols-[1.3fr_360px]">
+          <div className="flex flex-col justify-end">{completionActions}</div>
+          <Card className="bg-surface/50 p-5 border-border shadow-elevation-2">
+            <div className="text-xs font-bold uppercase tracking-widest text-foreground/50">Live template image</div>
+            <div
+              className="mt-4 h-44 rounded-2xl bg-cover bg-center border border-border shadow-elevation-1"
+              style={{ backgroundImage: `url(${TEMPLATE_SAMPLES[templateId]?.image || TEMPLATE_SAMPLES.modern.bg})` }}
+            />
+            <div className="mt-4 text-sm text-foreground/70 leading-relaxed font-medium">
+              Your selected layout is shown here. Switch templates to preview premium resume designs instantly before download.
+            </div>
+          </Card>
+>>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         </div>
       </div>
 
