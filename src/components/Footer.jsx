@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
 import { Github, Linkedin, Twitter, Youtube } from 'lucide-react'
 
 const BRAND = {
@@ -92,7 +91,10 @@ const FOOTER_SECTIONS = [
 function FooterListColumn({ title, items }) {
   return (
     <section aria-labelledby={`footer-col-${title}`}>
-      <h3 id={`footer-col-${title}`} className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-300/80">
+      <h3
+        id={`footer-col-${title}`}
+        className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-300/80"
+      >
         {title}
       </h3>
       <ul className="mt-4 space-y-3 text-sm text-slate-200/90">
@@ -124,7 +126,10 @@ function FooterListColumn({ title, items }) {
 
 function TrustBadgeRow() {
   return (
-    <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" aria-label="Trust badges">
+    <div
+      className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
+      aria-label="Trust badges"
+    >
       {TRUST_BADGE.map((b) => (
         <div
           key={b.label}
@@ -142,11 +147,10 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t border-white/10 bg-slate-950/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Main */}
         <div className="relative py-14">
           <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(60%_120%_at_50%_-20%,rgba(197,160,89,0.25),transparent_60%)] opacity-70" />
+
           <div className="relative grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr]">
-            {/* Brand */}
             <section aria-label="Brand">
               <div className="flex items-center gap-3">
                 <div
@@ -167,7 +171,6 @@ export default function Footer() {
 
               <TrustBadgeRow />
 
-              {/* Newsletter */}
               <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-5">
                 <h3 className="text-sm font-semibold text-white">Stay updated</h3>
                 <p className="mt-2 text-sm text-slate-300">
@@ -178,7 +181,6 @@ export default function Footer() {
                   className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start"
                   onSubmit={(e) => {
                     e.preventDefault()
-                    // Intentionally no network call here. Wire to your backend when available.
                   }}
                   aria-label="Newsletter subscription"
                 >
@@ -203,22 +205,16 @@ export default function Footer() {
                   </button>
                 </form>
 
-                <div className="mt-3 text-xs text-slate-400">
-                  We respect your inbox. Unsubscribe anytime.
-                </div>
+                <div className="mt-3 text-xs text-slate-400">We respect your inbox. Unsubscribe anytime.</div>
               </div>
             </section>
 
-            {/* Columns */}
             {FOOTER_SECTIONS.map((sec) => (
               <FooterListColumn key={sec.title} title={sec.title} items={sec.items} />
             ))}
 
-            {/* Social */}
             <section className="lg:col-span-1" aria-label="Social links">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-300/80">
-                Social
-              </h3>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-300/80">Social</h3>
               <div className="mt-4 grid grid-cols-2 gap-3">
                 {SOCIAL.map(({ key, label, to, Icon, ariaLabel }) => (
                   <a
@@ -229,57 +225,19 @@ export default function Footer() {
                     className="group inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 transition hover:bg-white/10 hover:border-royal-gold/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70"
                     aria-label={ariaLabel}
                   >
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold transition group-hover:brightness-110" aria-hidden="true">
+                    <span
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold transition group-hover:brightness-110"
+                      aria-hidden="true"
+                    >
                       <Icon className="h-4 w-4" />
                     </span>
                     <span className="text-sm font-semibold text-slate-100">{label}</span>
                   </a>
                 ))}
-
-                {/* Instagram + X icons not in lucide import list; keep as links without icons via text badges */}
-                <a
-                  href="https://www.instagram.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group col-span-1 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 transition hover:bg-white/10 hover:border-royal-gold/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70"
-                  aria-label="Resume PRO on Instagram (opens in new tab)"
-                >
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold transition group-hover:brightness-110" aria-hidden="true">
-                    ⌁
-                  </span>
-                  <span className="text-sm font-semibold text-slate-100">Instagram</span>
-                </a>
-
-                <a
-                  href="https://x.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group col-span-1 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 transition hover:bg-white/10 hover:border-royal-gold/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70"
-                  aria-label="Resume PRO on X (opens in new tab)"
-                >
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold transition group-hover:brightness-110" aria-hidden="true">
-                    𝕏
-                  </span>
-                  <span className="text-sm font-semibold text-slate-100">X</span>
-                </a>
-
-                <a
-                  href="https://www.youtube.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group col-span-2 inline-flex items-center justify-start gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10 hover:border-royal-gold/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70"
-                  aria-label="Resume PRO on YouTube (opens in new tab)"
-                >
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold transition group-hover:brightness-110" aria-hidden="true">
-                    ▶
-                  </span>
-                  <span className="text-sm font-semibold text-slate-100">YouTube</span>
-                </a>
               </div>
             </section>
           </div>
 
-          {/* Trust & Security Row */}
           <div className="mt-12 rounded-[28px] border border-white/10 bg-slate-950/30 p-5 sm:p-7">
             <div className="text-sm font-semibold text-white">Trust &amp; Security</div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -297,73 +255,31 @@ export default function Footer() {
                   <span className="text-sm text-slate-100/95">{t.label}</span>
                 </div>
               ))}
-=======
-
-export default function Footer() {
-  return (
-    <footer className="mt-[var(--section-spacing-desktop)] border-t border-border bg-surface-elevated/30 py-12">
-      <div className="layout-container">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_1fr]">
-          <div className="space-y-4">
-            <Link to="/" className="text-h4 font-black text-foreground flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary text-sm">R</span>
-              Resume PRO
-            </Link>
-            <p className="max-w-md text-foreground/70 leading-relaxed text-sm">
-              Modern SaaS resume builder with polished templates, intelligent content suggestions, and premium export features.
-            </p>
-          </div>
-
-          <div>
-            <div className="text-caption uppercase tracking-widest text-foreground/50 font-bold mb-4">Company</div>
-            <div className="space-y-3 text-sm text-foreground/70 font-medium">
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">About</a>
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Careers</a>
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Blog</a>
             </div>
-          </div>
 
-          <div>
-            <div className="text-caption uppercase tracking-widest text-foreground/50 font-bold mb-4">Resources</div>
-            <div className="space-y-3 text-sm text-foreground/70 font-medium">
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Help Center</a>
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Privacy</a>
-              <a className="block hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Terms</a>
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+            <div className="pb-10">
+              <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm text-slate-200/90">© {new Date().getFullYear()} Resume PRO. All Rights Reserved.</div>
+                <nav aria-label="Footer bottom links" className="flex flex-wrap gap-4 text-sm">
+                  <Link className="text-slate-200/90 hover:text-white transition" to="/">
+                    Home
+                  </Link>
+                  <Link className="text-slate-200/90 hover:text-white transition" to="/plans">
+                    Plans
+                  </Link>
+                  <Link className="text-slate-200/90 hover:text-white transition" to="/faq">
+                    FAQ
+                  </Link>
+                  <Link className="text-slate-200/90 hover:text-white transition" to="/contact">
+                    Contact
+                  </Link>
+                </nav>
+              </div>
             </div>
-          </div>
-        </div>
-
-<<<<<<< HEAD
-        {/* Footer bottom */}
-        <div className="pb-10">
-          <div className="flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-sm text-slate-200/90">© 2026 Resume PRO. All Rights Reserved.</div>
-            <nav aria-label="Footer bottom links" className="flex flex-wrap gap-4 text-sm">
-              <Link className="text-slate-200/90 hover:text-white transition" to="/">
-                Home
-              </Link>
-              <Link className="text-slate-200/90 hover:text-white transition" to="/plans">
-                Plans
-              </Link>
-              <Link className="text-slate-200/90 hover:text-white transition" to="/faq">
-                FAQ
-              </Link>
-              <Link className="text-slate-200/90 hover:text-white transition" to="/contact">
-                Contact
-              </Link>
-            </nav>
-=======
-        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 text-sm text-foreground/50 sm:flex-row sm:items-center sm:justify-between font-medium">
-          <div>© {new Date().getFullYear()} Resume PRO. All rights reserved.</div>
-          <div className="flex flex-wrap gap-4">
-            <a className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">LinkedIn</a>
-            <a className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">GitHub</a>
-            <a className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" href="#">Twitter</a>
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
           </div>
         </div>
       </div>
     </footer>
   )
 }
+

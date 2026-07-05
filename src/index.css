@@ -1,102 +1,27 @@
-/* Tailwind directives (Tailwind processes these at build time) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
-/* Premium SaaS design system tokens (CSS variables). */
+/*
+  NOTE: This file previously contained merge-conflict markers.
+  Conflict resolution strategy: keep the more complete “layered base” +
+  design tokens needed by the app, and preserve the premium animation
+  + accessibility + back-to-top utilities.
+*/
+
+
 :root {
-  color-scheme: dark;
-
-  /* Premium palette */
-  --color-ink-950: #020617;
-  --color-ink-900: #07101f;
-  --color-ink-800: #0b1731;
-  --color-ink-700: #0f2347;
-
-  --color-slate-50: #f8fafc;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-
-  --color-royal-gold: #c5a059;
-  --color-royal-gold-2: #e6c980;
-
-  --color-sky-500: #0ea5e9;
-  --color-sky-400: #38bdf8;
-
-  --color-purple-500: #7c3aed;
-  --color-blue-500: #3b82f6;
-
-  /* Typography scale */
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-    'Apple Color Emoji', 'Segoe UI Emoji';
-
-  --text-xs: 0.75rem; /* 12 */
-  --text-sm: 0.875rem; /* 14 */
-  --text-base: 1rem; /* 16 */
-  --text-lg: 1.125rem; /* 18 */
-  --text-xl: 1.25rem; /* 20 */
-  --text-2xl: 1.5rem; /* 24 */
-  --text-3xl: 1.875rem; /* 30 */
-  --text-4xl: 2.25rem; /* 36 */
-  --text-5xl: 3rem; /* 48 */
-  --text-6xl: 3.75rem; /* 60 */
-  --text-7xl: 4.5rem; /* 72 */
-
-  /* Spacing scale (8pt-ish) */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-7: 1.75rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-14: 3.5rem;
-  --space-16: 4rem;
-
-  /* Radii */
-  --radius-sm: 12px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --radius-2xl: 40px;
-
-  /* Shadows */
-  --shadow-soft: 0 10px 35px rgba(0, 0, 0, 0.35);
-  --shadow-glass: 0 12px 60px rgba(0, 0, 0, 0.45);
-  --shadow-gold: 0 18px 60px rgba(197, 160, 89, 0.18);
-
-  /* Glassmorphism standards */
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-bg-2: rgba(255, 255, 255, 0.08);
-  --glass-blur: 14px;
-
-  /* Motion */
-  --motion-fast: 140ms;
-  --motion-med: 240ms;
-  --motion-slow: 540ms;
-=======
-@layer base {
-  :root {
-    /* Light Mode Tokens */
+  /* Light Mode Tokens */
     --background: #f8fafc;
     --foreground: #020617;
 
     --surface: #ffffff;
     --surface-elevated: #f1f5f9;
 
-    --primary: #c5a059;
-    /* Royal Gold */
+    --primary: #c5a059; /* Royal Gold */
     --primary-foreground: #020617;
 
-    --secondary: #0a192f;
-    /* Royal Navy */
+    --secondary: #0a192f; /* Royal Navy */
     --secondary-foreground: #ffffff;
 
     --accent: #3b82f6;
@@ -117,7 +42,7 @@
     --nav-height: 80px;
     --page-max-width: 1280px;
     --page-padding-inline: 24px;
-    
+
     --section-spacing-desktop: 64px;
     --section-spacing-tablet: 48px;
     --section-spacing-mobile: 32px;
@@ -132,11 +57,9 @@
     --surface-elevated: #1e293b;
 
     --primary: #c5a059;
-    /* Royal Gold */
     --primary-foreground: #020617;
 
     --secondary: #0a192f;
-    /* Royal Navy */
     --secondary-foreground: #ffffff;
 
     --accent: #3b82f6;
@@ -151,18 +74,15 @@
     --input: #1e293b;
     --ring: #c5a059;
 
-    /* Layout Tokens */
     --nav-height: 80px;
     --page-max-width: 1280px;
     --page-padding-inline: 24px;
-    
+
     --section-spacing-desktop: 64px;
     --section-spacing-tablet: 48px;
     --section-spacing-mobile: 32px;
   }
-}
 
-@layer base {
   * {
     border-color: var(--border);
   }
@@ -178,28 +98,20 @@
 
   ::selection {
     background-color: rgba(197, 160, 89, 0.2);
-    /* primary/20 */
     color: var(--primary);
   }
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
-}
 
 html {
   scroll-behavior: smooth;
 }
 
-<<<<<<< HEAD
 body {
   min-height: 100vh;
   margin: 0;
-  font-family: var(--font-sans);
-  background-color: var(--color-ink-950);
-  color: var(--color-slate-50);
   overflow-x: hidden;
 }
 
-/* Background is rendered by App.jsx (responsive layered gradients).
-   Keep only base color here to avoid double/competing gradients. */
+/* Background is rendered by App.jsx (responsive layered gradients). */
 body {
   background-image: none;
 }
@@ -213,21 +125,11 @@ body {
 }
 
 .royal-gold {
-  color: var(--color-royal-gold);
+  color: var(--primary);
 }
 
 .royal-navy {
   color: #0a192f;
-}
-
-@keyframes gradient-pan {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 /* ========= Premium AppBackground animations ========= */
@@ -343,20 +245,19 @@ body {
   .bb-noise {
     opacity: 0.04 !important;
   }
-  /* reduce particle layer opacity on small screens */
+
   .bb-particles {
     opacity: 0.55 !important;
   }
 }
-
 
 /* ========= Accessibility: Skip Links ========= */
 .skip-link {
   position: absolute;
   top: -40px;
   left: 0;
-  background: var(--color-royal-gold);
-  color: var(--color-ink-950);
+  background: var(--primary);
+  color: var(--foreground);
   padding: 8px 16px;
   z-index: 100;
   transition: top 0.2s;
@@ -368,9 +269,8 @@ body {
   top: 0;
 }
 
-/* ========= Focus States ========= */
 *:focus-visible {
-  outline: 2px solid var(--color-royal-gold);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -396,22 +296,13 @@ body {
     transition: none !important;
   }
 }
-=======
 
-@layer utilities {
-  .glass-panel {
-    @apply bg-surface/70 backdrop-blur-xl border border-white/10 dark:border-white/5;
+.glass-panel {
+
+    @apply bg-surface/70 backdrop-blur-xl border border-white/10;
   }
 
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
 
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-
-  /* Global Layout Container */
   .layout-container {
     width: 100%;
     max-width: var(--page-max-width);
@@ -419,17 +310,18 @@ body {
     padding-inline: var(--page-padding-inline);
   }
 
-  /* Section Spacing Utilities */
   .section-spacing-y {
     padding-top: var(--section-spacing-mobile);
     padding-bottom: var(--section-spacing-mobile);
   }
+
   @media (min-width: 768px) {
     .section-spacing-y {
       padding-top: var(--section-spacing-tablet);
       padding-bottom: var(--section-spacing-tablet);
     }
   }
+
   @media (min-width: 1024px) {
     .section-spacing-y {
       padding-top: var(--section-spacing-desktop);
@@ -455,4 +347,4 @@ body.light::before {
     radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.03), transparent 30%),
     radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.02), transparent 40%);
 }
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+

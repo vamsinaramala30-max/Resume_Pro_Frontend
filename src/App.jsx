@@ -1,41 +1,33 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { cn } from './components/ui/Button'
+
+import Footer from './components/Footer.jsx'
+import AuthGuard from './components/AuthGuard.jsx'
+import ToastLayer from './components/ToastLayer.jsx'
+import { ErrorBoundary } from './components/ErrorBoundary.jsx'
+import NotFound from './pages/NotFound.jsx'
+
+import TopNav from './components/TopNav.jsx'
+import GlobalHeader from './components/GlobalHeader.jsx'
+
+import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
+import { apiMe, apiLogout } from './lib/api.js'
+
+import './index.css'
 
 // Enable React Router v7 future flags for v7 behavior
 const routerFuture = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
 }
-import { AnimatePresence, motion } from 'framer-motion'
-
-import header from './components/landing/HeroHeader.jsx'
-import GlobalHeader from './components/GlobalHeader.jsx'
-import Footer from './components/Footer.jsx'
-import AuthGuard from './components/AuthGuard.jsx'
-import ToastLayer from './components/ToastLayer.jsx'
-import { ErrorBoundary } from './components/ErrorBoundary.jsx'
-import NotFound from './pages/NotFound.jsx'
-import { readJSON, removeKey, writeJSON, STORAGE_KEYS } from './lib/storage.js'
-import { apiMe, apiLogout } from './lib/api.js'
 
 // Lazy loaded pages
 const Auth = lazy(() => import('./pages/Auth.jsx'))
 const OtpVerify = lazy(() => import('./pages/OtpVerify.jsx'))
 const SelectPlan = lazy(() => import('./pages/SelectPlan.jsx'))
 const Home = lazy(() => import('./pages/Home.jsx'))
-const NormalForm = lazy(() => import('./pages/normal/NormalForm.jsx'))
-const NormalPreview = lazy(() => import('./pages/normal/NormalPreview.jsx'))
-const NormalDownload = lazy(() => import('./pages/normal/NormalDownload.jsx'))
-const PremiumDashboard = lazy(() => import('./pages/premium/PremiumDashboard.jsx'))
-const PremiumForm = lazy(() => import('./pages/premium/PremiumForm.jsx'))
-<<<<<<< HEAD
 const About = lazy(() => import('./pages/About.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
 const BlogIndex = lazy(() => import('./pages/blog/BlogIndex.jsx'))
@@ -53,32 +45,25 @@ const TermsOfService = lazy(() => import('./pages/policies/TermsOfService.jsx'))
 const CookiePolicy = lazy(() => import('./pages/policies/CookiePolicy.jsx'))
 const RefundPolicy = lazy(() => import('./pages/policies/RefundPolicy.jsx'))
 const SecurityPolicy = lazy(() => import('./pages/policies/SecurityPolicy.jsx'))
+
+const NormalForm = lazy(() => import('./pages/normal/NormalForm.jsx'))
+const NormalPreview = lazy(() => import('./pages/normal/NormalPreview.jsx'))
+const NormalDownload = lazy(() => import('./pages/normal/NormalDownload.jsx'))
+
+const PremiumDashboard = lazy(() => import('./pages/premium/PremiumDashboard.jsx'))
+const PremiumForm = lazy(() => import('./pages/premium/PremiumForm.jsx'))
+
 const Builder = lazy(() => import('./pages/Builder.jsx'))
 const ChatBotAIAssistant = lazy(() => import('./components/ai/ChatBotAIAssistant.jsx'))
-=======
-
-import TopNav from './components/TopNav.jsx'
-import Footer from './components/Footer.jsx'
-import AuthGuard from './components/AuthGuard.jsx'
-import ToastLayer from './components/ToastLayer.jsx'
-import { cn } from './components/ui/Button'
-
-import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
-
-import './index.css'
 
 function AppShell() {
-  // Router hooks - MUST be called first
   const location = useLocation()
   const navigate = useNavigate()
 
-  // State hooks - MUST be called unconditionally
   const [user, setUser] = useState(null)
   const [toasts, setToasts] = useState([])
   const [authLoading, setAuthLoading] = useState(true)
 
-  // Memo hook - unconditional
   const showToast = useMemo(
     () => (type, title, message) => {
       window.dispatchEvent(
@@ -90,7 +75,6 @@ function AppShell() {
     [],
   )
 
-  // Effect for auth verification - runs on mount
   useEffect(() => {
     async function verifyAuth() {
       const auth = readJSON(STORAGE_KEYS.auth, null)
@@ -108,13 +92,10 @@ function AppShell() {
             rememberMe: auth.rememberMe,
             createdAt: auth.createdAt,
           })
-          console.log('Auth verified:', response.user)
         } else {
-          console.log('Token invalid, clearing auth')
           removeKey(STORAGE_KEYS.auth)
         }
       } catch (err) {
-        console.error('Auth verification failed:', err.message)
         removeKey(STORAGE_KEYS.auth)
       } finally {
         setAuthLoading(false)
@@ -124,7 +105,6 @@ function AppShell() {
     verifyAuth()
   }, [])
 
-  // Effect for toast handling - MUST run unconditionally
   useEffect(() => {
     const handleToast = (event) => {
       const id =
@@ -142,14 +122,13 @@ function AppShell() {
     return () => window.removeEventListener('royal-toast', handleToast)
   }, [])
 
-  // Handler functions
   const onLogout = async () => {
     try {
-      // Call backend logout API
       await apiLogout()
-    } catch (err) {
-      // Ignore API errors - still clear local auth
+    } catch {
+      // ignore
     }
+
     removeKey(STORAGE_KEYS.auth)
     sessionStorage.clear()
     setUser(null)
@@ -157,10 +136,8 @@ function AppShell() {
     navigate('/auth', { replace: true })
   }
 
-  // Derived values - computed after all hooks
   const isAuthRoute = location.pathname === '/auth'
 
-  // Render loading state - uses conditional rendering AFTER all hooks
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950">
@@ -172,37 +149,17 @@ function AppShell() {
     )
   }
 
-  // Main render - ALL hooks called before this point
   return (
-<<<<<<< HEAD
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-royal-gold/25 blur-3xl animate-blob" />
-        <div className="absolute right-[-5rem] top-24 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute left-1/2 top-1/3 h-80 w-80 -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl animate-blob animation-delay-4000" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(197,160,89,0.18),transparent_18%),radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.18),transparent_22%)]" />
-      </div>
-
-      <div className="relative z-10">
-        <GlobalHeader
-          user={user?.user}
-          onLogout={onLogout}
-        />
-        <main className="relative">
-=======
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       <div className="relative z-10 flex flex-col min-h-screen">
         {!isAuthRoute ? (
-          <TopNav user={user} theme={theme} toggleTheme={toggleTheme} onLogout={onLogout} />
+          <>
+            <GlobalHeader user={user?.user} onLogout={onLogout} />
+            <TopNav user={user} onLogout={onLogout} />
+          </>
         ) : null}
 
-        <main
-          className={cn(
-            'relative flex-1',
-            !isAuthRoute && 'pt-[calc(var(--nav-height)+var(--section-spacing-mobile))] md:pt-[calc(var(--nav-height)+var(--section-spacing-tablet))] lg:pt-[calc(var(--nav-height)+var(--section-spacing-desktop))] pb-[var(--section-spacing-mobile)] md:pb-[var(--section-spacing-tablet)] lg:pb-[var(--section-spacing-desktop)] layout-container'
-          )}
-        >
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+        <main className={cn('relative flex-1 pt-28 pb-10 layout-container')}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={location.pathname}
@@ -210,7 +167,7 @@ function AppShell() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className={cn("relative w-full", isAuthRoute && "flex-1 flex flex-col")}
+              className={cn('relative w-full', isAuthRoute && 'flex-1 flex flex-col')}
             >
               <Suspense
                 fallback={
@@ -223,12 +180,9 @@ function AppShell() {
                   <Routes location={location}>
                     <Route path="/" element={<Home />} />
 
-                    {/* OTP Verification Route */}
                     <Route
                       path="/verify"
-                      element={
-                        <OtpVerify />
-                      }
+                      element={<OtpVerify />}
                     />
 
                     <Route
@@ -326,6 +280,7 @@ function AppShell() {
                         </AuthGuard>
                       }
                     />
+
                     <Route
                       path="/settings"
                       element={
@@ -336,12 +291,16 @@ function AppShell() {
                     />
 
                     {/* Legacy/compatibility */}
-                    <Route path="/resume-builder" element={<Builder user={user?.user} showToast={showToast} />} />
-                    <Route path="/builder" element={<Builder user={user?.user} showToast={showToast} />} />
+                    <Route
+                      path="/resume-builder"
+                      element={<Builder user={user?.user} showToast={showToast} />}
+                    />
+                    <Route
+                      path="/builder"
+                      element={<Builder user={user?.user} showToast={showToast} />}
+                    />
 
                     <Route path="*" element={<NotFound />} />
-
-
                   </Routes>
                 </ErrorBoundary>
               </Suspense>
@@ -352,13 +311,9 @@ function AppShell() {
         {!isAuthRoute ? <Footer /> : null}
       </div>
 
-      <ToastLayer
-        toasts={toasts}
-        onRemove={(id) => setToasts((prev) => prev.filter((toast) => toast.id !== id))}
-      />
+      <ToastLayer toasts={toasts} onRemove={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))} />
 
-      {/* Floating AI Chat Assistant - outside main content area */}
-      {!isAuthRoute && <ChatBotAIAssistant />}
+      {!isAuthRoute ? <ChatBotAIAssistant /> : null}
     </div>
   )
 }
@@ -370,3 +325,4 @@ export default function App() {
     </Router>
   )
 }
+
