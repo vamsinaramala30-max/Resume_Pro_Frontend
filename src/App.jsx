@@ -9,7 +9,6 @@ import ToastLayer from './components/ToastLayer.jsx'
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 import NotFound from './pages/NotFound.jsx'
 
-import TopNav from './components/TopNav.jsx'
 import GlobalHeader from './components/GlobalHeader.jsx'
 
 import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
@@ -63,6 +62,26 @@ function AppShell() {
   const [user, setUser] = useState(null)
   const [toasts, setToasts] = useState([])
   const [authLoading, setAuthLoading] = useState(true)
+
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark'
+  })
+
+  useEffect(() => {
+    const root = window.document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+      root.classList.remove('light')
+    } else {
+      root.classList.add('light')
+      root.classList.remove('dark')
+    }
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  }
 
   const showToast = useMemo(
     () => (type, title, message) => {
@@ -153,10 +172,7 @@ function AppShell() {
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       <div className="relative z-10 flex flex-col min-h-screen">
         {!isAuthRoute ? (
-          <>
-            <GlobalHeader user={user?.user} onLogout={onLogout} />
-            <TopNav user={user} onLogout={onLogout} />
-          </>
+          <GlobalHeader user={user?.user} onLogout={onLogout} theme={theme} toggleTheme={toggleTheme} />
         ) : null}
 
         <main className={cn('relative flex-1 pt-28 pb-10 layout-container')}>

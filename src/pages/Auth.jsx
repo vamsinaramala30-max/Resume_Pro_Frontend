@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-<<<<<<< HEAD
 import { 
   Mail, Lock, User, ArrowRight, RefreshCw, 
   CheckCircle, XCircle, Sparkles, Eye, EyeOff, 
-  Send, ArrowLeft 
+  Send, ArrowLeft, ShieldCheck, Check, Info, FileText
 } from 'lucide-react'
 
 import LoadingButton from '../components/LoadingButton.jsx'
-import FloatingInput from '../components/FloatingInput.jsx'
 import {
   apiLogin,
   apiRegister,
@@ -20,19 +18,12 @@ import {
   apiVerifyEmail,
   apiResendVerify
 } from '../lib/api.js'
-=======
-import { Button } from '../components/ui/Button'
-import { Input } from '../components/ui/Input'
-import { Label } from '../components/ui/Label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card'
-import { Eye, EyeOff, ShieldCheck, Sparkles, Save } from 'lucide-react'
-
-import { apiLogin, apiRegister } from '../lib/api.js'
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
 import { isValidEmail } from '../lib/validators.js'
 import { readJSON, writeJSON, STORAGE_KEYS } from '../lib/storage.js'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/ui/Card.jsx'
+import { Button } from '../components/ui/Button.jsx'
 
-// --- Helper Utilities & Subcomponents ---
+// --- Helper Utilities ---
 
 function GoogleIcon({ className }) {
   return (
@@ -65,52 +56,17 @@ function strengthScore(pw) {
   return Math.min(100, score)
 }
 
+function getStrengthLabel(score) {
+  if (score === 0) return ''
+  if (score >= 80) return 'Strong'
+  if (score >= 50) return 'Moderate'
+  return 'Weak'
+}
+
 function barColor(score) {
-<<<<<<< HEAD
   if (score >= 80) return 'bg-emerald-500'
   if (score >= 50) return 'bg-amber-500'
-  return 'bg-red-500'
-=======
-  if (score >= 80) return 'bg-success'
-  if (score >= 50) return 'bg-warning'
-  return 'bg-error'
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
-}
-
-function GlassCard({ children, className = '' }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`relative rounded-[2rem] border border-white/10 bg-slate-950/60 p-6 md:p-8 shadow-2xl backdrop-blur-2xl ${className}`}
-    >
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-      {children}
-    </motion.div>
-  )
-}
-
-function FloatingShapes() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      <motion.div
-        animate={{ y: [0, -30, 0], x: [0, 20, 0], rotate: [0, 15, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-amber-500/10 blur-3xl"
-      />
-      <motion.div
-        animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute top-1/3 right-[-10%] h-72 w-72 rounded-full bg-sky-500/10 blur-3xl"
-      />
-      <motion.div
-        animate={{ y: [0, -20, 0], x: [0, 15, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        className="absolute bottom-20 left-1/4 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl"
-      />
-    </div>
-  )
+  return 'bg-rose-500'
 }
 
 function AuthTab({ active, onClick, children, icon: Icon }) {
@@ -118,13 +74,13 @@ function AuthTab({ active, onClick, children, icon: Icon }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition-all duration-300 ${
+      className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-semibold tracking-wide transition-all duration-300 ${
         active
-          ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20'
+          ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/10'
           : 'text-slate-400 hover:text-white hover:bg-white/5'
       }`}
     >
-      {Icon && <Icon className="h-4 w-4" />}
+      {Icon && <Icon className="h-3.5 w-3.5" />}
       {children}
     </button>
   )
@@ -136,31 +92,103 @@ function AuthMessage({ type, title, message, onClose }) {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className={`flex items-start gap-3 rounded-2xl border p-4 mb-4 ${
+      className={`flex items-start gap-3 rounded-xl border p-3.5 text-xs ${
         type === 'success'
-          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+          ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-300'
           : type === 'error'
-          ? 'border-red-500/30 bg-red-500/10 text-red-300'
-          : 'border-sky-500/30 bg-sky-500/10 text-sky-300'
+          ? 'border-rose-500/20 bg-rose-500/5 text-rose-300'
+          : 'border-sky-500/20 bg-sky-500/5 text-sky-300'
       }`}
     >
       {type === 'success' ? (
-        <CheckCircle className="h-5 w-5 flex-shrink-0 text-emerald-400" />
+        <CheckCircle className="h-4 w-4 flex-shrink-0 text-emerald-400 mt-0.5" />
       ) : type === 'error' ? (
-        <XCircle className="h-5 w-5 flex-shrink-0 text-red-400" />
+        <XCircle className="h-4 w-4 flex-shrink-0 text-rose-400 mt-0.5" />
       ) : (
-        <Sparkles className="h-5 w-5 flex-shrink-0 text-sky-400" />
+        <Sparkles className="h-4 w-4 flex-shrink-0 text-sky-400 mt-0.5" />
       )}
       <div className="flex-1 min-w-0">
-        <div className="font-semibold text-sm">{title}</div>
-        <div className="text-xs text-slate-300 mt-0.5">{message}</div>
+        <div className="font-semibold">{title}</div>
+        <div className="text-slate-400 mt-0.5 leading-relaxed">{message}</div>
       </div>
       {onClose && (
-        <button onClick={onClose} className="text-slate-400 hover:text-white flex-shrink-0 transition">
-          <XCircle className="h-4 w-4" />
+        <button type="button" onClick={onClose} className="text-slate-500 hover:text-white flex-shrink-0 transition">
+          <XCircle className="h-3.5 w-3.5" />
         </button>
       )}
     </motion.div>
+  )
+}
+
+// --- Redesigned Premium Input Component ---
+function PremiumInput({
+  label,
+  value,
+  onChange,
+  onBlur,
+  type = 'text',
+  placeholder = '',
+  error,
+  name,
+  autoComplete,
+  icon: Icon,
+  disabled,
+  maxLength,
+  showPasswordToggle,
+  onTogglePassword,
+  showPasswordState
+}) {
+  return (
+    <div className="space-y-1.5 w-full">
+      <div className="flex justify-between items-center px-0.5">
+        <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{label}</label>
+      </div>
+      <div className="relative group">
+        {Icon && (
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition duration-200">
+            <Icon className="h-4 w-4" />
+          </div>
+        )}
+        <input
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          disabled={disabled}
+          maxLength={maxLength}
+          className={`w-full rounded-xl bg-slate-950/80 border py-3 px-4 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
+            Icon ? 'pl-10' : 'pl-4'
+          } ${showPasswordToggle ? 'pr-10' : 'pr-4'} ${
+            error
+              ? 'border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20'
+              : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+          } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+        />
+        {showPasswordToggle && (
+          <button
+            type="button"
+            onClick={onTogglePassword}
+            disabled={disabled}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition duration-200"
+          >
+            {showPasswordState ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        )}
+      </div>
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-rose-400 text-xs px-0.5 flex items-center gap-1 font-medium"
+        >
+          <Info className="h-3.5 w-3.5 flex-shrink-0" />
+          {error}
+        </motion.p>
+      )}
+    </div>
   )
 }
 
@@ -173,30 +201,26 @@ export default function Auth({ onAuthed }) {
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
 
+  // Fields
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [name, setName] = useState('')
   const [otp, setOtp] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-<<<<<<< HEAD
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+
+  // System status notification
   const [message, setMessage] = useState(null)
   const [otpCountdown, setOtpCountdown] = useState(0)
 
-  const score = useMemo(() => strengthScore(password), [password])
-
-  // REMOVED: Auto-login without verification causes false login state
-  // Users must authenticate through proper flow now
-=======
-  const [forgot, setForgot] = useState(false)
-
-  const [to, setTo] = useState({ type: '', title: '', message: '' })
+  // Validation Errors
   const [errors, setErrors] = useState({})
+  const [forgotSuccess, setForgotSuccess] = useState(false)
+  const [resetSuccess, setResetSuccess] = useState(false)
 
   const score = useMemo(() => strengthScore(password), [password])
-  const navigate = useNavigate()
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
-
-  // OTP Countdown handling
 
   // OTP Countdown handling
   useEffect(() => {
@@ -211,46 +235,86 @@ export default function Auth({ onAuthed }) {
     setMessage({ type, title, message })
   }, [])
 
-<<<<<<< HEAD
-  const validate = useCallback(() => {
-    if (!email.trim()) return 'Email is required'
-    if (!isValidEmail(email)) return 'Enter a valid email address'
-    if (mode === 'login' && !password.trim()) return 'Password is required'
-    if (mode === 'register' && !name.trim()) return 'Name is required'
-    if (mode === 'register' && password.length < 6) return 'Password must be at least 6 characters'
-    return ''
-  }, [email, password, name, mode])
-=======
-  const validate = () => {
-    const newErrors = {}
-    if (!email.trim()) newErrors.email = 'Email is required'
-    else if (!isValidEmail(email)) newErrors.email = 'Enter a valid email'
-    
-    if (!password.trim()) newErrors.password = 'Password is required'
-    else if (mode === 'register' && password.length < 6) newErrors.password = 'Password must be at least 6 characters'
-    
-    if (mode === 'register' && !name.trim()) newErrors.name = 'Name is required'
+  // Inline check helper
+  const validateField = (field, val) => {
+    let errs = { ...errors }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length > 0
+    if (field === 'email') {
+      if (!val.trim()) {
+        errs.email = 'Email address is required'
+      } else if (!isValidEmail(val)) {
+        errs.email = 'Please enter a valid email address'
+      } else {
+        delete errs.email
+      }
+    }
+
+    if (field === 'password') {
+      if (!val.trim()) {
+        errs.password = 'Password is required'
+      } else if (val.length < 6) {
+        errs.password = 'Password must be at least 6 characters long'
+      } else {
+        delete errs.password
+      }
+    }
+
+    if (field === 'confirmPassword') {
+      if (!val.trim()) {
+        errs.confirmPassword = 'Please confirm your password'
+      } else if (val !== password) {
+        errs.confirmPassword = 'Passwords do not match'
+      } else {
+        delete errs.confirmPassword
+      }
+    }
+
+    if (field === 'name') {
+      if (!val.trim()) {
+        errs.name = 'Full name is required'
+      } else {
+        delete errs.name
+      }
+    }
+
+    setErrors(errs)
   }
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+
+  // Pre-submit validation
+  const validateAll = () => {
+    const errs = {}
+
+    if (mode !== 'email-otp') {
+      if (!email.trim()) errs.email = 'Email address is required'
+      else if (!isValidEmail(email)) errs.email = 'Please enter a valid email address'
+    }
+
+    if (['login', 'register', 'reset-password'].includes(mode)) {
+      if (!password.trim()) errs.password = 'Password is required'
+      else if (password.length < 6) errs.password = 'Password must be at least 6 characters'
+    }
+
+    if (mode === 'register') {
+      if (!name.trim()) errs.name = 'Full name is required'
+      if (password !== confirmPassword) errs.confirmPassword = 'Passwords do not match'
+      if (!termsAccepted) errs.terms = 'You must accept the terms and conditions'
+    }
+
+    if (mode === 'reset-password') {
+      if (password !== confirmPassword) errs.confirmPassword = 'Passwords do not match'
+    }
+
+    setErrors(errs)
+    return Object.keys(errs).length === 0
+  }
 
   // --- Handlers ---
 
-<<<<<<< HEAD
   async function handlePasswordLogin() {
-    const err = validate()
-    if (err) return showMsg('error', 'Validation Check', err)
-=======
-  async function submit(e) {
-    if (e) e.preventDefault()
-    
-    if (validate()) return
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
+    if (!validateAll()) return
 
     setLoading(true)
-    setTo({ type: '', title: '', message: '' })
+    setMessage(null)
     
     try {
       const data = await apiLogin({ email, password })
@@ -265,10 +329,10 @@ export default function Auth({ onAuthed }) {
   }
 
   async function handleRegister() {
-    const err = validate()
-    if (err) return showMsg('error', 'Validation Check', err)
+    if (!validateAll()) return
 
     setLoading(true)
+    setMessage(null)
     try {
       const data = await apiRegister({ name, email, password })
 
@@ -294,10 +358,12 @@ export default function Auth({ onAuthed }) {
 
   async function handleEmailLoginRequest() {
     if (!email.trim() || !isValidEmail(email)) {
-      return showMsg('error', 'Valid Email Required', 'Please provide a valid email before requesting a verification code.')
+      setErrors({ email: 'Please provide a valid email address first.' })
+      return
     }
 
     setLoading(true)
+    setMessage(null)
     try {
       await apiEmailLoginRequest({ email })
       showMsg('success', 'Code Dispatched', 'Check your inbox for a secure 6-digit access code.')
@@ -312,14 +378,14 @@ export default function Auth({ onAuthed }) {
 
   async function handleEmailLoginVerify() {
     if (!otp.trim() || otp.length !== 6) {
-      return showMsg('error', 'Verification Error', 'Please input the complete 6-digit confirmation code.')
+      showMsg('error', 'Verification Error', 'Please input the complete 6-digit confirmation code.')
+      return
     }
 
     setLoading(true)
+    setMessage(null)
     try {
       if (mode === 'email-otp') {
-        // This could be either email login OR email verification after registration
-        // Try email login first
         try {
           const data = await apiEmailLoginVerify({ email, otp, rememberMe })
           const auth = { token: data.token, user: data.user, rememberMe, createdAt: Date.now() }
@@ -327,8 +393,7 @@ export default function Auth({ onAuthed }) {
           onAuthed(auth)
           return
         } catch (loginErr) {
-          // If login fails, try email verification
-          if (loginErr.message?.includes('Invalid') || loginErr.message?.includes('expired')) {
+          if (loginErr.message?.includes('Invalid') || loginErr.message?.includes('expired') || loginErr.message?.includes('not verified')) {
             try {
               await apiVerifyEmail({ email, otp })
               showMsg('success', 'Email Verified', 'Your email has been verified. Please login to continue.')
@@ -342,7 +407,6 @@ export default function Auth({ onAuthed }) {
           throw loginErr
         }
       } else {
-        // Password reset (forgot password)
         const data = await apiEmailLoginVerify({ email, otp, rememberMe })
         const auth = { token: data.token, user: data.user, rememberMe, createdAt: Date.now() }
         writeJSON(STORAGE_KEYS.auth, auth)
@@ -357,14 +421,15 @@ export default function Auth({ onAuthed }) {
 
   async function handleForgotPassword() {
     if (!email.trim() || !isValidEmail(email)) {
-      return showMsg('error', 'Valid Email Required', 'Please enter your account email to receive reset instructions.')
+      setErrors({ email: 'Please enter a valid email address to receive reset instructions.' })
+      return
     }
 
     setLoading(true)
+    setMessage(null)
     try {
       await apiForgotPassword({ email })
-      showMsg('success', 'Reset Code Sent', 'If that account exists, a temporary password recovery code has been sent.')
-      setMode('reset-password')
+      setForgotSuccess(true)
       setOtpCountdown(60)
     } catch (e) {
       showMsg('error', 'Request Failed', e?.message || 'An error occurred triggering the password reset.')
@@ -374,20 +439,17 @@ export default function Auth({ onAuthed }) {
   }
 
   async function handlePasswordReset() {
+    if (!validateAll()) return
     if (!otp.trim() || otp.length !== 6) {
-      return showMsg('error', 'Invalid Code', 'Please input your 6-digit security code.')
-    }
-    if (!password.trim() || password.length < 6) {
-      return showMsg('error', 'Security Issue', 'Your new password must be at least 6 characters long.')
+      showMsg('error', 'Invalid Code', 'Please input your 6-digit security code.')
+      return
     }
 
     setLoading(true)
+    setMessage(null)
     try {
       await apiResetPassword({ email, otp, newPassword: password })
-      showMsg('success', 'Password Updated', 'Your security parameters have been updated. You can now log in.')
-      setMode('login')
-      setPassword('')
-      setOtp('')
+      setResetSuccess(true)
     } catch (e) {
       showMsg('error', 'Reset Execution Error', e?.message || 'Failed to update credentials. Please crosscheck your token.')
     } finally {
@@ -410,166 +472,292 @@ export default function Auth({ onAuthed }) {
   const changeMode = (targetMode) => {
     setMode(targetMode)
     setMessage(null)
+    setErrors({})
+    setForgotSuccess(false)
+    setResetSuccess(false)
   }
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.08),transparent_40%),radial-gradient(circle_at_20%_30%,rgba(56,189,248,0.08),transparent_25%),linear-gradient(180deg,#020617,#090d1f)] text-white relative flex items-center justify-center py-12 px-4 selection:bg-amber-500/30 selection:text-white">
-      <FloatingShapes />
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(197,160,89,0.06),transparent_45%),radial-gradient(circle_at_bottom_right,_rgba(10,25,47,0.8),transparent_50%),linear-gradient(180deg,#020617,#030712)] text-white relative flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 selection:bg-amber-500/20 selection:text-amber-300">
+      
+      {/* Decorative Blur Spheres */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-amber-500/5 blur-[120px] animate-pulse duration-[8000ms]" />
+        <div className="absolute top-1/3 -right-40 h-[600px] w-[600px] rounded-full bg-slate-900/50 blur-[150px]" />
+      </div>
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto">
+        <div className="grid gap-12 lg:grid-cols-12 items-center">
           
-          {/* Left: Interactive Info Column */}
-          <div className="space-y-8 hidden lg:block pr-6">
+          {/* Left Column: Premium Brand Showcase */}
+          <div className="hidden lg:flex lg:col-span-6 flex-col justify-center space-y-8 pr-8">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-widest text-amber-400"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/5 px-4.5 py-1.5 text-xs font-semibold text-amber-500 tracking-wider w-fit"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              Premium Resume Workspace
+              INTELLIGENT ATS RESUME WORKSPACE
             </motion.div>
-            
+
             <div className="space-y-4">
-              <h1 className="text-5xl font-black tracking-tight leading-tight text-white xl:text-6xl">
-                Secure login for your{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500">
-                  modern
-                </span>{' '}
-                workflow.
+              <h1 className="text-4xl xl:text-5xl font-extrabold tracking-tight leading-[1.15] text-white">
+                Create a resume that gets you{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500">
+                  hired.
+                </span>
               </h1>
-              <p className="text-slate-400 leading-relaxed text-base max-w-lg">
-                Sign in to manage premium templates, restore dynamic drafts, and export production-ready, ATS-optimized data.
+              <p className="text-slate-400 text-sm leading-relaxed max-w-md">
+                Build structurally optimal, high-converting designer resumes aligned directly with industry ATS criteria.
               </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                { title: 'Live Preview', description: 'See structural layout variations rendering dynamically.', icon: '👁️' },
-                { title: 'Premium Layouts', description: 'Access high-converting minimalist designs.', icon: '✨' },
-                { title: 'Cloud Persistence', description: 'Progress is saved automatically to secure storage.', icon: '🔒' },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="rounded-2xl border border-white/5 bg-slate-900/40 p-4 backdrop-blur-sm"
-                >
-                  <div className="text-2xl">{item.icon}</div>
-                  <div className="mt-2 text-sm font-bold text-slate-200">{item.title}</div>
-                  <p className="mt-1 text-xs text-slate-400 leading-normal">{item.description}</p>
-                </motion.div>
-              ))}
+            {/* Premium Simulated UI Illustration */}
+            <div className="relative rounded-2xl border border-white/5 bg-slate-950/80 p-5 shadow-2xl overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent opacity-50 pointer-events-none" />
+              <div className="flex items-center justify-between border-b border-white/5 pb-3.5 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-3 w-3 rounded-full bg-rose-500/60" />
+                  <div className="h-3 w-3 rounded-full bg-amber-500/60" />
+                  <div className="h-3 w-3 rounded-full bg-emerald-500/60" />
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                  <ShieldCheck className="h-3 w-3 text-amber-500" />
+                  ATS Match Score
+                </div>
+              </div>
+              <div className="space-y-3.5">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="h-3.5 w-32 rounded bg-slate-800" />
+                    <div className="h-2 w-20 rounded bg-slate-900" />
+                  </div>
+                  <div className="text-xs font-bold text-emerald-400">92% Optimal</div>
+                </div>
+                <div className="h-2 w-full rounded bg-slate-900 overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: '92%' }}
+                    transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
+                    className="h-full bg-gradient-to-r from-amber-500 to-emerald-500" 
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2.5 pt-2">
+                  <div className="p-2.5 rounded-lg bg-slate-900/60 border border-white/5 flex items-center gap-2">
+                    <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                    <span className="text-[10px] font-medium text-slate-300">ATS Formatting</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-900/60 border border-white/5 flex items-center gap-2">
+                    <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                    <span className="text-[10px] font-medium text-slate-300">Action Verbs Check</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Proof */}
+            <div className="pt-2">
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">TRUSTED BY CANDIDATES AT</p>
+              <div className="flex items-center gap-6 mt-3 text-slate-400 opacity-60 font-semibold text-xs tracking-wider">
+                <span>GOOGLE</span>
+                <span>STRIPE</span>
+                <span>VERCEL</span>
+                <span>NOTION</span>
+              </div>
             </div>
           </div>
 
-          {/* Right: Authentication Control Panel */}
-          <div className="flex flex-col w-full max-w-md mx-auto">
-            <GlassCard>
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <h2 className="text-2xl font-black tracking-tight text-white mb-1.5">
-                    {mode === 'login' && 'Welcome Back'}
-                    {mode === 'register' && 'Create Account'}
-                    {mode === 'email-otp' && 'Verify Identity'}
-                    {mode === 'forgot' && 'Account Recovery'}
-                    {mode === 'reset-password' && 'Choose Password'}
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    {mode === 'login' && 'Access dashboard insights and continuous document updates.'}
-                    {mode === 'register' && 'Unlock instant saving and custom structural styles.'}
-                    {mode === 'email-otp' && `Enter the 6-digit workspace access code sent to ${email}`}
-                    {mode === 'forgot' && 'Verify registration credentials to dispatch a reset sequence.'}
-                    {mode === 'reset-password' && 'Establish uniform, updated credentials code authentication.'}
-                  </p>
+          {/* Right Column: Form Control Panel */}
+          <div className="col-span-12 lg:col-span-6 flex flex-col w-full max-w-md mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-2xl backdrop-blur-xl"
+            >
+              {/* Top Card Header */}
+              <div className="mb-6">
+                <h2 className="text-xl font-bold tracking-tight text-white mb-1.5 flex items-center gap-2">
+                  {mode === 'login' && 'Sign in to Resume PRO'}
+                  {mode === 'register' && 'Get Started Free'}
+                  {mode === 'email-otp' && 'Verify Security Code'}
+                  {mode === 'forgot' && 'Reset Password'}
+                  {mode === 'reset-password' && 'Configure New Password'}
+                </h2>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {mode === 'login' && 'Enter your security parameters to access dashboard options.'}
+                  {mode === 'register' && 'Create your account to unlock instant AI resume scoring.'}
+                  {mode === 'email-otp' && `Input the secure 6-digit confirmation key dispatched to ${email}`}
+                  {mode === 'forgot' && 'Provide your registered email address to verify identity.'}
+                  {mode === 'reset-password' && 'Setup uniform and updated password credentials.'}
+                </p>
+              </div>
+
+              {/* Login / Register Navigation Tabs */}
+              {(mode === 'login' || mode === 'register') && (
+                <div className="flex gap-1 rounded-xl bg-slate-950 p-1 mb-6 border border-slate-900">
+                  <AuthTab active={mode === 'login'} onClick={() => changeMode('login')} icon={Lock}>Login</AuthTab>
+                  <AuthTab active={mode === 'register'} onClick={() => changeMode('register')} icon={User}>Register</AuthTab>
                 </div>
+              )}
 
-                {/* Main Tabs */}
-                {(mode === 'login' || mode === 'register') && (
-                  <div className="flex gap-1.5 rounded-2xl bg-slate-950 p-1.5 border border-white/5">
-                    <AuthTab active={mode === 'login'} onClick={() => changeMode('login')} icon={Lock}>Login</AuthTab>
-                    <AuthTab active={mode === 'register'} onClick={() => changeMode('register')} icon={User}>Register</AuthTab>
-                  </div>
-                )}
+              {/* Passwordless alternative toggle */}
+              {mode === 'login' && (
+                <button
+                  type="button"
+                  onClick={() => changeMode('email-otp')}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/60 py-3 text-xs font-bold text-slate-300 hover:bg-slate-950 hover:text-white transition duration-200 mb-6"
+                >
+                  <Mail className="h-3.5 w-3.5 text-amber-500" />
+                  Sign in with secure email code
+                </button>
+              )}
 
-                {/* Passwordless alternative toggle */}
-                {mode === 'login' && (
-                  <button
-                    type="button"
-                    onClick={() => changeMode('email-otp')}
-                    className="w-full flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 py-3 text-xs font-semibold text-slate-200 hover:border-amber-500/40 hover:bg-white/10 transition duration-200"
-                  >
-                    <Mail className="h-3.5 w-3.5" />
-                    Sign in with secure email code
-                  </button>
-                )}
-
-                {/* System Messages */}
-                <AnimatePresence mode="wait">
-                  {message && (
+              {/* System Messages */}
+              <AnimatePresence mode="wait">
+                {message && (
+                  <div className="mb-5">
                     <AuthMessage
                       type={message.type}
                       title={message.title}
                       message={message.message}
                       onClose={() => setMessage(null)}
                     />
-                  )}
-                </AnimatePresence>
+                  </div>
+                )}
+              </AnimatePresence>
 
-                {/* Inputs Stack */}
-                <div className="space-y-3.5">
+              {/* FORGOT PASSWORD SUCCESS SCREEN */}
+              {forgotSuccess ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center space-y-5 py-2"
+                >
+                  <div className="inline-flex items-center justify-center h-14 w-14 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <Send className="h-6 w-6" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold text-white">Reset Link Dispatched</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+                      A dynamic recovery code sequence was dispatched to <strong className="text-white">{email}</strong>. Check your inbox and spam folder.
+                    </p>
+                  </div>
+                  <div className="pt-2 space-y-3">
+                    {otpCountdown > 0 ? (
+                      <p className="text-[11px] text-slate-500">Resend sequence available in {otpCountdown}s</p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleForgotPassword}
+                        className="text-xs text-amber-500 hover:text-amber-400 font-bold transition"
+                      >
+                        Resend Recovery Link
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => changeMode('login')}
+                      className="w-full flex items-center justify-center gap-1.5 py-3 border border-slate-800 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-950 transition duration-200"
+                    >
+                      <ArrowLeft className="h-3.5 w-3.5" /> Return to Login
+                    </button>
+                  </div>
+                </motion.div>
+              ) : resetSuccess ? (
+                /* RESET PASSWORD SUCCESS SCREEN */
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center space-y-5 py-2"
+                >
+                  <div className="inline-flex items-center justify-center h-14 w-14 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <Check className="h-6 w-6" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold text-white">Password Configured</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      Your new security password credentials have been updated successfully.
+                    </p>
+                  </div>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => changeMode('login')}
+                      className="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-xl text-xs hover:bg-amber-400 transition duration-200"
+                    >
+                      Sign In to Continue
+                    </button>
+                  </div>
+                </motion.div>
+              ) : (
+                /* STANDARD FORMS STACK */
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  
+                  {/* Name field (Register only) */}
                   {mode === 'register' && (
-                    <FloatingInput
+                    <PremiumInput
                       label="Full Name"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder=" "
+                      onChange={(e) => {
+                        setName(e.target.value)
+                        if (errors.name) validateField('name', e.target.value)
+                      }}
+                      onBlur={() => validateField('name', name)}
+                      placeholder="e.g. John Doe"
                       autoComplete="name"
                       icon={User}
+                      error={errors.name}
+                      disabled={loading}
                     />
                   )}
 
+                  {/* Email Field (All except reset password, which is read-only if email is already set) */}
                   {mode !== 'email-otp' && (
-                    <FloatingInput
+                    <PremiumInput
                       label="Email Address"
                       type="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder=" "
+                      onChange={(e) => {
+                        setEmail(e.target.value)
+                        if (errors.email) validateField('email', e.target.value)
+                      }}
+                      onBlur={() => validateField('email', email)}
+                      placeholder="name@example.com"
                       autoComplete="email"
                       icon={Mail}
-                      disabled={mode === 'reset-password'}
+                      error={errors.email}
+                      disabled={loading || mode === 'reset-password'}
                     />
                   )}
 
+                  {/* OTP Field (email-otp only) */}
                   {mode === 'email-otp' && (
-                    <div className="space-y-3">
-                      <FloatingInput
-                        label="6-Digit Verification Code"
+                    <div className="space-y-4">
+                      <PremiumInput
+                        label="6-Digit Security Code"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                         placeholder="000000"
                         maxLength={6}
                         icon={Lock}
+                        disabled={loading}
                       />
-                      <div className="flex items-center justify-between text-xs px-1">
+                      <div className="flex items-center justify-between text-xs px-0.5">
                         <button
                           type="button"
                           onClick={() => changeMode('login')}
-                          className="flex items-center gap-1 text-slate-400 hover:text-white transition"
+                          className="flex items-center gap-1.5 text-slate-400 hover:text-white transition duration-200 font-medium"
                         >
                           <ArrowLeft className="h-3.5 w-3.5" /> Password Login
                         </button>
                         {otpCountdown > 0 ? (
-                          <span className="text-slate-400">Resend code in {otpCountdown}s</span>
+                          <span className="text-slate-500">Resend in {otpCountdown}s</span>
                         ) : (
                           <button
                             type="button"
                             onClick={handleEmailLoginRequest}
-                            className="text-amber-400 hover:text-amber-300 font-semibold transition"
+                            className="text-amber-500 hover:text-amber-400 font-bold transition"
                           >
                             Resend Request
                           </button>
@@ -578,364 +766,257 @@ export default function Auth({ onAuthed }) {
                     </div>
                   )}
 
-                  {(mode === 'login' || mode === 'register' || mode === 'reset-password') && (
-                    <div className="space-y-2 relative">
-                      <div className="relative">
-                        <FloatingInput
-                          label={mode === 'reset-password' ? "New Password" : "Password"}
-                          type={showPassword ? 'text' : 'password'}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder=" "
-                          autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                          icon={Lock}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword((s) => !s)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition"
-                        >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </button>
-                      </div>
-                      
+                  {/* Password & Strength Meter */}
+                  {['login', 'register', 'reset-password'].includes(mode) && (
+                    <div className="space-y-4">
+                      <PremiumInput
+                        label={mode === 'reset-password' ? "New Password" : "Password"}
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value)
+                          if (errors.password) validateField('password', e.target.value)
+                        }}
+                        onBlur={() => validateField('password', password)}
+                        placeholder="••••••••"
+                        autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                        icon={Lock}
+                        error={errors.password}
+                        disabled={loading}
+                        showPasswordToggle
+                        onTogglePassword={() => setShowPassword(prev => !prev)}
+                        showPasswordState={showPassword}
+                      />
+
+                      {/* Password Strength Indicator */}
                       {mode === 'register' && password.length > 0 && (
-                        <div className="pt-1">
-                          <div className="h-1 w-full rounded-full bg-white/10 overflow-hidden">
+                        <div className="bg-slate-950/40 border border-slate-900 rounded-xl p-3 space-y-2">
+                          <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            <span>Password Strength</span>
+                            <span className={score >= 80 ? 'text-emerald-400' : score >= 50 ? 'text-amber-400' : 'text-rose-400'}>
+                              {getStrengthLabel(score)}
+                            </span>
+                          </div>
+                          <div className="h-1.5 w-full rounded-full bg-slate-900 overflow-hidden">
                             <motion.div animate={{ width: `${score}%` }} className={`h-full ${barColor(score)}`} />
                           </div>
-                          <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-                            <span>Complexity Check</span>
-                            <span>Score: {score}%</span>
+                          <div className="text-[10px] text-slate-500 leading-normal">
+                            Use 8+ characters with uppercase letters, numbers, and symbols.
                           </div>
                         </div>
                       )}
                     </div>
                   )}
-                </div>
 
-                {/* Sub Options Row */}
-                {mode === 'login' && (
-                  <div className="flex items-center justify-between text-xs px-1 pt-1">
-                    <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        className="h-3.5 w-3.5 accent-amber-500 rounded border-white/10 bg-slate-900"
-                      />
-                      Remember Session
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => changeMode('forgot')}
-                      className="text-slate-400 hover:text-amber-400 transition"
-                    >
-                      Forgot password?
-                    </button>
-                  </div>
-                )}
-
-                {/* Primary Submits */}
-                <div className="pt-2">
-                  {['login', 'register'].includes(mode) && (
-                    <>
-                      <LoadingButton type="submit" loading={loading} disabled={loading} className="w-full bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition duration-200 py-3 rounded-xl flex items-center justify-center">
-                        {mode === 'register' ? 'Complete Onboarding' : 'Secure Entry'}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </LoadingButton>
-
-                      <div className="relative my-5">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5" /></div>
-                        <div className="relative flex justify-center text-[10px] uppercase tracking-wider"><span className="bg-slate-950 px-2.5 text-slate-500">SSO Alternatives</span></div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <button type="button" className="flex items-center justify-center gap-2 rounded-xl border border-white/5 bg-white/5 py-2.5 text-xs font-semibold text-slate-200 hover:bg-white/10 transition">
-                          <GoogleIcon className="h-4 w-4" /> Google
-                        </button>
-                        <button type="button" className="flex items-center justify-center gap-2 rounded-xl border border-white/5 bg-white/5 py-2.5 text-xs font-semibold text-slate-200 hover:bg-white/10 transition">
-                          <AppleIcon className="h-4 w-4" /> Apple
-                        </button>
-                      </div>
-                    </>
+                  {/* Confirm Password (Register & Reset Password only) */}
+                  {['register', 'reset-password'].includes(mode) && (
+                    <PremiumInput
+                      label="Confirm Password"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value)
+                        if (errors.confirmPassword) validateField('confirmPassword', e.target.value)
+                      }}
+                      onBlur={() => validateField('confirmPassword', confirmPassword)}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      icon={Lock}
+                      error={errors.confirmPassword}
+                      disabled={loading}
+                      showPasswordToggle
+                      onTogglePassword={() => setShowConfirmPassword(prev => !prev)}
+                      showPasswordState={showConfirmPassword}
+                    />
                   )}
 
-                  {mode === 'email-otp' && (
-                    <LoadingButton type="submit" loading={loading} disabled={loading} className="w-full bg-amber-500 text-slate-950 font-bold py-3">
-                      Verify & Synchronize
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </LoadingButton>
-                  )}
-
-                  {mode === 'forgot' && (
-                    <div className="space-y-3">
-                      <LoadingButton type="button" onClick={handleForgotPassword} loading={loading} disabled={loading || otpCountdown > 0} className="w-full bg-amber-500 text-slate-950 font-bold py-3">
-                        <Send className="mr-2 h-4 w-4" /> Send Recovery Link
-                      </LoadingButton>
-                      <button type="button" onClick={() => changeMode('login')} className="w-full text-center text-xs text-slate-400 hover:text-white transition py-1">
-                        Return to Authentication
-                      </button>
-                    </div>
-                  )}
-
-                  {mode === 'reset-password' && (
-                    <LoadingButton type="submit" loading={loading} disabled={loading} className="w-full bg-amber-500 text-slate-950 font-bold py-3">
-                      Commit New Password
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </LoadingButton>
-                  )}
-                </div>
-              </form>
-            </GlassCard>
-
-            {/* Structured contextual footer switcher links grouped nicely within the layout segment */}
-            <div className="mt-5 text-center text-xs text-slate-400">
-              {mode === 'login' && (
-                <p>
-                  New to the platform?{' '}
-                  <button type="button" onClick={() => changeMode('register')} className="text-amber-400 hover:underline font-semibold ml-0.5">
-                    Create your account
-                  </button>
-                </p>
-              )}
-              {mode === 'register' && (
-                <p>
-                  Already have an account?{' '}
-                  <button type="button" onClick={() => changeMode('login')} className="text-amber-400 hover:underline font-semibold ml-0.5">
-                    Log in
-                  </button>
-                </p>
-              )}
-            </div>
-          </div>
-
-=======
-    <div className="flex-1 flex w-full justify-center py-[var(--section-spacing-desktop)] px-[var(--page-padding-inline)] z-10 relative">
-      <div className="max-w-6xl w-full grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
-        
-        {/* Left Side Details */}
-        <div className="space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 rounded-full bg-surface-elevated px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary border border-primary/20 shadow-elevation-1">
-            <Sparkles className="h-4 w-4" /> Premium Workspace
-          </div>
-          <div className="space-y-4">
-            <h1 className="text-h2 sm:text-h1 font-black tracking-tight text-foreground">
-              Secure login for your modern resume workflow.
-            </h1>
-            <p className="text-body-large text-foreground/70 max-w-xl mx-auto lg:mx-0">
-              Sign in to access your saved drafts, premium templates, instant preview, and polished PDF export. Built for professionals who want a better job application experience.
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto lg:mx-0">
-            {[
-              { icon: Eye, title: 'Live Preview', description: 'See updates instantly.' },
-              { icon: Sparkles, title: 'Premium Layouts', description: 'Polished ATS designs.' },
-              { icon: Save, title: 'Secure Save', description: 'Drafts restore instantly.' },
-            ].map((item) => (
-              <Card key={item.title} className="bg-surface/50 border-white/5 shadow-none">
-                <CardContent className="p-4 flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3">
-                    <item.icon className="h-5 w-5" />
-                  </div>
-                  <div className="text-sm font-bold text-foreground">{item.title}</div>
-                  <p className="mt-1 text-xs text-foreground/70">{item.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
-        </div>
-
-        {/* Right Side Form */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Card className="shadow-elevation-4 border-border overflow-hidden">
-            <CardHeader className="pb-0 pt-6 px-6">
-              <div className="flex gap-2 rounded-xl bg-surface-elevated p-1.5 border border-border">
-                <button
-                  type="button"
-                  className={`flex-1 rounded-lg py-2.5 text-sm font-bold transition-all ${
-                    mode === 'login'
-                      ? 'bg-surface text-foreground shadow-elevation-1'
-                      : 'text-foreground/60 hover:text-foreground'
-                  }`}
-                  onClick={() => { setMode('login'); setForgot(false); setErrors({}); setTo({}); }}
-                >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  className={`flex-1 rounded-lg py-2.5 text-sm font-bold transition-all ${
-                    mode === 'register'
-                      ? 'bg-surface text-foreground shadow-elevation-1'
-                      : 'text-foreground/60 hover:text-foreground'
-                  }`}
-                  onClick={() => { setMode('register'); setForgot(false); setErrors({}); setTo({}); }}
-                >
-                  Register
-                </button>
-              </div>
-            </CardHeader>
-
-            <CardContent className="p-6">
-              <AnimatePresence mode="wait">
-                {forgot ? (
-                  <motion.div
-                    key="forgot"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    className="space-y-6"
-                  >
-                    <div className="space-y-2 text-center">
-                      <CardTitle>Forgot Password</CardTitle>
-                      <CardDescription>
-                        This demo stores users locally. Password resets are disabled.
-                      </CardDescription>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <Button type="button" variant="outline" onClick={() => setForgot(false)}>
-                        Back to login
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={() => showMsg('success', 'Info', 'Reset flow is disabled.')}
-                      >
-                        Request reset
-                      </Button>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.form
-                    key="form"
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    onSubmit={submit}
-                    className="space-y-5"
-                    noValidate
-                  >
-                    <div className="space-y-2 text-center pb-2">
-                      <CardTitle className="text-h4">{mode === 'register' ? 'Create an account' : 'Welcome back'}</CardTitle>
-                      <CardDescription>
-                        {mode === 'register'
-                          ? 'Register to unlock saved resumes and premium features.'
-                          : 'Login to continue editing and download your PDF.'}
-                      </CardDescription>
-                    </div>
-
-                    <div className="space-y-4">
-                      {mode === 'register' && (
-                        <div className="space-y-1.5">
-                          <Label htmlFor="name">Full Name</Label>
-                          <Input
-                            id="name"
-                            value={name}
-                            onChange={(e) => { setName(e.target.value); setErrors(prev => ({...prev, name: ''})) }}
-                            placeholder="John Doe"
-                            autoComplete="name"
-                            error={errors.name}
-                          />
-                        </div>
-                      )}
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          value={email}
-                          onChange={(e) => { setEmail(e.target.value); setErrors(prev => ({...prev, email: ''})) }}
-                          placeholder="name@example.com"
-                          type="email"
-                          autoComplete="email"
-                          error={errors.email}
+                  {/* Terms / Conditions & Privacy Policy checkboxes (Register only) */}
+                  {mode === 'register' && (
+                    <div className="space-y-2.5 pt-1">
+                      <label className="flex items-start gap-2.5 text-xs text-slate-400 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={termsAccepted}
+                          onChange={(e) => {
+                            setTermsAccepted(e.target.checked)
+                            if (e.target.checked) {
+                              const errs = { ...errors }
+                              delete errs.terms
+                              setErrors(errs)
+                            }
+                          }}
+                          disabled={loading}
+                          className="mt-0.5 h-3.5 w-3.5 accent-amber-500 rounded border-slate-800 bg-slate-950 text-amber-500 focus:ring-amber-500/20"
                         />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="password">Password</Label>
-                        <div className="relative">
-                          <Input
-                            id="password"
-                            type={showPassword ? 'text' : 'password'}
-                            value={password}
-                            onChange={(e) => { setPassword(e.target.value); setErrors(prev => ({...prev, password: ''})) }}
-                            placeholder="••••••••"
-                            autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                            error={errors.password}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-2.5 text-foreground/50 hover:text-foreground transition-colors focus-visible:outline-none"
-                            aria-label={showPassword ? "Hide password" : "Show password"}
-                          >
-                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                          </button>
-                        </div>
-                        {mode === 'register' && password && (
-                          <div className="pt-3 pb-1">
-                            <div className="h-1.5 rounded-full bg-surface-elevated overflow-hidden">
-                              <div style={{ width: `${score}%` }} className={`h-full transition-all duration-300 ${barColor(score)}`} />
-                            </div>
-                            <p className="mt-1.5 text-xs text-foreground/60">Strength: {score}%</p>
-                          </div>
-                        )}
-                      </div>
+                        <span>
+                          I agree to the{' '}
+                          <a href="/terms" target="_blank" className="text-slate-300 hover:text-white underline font-semibold transition">
+                            Terms of Service
+                          </a>{' '}
+                          and{' '}
+                          <a href="/privacy" target="_blank" className="text-slate-300 hover:text-white underline font-semibold transition">
+                            Privacy Policy
+                          </a>.
+                        </span>
+                      </label>
+                      {errors.terms && (
+                        <p className="text-rose-400 text-xs flex items-center gap-1 font-medium">
+                          <Info className="h-3.5 w-3.5 flex-shrink-0" />
+                          {errors.terms}
+                        </p>
+                      )}
                     </div>
+                  )}
 
-                    <div className="flex items-center justify-between pt-2">
-                      <label className="flex items-center gap-2 cursor-pointer group">
-                        <div className="relative flex items-center justify-center">
-                          <input
-                            type="checkbox"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                            className="peer sr-only"
-                          />
-                          <div className="h-4 w-4 rounded border border-border bg-surface transition-colors peer-checked:bg-primary peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background"></div>
-                          {rememberMe && <ShieldCheck className="absolute h-3 w-3 text-primary-foreground" />}
-                        </div>
-                        <span className="text-sm text-foreground/80 group-hover:text-foreground transition-colors">Remember me</span>
+                  {/* Remember me & Forgot Password Row (Login only) */}
+                  {mode === 'login' && (
+                    <div className="flex items-center justify-between text-xs px-0.5 pt-1 pb-2">
+                      <label className="flex items-center gap-2 text-slate-300 cursor-pointer select-none font-medium">
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          disabled={loading}
+                          className="h-3.5 w-3.5 accent-amber-500 rounded border-slate-800 bg-slate-950 text-amber-500 focus:ring-amber-500/20"
+                        />
+                        Remember Session
                       </label>
                       <button
-                        onClick={() => setForgot(true)}
-                        className="text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
                         type="button"
+                        onClick={() => changeMode('forgot')}
+                        disabled={loading}
+                        className="text-slate-400 hover:text-amber-500 font-bold transition duration-200"
                       >
                         Forgot password?
                       </button>
                     </div>
+                  )}
 
-                    {to?.type && (
-                      <div className={`text-sm p-3 rounded-md border ${
-                        to.type === 'error' ? 'bg-error/10 border-error/20 text-error' : 
-                        to.type === 'success' ? 'bg-success/10 border-success/20 text-success' : 
-                        'bg-surface-elevated border-border text-foreground'
-                      }`}>
-                        <span className="font-semibold">{to.title}:</span> {to.message}
+                  {/* Submit Actions */}
+                  <div className="pt-2.5">
+                    {['login', 'register'].includes(mode) && (
+                      <>
+                        <LoadingButton
+                          type="submit"
+                          loading={loading}
+                          disabled={loading}
+                          className="w-full bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition duration-200 py-3 rounded-xl flex items-center justify-center text-xs tracking-wider uppercase"
+                        >
+                          {mode === 'register' ? 'Complete Onboarding' : 'Secure Entry'}
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </LoadingButton>
+
+                        <div className="relative my-6">
+                          <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-slate-800" />
+                          </div>
+                          <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
+                            <span className="bg-slate-900 px-3 text-slate-500 font-bold">Or continue with</span>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            type="button"
+                            disabled={loading}
+                            className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/40 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-950 hover:text-white transition duration-200"
+                          >
+                            <GoogleIcon className="h-4 w-4" /> Google
+                          </button>
+                          <button
+                            type="button"
+                            disabled={loading}
+                            className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/40 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-950 hover:text-white transition duration-200"
+                          >
+                            <AppleIcon className="h-4 w-4" /> Apple
+                          </button>
+                        </div>
+                      </>
+                    )}
+
+                    {mode === 'email-otp' && (
+                      <LoadingButton
+                        type="submit"
+                        loading={loading}
+                        disabled={loading}
+                        className="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-xl text-xs tracking-wider uppercase hover:bg-amber-400 transition duration-200"
+                      >
+                        Verify & Synchronize
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </LoadingButton>
+                    )}
+
+                    {mode === 'forgot' && (
+                      <div className="space-y-4">
+                        <LoadingButton
+                          type="submit"
+                          loading={loading}
+                          disabled={loading}
+                          className="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-xl text-xs tracking-wider uppercase hover:bg-amber-400 transition duration-200"
+                        >
+                          Send Recovery Link
+                          <Send className="ml-2 h-3.5 w-3.5" />
+                        </LoadingButton>
+                        <button
+                          type="button"
+                          onClick={() => changeMode('login')}
+                          disabled={loading}
+                          className="w-full text-center text-xs text-slate-400 hover:text-white transition duration-200 py-1 font-medium"
+                        >
+                          Return to Authentication
+                        </button>
                       </div>
                     )}
 
-                    <Button type="submit" isLoading={loading} className="w-full mt-2">
-                      {mode === 'register' ? 'Create Account' : 'Login'}
-                    </Button>
-                  </motion.form>
-                )}
-              </AnimatePresence>
-            </CardContent>
-          </Card>
-        </motion.div>
+                    {mode === 'reset-password' && (
+                      <LoadingButton
+                        type="submit"
+                        loading={loading}
+                        disabled={loading}
+                        className="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-xl text-xs tracking-wider uppercase hover:bg-amber-400 transition duration-200"
+                      >
+                        Commit New Password
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </LoadingButton>
+                    )}
+                  </div>
+                </form>
+              )}
+
+              {/* Contextual Footer links */}
+              {!forgotSuccess && !resetSuccess && (
+                <div className="mt-6 text-center text-xs text-slate-400">
+                  {mode === 'login' && (
+                    <p>
+                      New to the platform?{' '}
+                      <button
+                        type="button"
+                        onClick={() => changeMode('register')}
+                        className="text-amber-500 hover:underline font-bold ml-0.5"
+                      >
+                        Create your account
+                      </button>
+                    </p>
+                  )}
+                  {mode === 'register' && (
+                    <p>
+                      Already have an account?{' '}
+                      <button
+                        type="button"
+                        onClick={() => changeMode('login')}
+                        className="text-amber-500 hover:underline font-bold ml-0.5"
+                      >
+                        Log in
+                      </button>
+                    </p>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+        </div>
       </div>
     </div>
   )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb

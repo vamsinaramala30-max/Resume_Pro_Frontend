@@ -17,6 +17,8 @@ import {
   Star,
   FileSignature,
   Zap,
+  Sun,
+  Moon,
 } from 'lucide-react'
 
 const dropdownVariants = {
@@ -168,7 +170,7 @@ function UserAvatar({ user, onClick, active }) {
   )
 }
 
-export default function GlobalHeader({ user, onLogout }) {
+export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
   const location = useLocation()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -252,10 +254,8 @@ export default function GlobalHeader({ user, onLogout }) {
   const hasUnread = notifications.some(n => !n.read)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[1400px] z-50 rounded-2xl border border-white/10 bg-slate-950/75 backdrop-blur-xl shadow-2xl transition-all duration-300">
+      <div className="mx-auto flex h-16 w-full items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2.5 group focus:outline-none">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 transition-all group-hover:bg-amber-500/20 group-hover:scale-105 ring-1 ring-amber-500/20">
             <Sparkles className="h-4 w-4 fill-amber-400/20" />
@@ -297,6 +297,15 @@ export default function GlobalHeader({ user, onLogout }) {
               <Crown className="h-3 w-3 fill-slate-950" />
               PRO
             </Link>
+          )}
+          {toggleTheme && (
+            <button
+              onClick={toggleTheme}
+              className="rounded-xl p-2.5 text-slate-400 hover:bg-white/5 hover:text-white transition-all focus:outline-none"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            </button>
           )}
 
           <div className="relative" ref={notifPanelRef}>

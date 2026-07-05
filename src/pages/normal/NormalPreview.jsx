@@ -195,30 +195,16 @@ export default function NormalPreview() {
   }, [])
 
   const completionActions = (
-<<<<<<< HEAD
-    <div className="flex items-center justify-between gap-4 flex-wrap">
-      <button
-        type="button"
-        onClick={() => (window.location.href = '/normal')}
-        className="px-4 py-2 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-royal-gold transition text-sm inline-flex items-center gap-2"
-=======
     <div className="flex items-center justify-between gap-4 flex-wrap mt-8">
       <Button
         variant="outline"
         onClick={() => navigate('/normal')}
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Edit
       </Button>
 
       <div className="flex items-center gap-3">
-<<<<<<< HEAD
-        <button
-          type="button"
-          onClick={() => (window.location.href = '/normal/download')}
-          className="px-4 py-2 rounded-2xl font-bold bg-royal-gold text-royal-navy hover:brightness-110 transition text-sm inline-flex items-center gap-2"
-=======
         <Button
           variant="secondary"
           onClick={() => navigate('/normal')}
@@ -228,7 +214,6 @@ export default function NormalPreview() {
 
         <Button
           onClick={() => navigate('/normal/download')}
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         >
           <Check className="w-4 h-4 mr-2" />
           Confirm
@@ -254,12 +239,6 @@ export default function NormalPreview() {
           </div>
         </div>
 
-<<<<<<< HEAD
-      <div className="mt-6">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div>{/* keep */}</div>
-          {completionActions}
-=======
         <div className="mt-8 grid gap-5 lg:grid-cols-[1.3fr_360px]">
           <div className="flex flex-col justify-end">{completionActions}</div>
           <Card className="bg-surface/50 p-5 border-border shadow-elevation-2">
@@ -272,10 +251,7 @@ export default function NormalPreview() {
               Your selected layout is shown here. Switch templates to preview premium resume designs instantly before download.
             </div>
           </Card>
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
         </div>
-      </div>
-
       </motion.div>
 
       <div className="mt-7">

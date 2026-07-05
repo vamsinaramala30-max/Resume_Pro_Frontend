@@ -26,7 +26,7 @@ function makeParticles(count: number): ParticleSpec[] {
       size: 1 + rand() * 2.6,
       delay: rand() * 6,
       duration: 8 + rand() * 12,
-      hue: hues[i % hues.length],
+      hue: hues[i % hues.length] || 'gold',
     })
   }
 

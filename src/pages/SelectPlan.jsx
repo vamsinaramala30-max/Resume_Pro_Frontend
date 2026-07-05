@@ -40,25 +40,6 @@ function PlanCard({ title, subtitle, badge, glow, onClick, icon, features }) {
             ))}
           </div>
 
-<<<<<<< HEAD
-        <div className="space-y-3">
-          {features.map((feature, idx) => (
-            <div key={idx} className="flex items-center gap-3 text-sm text-slate-300">
-              <BadgeCheck className={glow ? 'h-4 w-4 text-royal-gold' : 'h-4 w-4 text-slate-400'} />
-              <span>{feature}</span>
-            </div>
-          ))}
-        </div>
-
-          <div className="flex flex-wrap items-center gap-3 pt-4">
-          <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
-            {glow ? 'AI + luxury' : 'Solid resume workflow'}
-          </span>
-        </div>
-
-      </div>
-    </motion.button>
-=======
           <div className="pt-6 border-t border-border mt-auto flex flex-col sm:flex-row items-center gap-4">
             <Button onClick={onClick} className="w-full sm:w-auto" variant={glow ? "default" : "secondary"}>
               Select {badge}
@@ -70,7 +51,6 @@ function PlanCard({ title, subtitle, badge, glow, onClick, icon, features }) {
         </CardContent>
       </Card>
     </motion.div>
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb
   )
 }
 

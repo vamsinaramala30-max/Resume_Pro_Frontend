@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -170,4 +168,3 @@ export default function TopNav({ user, onLogout, theme, toggleTheme }) {
     </header>
   )
 }
->>>>>>> 50dbb2228965c1ead5a30fee68a216de8e7433eb

@@ -50,7 +50,8 @@ async function safeFetch(url, options) {
   const res = await fetch(url, options)
   const json = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw new Error(json?.error || json?.message || res.statusText || 'Request failed')
+    const errMsg = json?.error?.message || (typeof json?.error === 'string' ? json?.error : '') || json?.message || res.statusText || 'Request failed'
+    throw new Error(errMsg)
   }
   return json
 }
