@@ -4,7 +4,16 @@ async function safeFetch(url, options) {
   const res = await fetch(url, options)
   const json = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw new Error(json?.error || json?.message || `${res.statusText || 'Request failed'}`)
+    // json.error can be a string or an object — extract a readable message
+    const errObj = json?.error
+    const errMsg =
+      (typeof errObj === 'string' ? errObj : errObj?.message) ||
+      json?.message ||
+      res.statusText ||
+      'Request failed'
+    const err = new Error(errMsg)
+    err.status = res.status
+    throw err
   }
   return json
 }
@@ -28,3 +37,10 @@ export async function apiGetMyResumes({ token }) {
   })
 }
 
+export async function apiDeleteResume({ token, id }) {
+  const API_BASE = await getApiBase();
+  return safeFetch(`${API_BASE}/resume/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+}

@@ -351,76 +351,76 @@ export default function Settings() {
                     <div className="space-y-4">
                       <div className="grid gap-4 md:grid-cols-2">
                         <div>
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Full Name
                           </label>
                           <input
                             value={profileForm.name}
                             onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20"
                             type="text"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Email
                           </label>
                           <input
                             value={user?.email || ''}
                             disabled
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-slate-500 cursor-not-allowed"
+                            className="w-full rounded-xl bg-slate-950/40 border border-slate-900 px-4 py-3 text-sm text-slate-500 cursor-not-allowed"
                             type="email"
                           />
-                          <p className="text-xs text-slate-500 mt-1">Email cannot be changed</p>
+                          <p className="text-[10px] text-slate-500 mt-1.5 uppercase font-semibold">Email cannot be changed</p>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Phone
                           </label>
                           <input
                             value={profileForm.phone}
                             onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20"
                             type="tel"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Location
                           </label>
                           <input
                             value={profileForm.location}
                             onChange={(e) => setProfileForm({ ...profileForm, location: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20"
                             type="text"
                             placeholder="City, Country"
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Profession
                           </label>
                           <input
                             value={profileForm.profession}
                             onChange={(e) => setProfileForm({ ...profileForm, profession: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20"
                             type="text"
                             placeholder="e.g. Full Stack Developer"
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-slate-400 mb-2">
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Bio
                           </label>
                           <textarea
                             value={profileForm.bio}
                             onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400 resize-none h-24"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 resize-none h-24 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20"
                             placeholder="Tell us about yourself..."
                           />
                         </div>
@@ -477,14 +477,14 @@ export default function Settings() {
 
                     <div className="space-y-4 max-w-md">
                       <div>
-                        <label className="block text-sm font-medium text-slate-400 mb-2">
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                           Current Password
                         </label>
                         <div className="relative">
                           <input
                             value={passwordForm.currentPassword}
                             onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400 pr-12"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 pr-12"
                             type={showPasswords.current ? 'text' : 'password'}
                           />
                           <button
@@ -498,14 +498,14 @@ export default function Settings() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-slate-400 mb-2">
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                           New Password
                         </label>
                         <div className="relative">
                           <input
                             value={passwordForm.newPassword}
                             onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400 pr-12"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 pr-12"
                             type={showPasswords.new ? 'text' : 'password'}
                           />
                           <button
@@ -517,27 +517,27 @@ export default function Settings() {
                           </button>
                         </div>
                         {passwordForm.newPassword && (
-                          <div className="mt-2">
-                            <div className="flex gap-1 h-1 rounded-full bg-slate-700 overflow-hidden">
+                          <div className="mt-2.5">
+                            <div className="flex gap-1 h-1.5 rounded-full bg-slate-800 overflow-hidden">
                               <div
                                 className={`transition-all ${passwordStrength.color}`}
                                 style={{ width: `${passwordStrength.score}%` }}
                               />
                             </div>
-                            <p className="text-xs text-slate-400 mt-1">{passwordStrength.label}</p>
+                            <p className="text-[10px] text-slate-400 mt-1.5 uppercase font-semibold">{passwordStrength.label}</p>
                           </div>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-slate-400 mb-2">
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                           Confirm New Password
                         </label>
                         <div className="relative">
                           <input
                             value={passwordForm.confirmPassword}
                             onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                            className="w-full rounded-xl bg-black/30 border border-white/15 px-4 py-3 text-white outline-none focus:border-amber-400 pr-12"
+                            className="w-full rounded-xl bg-slate-950/80 border border-slate-800 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 pr-12"
                             type={showPasswords.confirm ? 'text' : 'password'}
                           />
                           <button
@@ -549,7 +549,7 @@ export default function Settings() {
                           </button>
                         </div>
                         {passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword && (
-                          <p className="text-xs text-red-400 mt-1">Passwords do not match</p>
+                          <p className="text-xs text-red-400 mt-1.5 font-medium">Passwords do not match</p>
                         )}
                       </div>
 

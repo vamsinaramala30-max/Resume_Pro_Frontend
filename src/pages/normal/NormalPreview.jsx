@@ -24,7 +24,7 @@ function sanitizeText(s) {
 function A4Wrapper({ children }) {
   return (
     <div className="w-full flex justify-center">
-      <div className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shadow-2xl rounded-none overflow-hidden">
+      <div className="w-[210mm] min-h-[297mm] bg-white text-slate-900 shadow-2xl rounded-none overflow-visible">
         {children}
       </div>
     </div>

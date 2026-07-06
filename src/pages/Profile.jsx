@@ -487,41 +487,13 @@ export default function Profile() {
             >
               <div className="flex items-center gap-3">
                 <LogOut className="h-5 w-5 text-red-400" />
-                <div>
+                <div className="text-left">
                   <p className="font-semibold text-red-400">Sign Out</p>
                   <p className="text-sm text-slate-400">Sign out of your account</p>
                 </div>
               </div>
               <ChevronRight className="h-5 w-5 text-slate-400" />
             </button>
-          </div>
-        </section>
-
-        {/* Theme Settings */}
-        <section className="mb-8 rounded-3xl border border-white/10 bg-slate-900/40 p-6 shadow-2xl backdrop-blur-xl">
-          <h2 className="text-xl font-black flex items-center gap-2 mb-6">
-            <Moon className="h-5 w-5 text-amber-400" />
-            Appearance
-          </h2>
-
-          <div className="grid grid-cols-3 gap-3">
-            {['light', 'dark', 'system'].map(t => {
-              const Icon = themeIcons[t]
-              return (
-                <button
-                  key={t}
-                  onClick={() => setTheme(t)}
-                  className={`p-4 rounded-xl border transition ${
-                    theme === t
-                      ? 'border-amber-400 bg-amber-400/10'
-                      : 'border-white/10 hover:border-white/30'
-                  }`}
-                >
-                  <Icon className="h-6 w-6 mx-auto mb-2" />
-                  <p className="text-sm font-semibold capitalize">{t}</p>
-                </button>
-              )
-            })}
           </div>
         </section>
 
@@ -534,7 +506,7 @@ export default function Profile() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <Link
-              to="/select"
+              to="/resumes"
               className="flex items-center gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition"
             >
               <FileText className="h-5 w-5 text-amber-400" />

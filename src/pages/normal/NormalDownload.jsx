@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Download, Share2, Printer, Save, FileText, ArrowLeft, Loader2, CheckCircle2, User } from 'lucide-react'
+import { Download, Share2, Printer, Save, FileText, User, ArrowLeft, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { RESUME_DEFAULTS } from '../../lib/resumeDefaults.js'
@@ -8,11 +8,6 @@ import { readJSON, writeJSON, STORAGE_KEYS } from '../../lib/storage.js'
 import { splitSkillString } from '../../lib/formatters.js'
 import TemplateSelector from '../../components/TemplateSelector.jsx'
 import { apiSaveResume } from '../../lib/apiResume.js'
-
-async function loadHtml2Pdf() {
-  const module = await import('html2pdf.js')
-  return module.default || module
-}
 
 const DRAFT_KEY = STORAGE_KEYS.resumeDraftNormal
 
@@ -82,64 +77,109 @@ function PreviewResumeMini({ data, templateId }) {
 }
 
 export default function NormalDownload() {
+  const navigate = useNavigate()
   const [templateId, setTemplateId] = useState('modern')
   const [data, setData] = useState(() => {
     const saved = readJSON(DRAFT_KEY, null)
     return saved ? mergeResume(RESUME_DEFAULTS, saved) : { ...RESUME_DEFAULTS }
   })
+  const [pdfLoading, setPdfLoading] = useState(false)
+  const [exportLoading, setExportLoading] = useState(false)
 
   useEffect(() => {
     const saved = readJSON(DRAFT_KEY, null)
     if (saved) setData(mergeResume(RESUME_DEFAULTS, saved))
   }, [])
 
-  const downloadPdf = async () => {
+  /** Smart PDF generator: measures actual content height and creates
+   *  exactly the right number of A4 pages — no blank overflow pages. */
+  const generateSmartPdf = async ({ scale = 2, quality = 0.98, filename }) => {
     const el = document.getElementById('resume-preview-print')
     if (!el) return
 
-    const html2pdf = await loadHtml2Pdf()
-    const name = `${(data.fullName || 'resume').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`
+    // Dynamically import jsPDF + html2canvas so we don't inflate the initial bundle
+    const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+      import('jspdf'),
+      import('html2canvas'),
+    ])
 
-    const opt = {
-      margin: [8, 8, 8, 8],
-      filename: name,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'] },
+    const canvas = await html2canvas(el, {
+      scale,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      // Capture the full scrollable height so long resumes render completely
+      windowHeight: el.scrollHeight,
+    })
+
+    // A4 dimensions in mm
+    const A4_W_MM = 210
+    const A4_H_MM = 297
+    const MARGIN_MM = 8
+
+    const printableW = A4_W_MM - MARGIN_MM * 2
+    const printableH = A4_H_MM - MARGIN_MM * 2
+
+    // Convert canvas px → mm so we can calculate how many pages fit
+    const pxPerMm = canvas.width / printableW
+    const contentHeightMm = canvas.height / pxPerMm
+    const totalPages = Math.max(1, Math.ceil(contentHeightMm / printableH))
+
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) pdf.addPage()
+
+      // Slice the canvas vertically for this page's strip
+      const srcY = page * printableH * pxPerMm
+      const srcH = Math.min(printableH * pxPerMm, canvas.height - srcY)
+
+      const pageCanvas = document.createElement('canvas')
+      pageCanvas.width = canvas.width
+      pageCanvas.height = srcH
+      const ctx = pageCanvas.getContext('2d')
+      ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH)
+
+      const imgData = pageCanvas.toDataURL('image/jpeg', quality)
+      const imgH = srcH / pxPerMm
+
+      pdf.addImage(imgData, 'JPEG', MARGIN_MM, MARGIN_MM, printableW, imgH)
     }
 
-    await html2pdf().set(opt).from(el).save()
+    pdf.save(filename)
+  }
+
+  const downloadPdf = async () => {
+    const name = `${(data.fullName || 'resume').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`
+    setPdfLoading(true)
+    try { await generateSmartPdf({ scale: 2, quality: 0.97, filename: name }) }
+    finally { setPdfLoading(false) }
+  }
+
+  const exportHighQualityPdf = async () => {
+    const name = `${(data.fullName || 'resume').replace(/[^a-z0-9]/gi, '_').toLowerCase()}-high-quality.pdf`
+    setExportLoading(true)
+    try { await generateSmartPdf({ scale: 2.5, quality: 1, filename: name }) }
+    finally { setExportLoading(false) }
   }
 
   const share = async () => {
-    // Demo: share via Web Share if available; otherwise create a text share.
     const shareData = {
       title: 'My Resume',
-      text: `Resume for ${data.fullName || 'Me'} — generated with Royal Resume Builder`,
+      text: `Resume for ${data.fullName || 'Me'} — generated with Resume PRO`,
       url: window.location.href,
     }
-
     try {
       if (navigator.share) await navigator.share(shareData)
       else {
         window.dispatchEvent(
           new CustomEvent('royal-toast', {
-            detail: {
-              type: 'info',
-              title: 'Share',
-              message: shareData.text,
-            },
+            detail: { type: 'info', title: 'Share', message: shareData.text },
           })
         )
       }
     } catch {
-      // no-op
+      // no-op (user cancelled share)
     }
   }
 
@@ -187,40 +227,28 @@ export default function NormalDownload() {
     }
   }
 
-  const print = () => {
-    // ensure UI is not printed
-    window.print()
-  }
-
-  const exportHighQualityPdf = async () => {
-    const el = document.getElementById('resume-preview-print')
-    if (!el) return
-
-    const html2pdf = await loadHtml2Pdf()
-    const name = `${(data.fullName || 'resume').replace(/[^a-z0-9]/gi, '_').toLowerCase()}-high-quality.pdf`
-
-    await html2pdf().set({
-      margin: [10, 10, 10, 10],
-      filename: name,
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 2.5, useCORS: true, logging: false, backgroundColor: '#ffffff' },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'] },
-    }).from(el).save()
-  }
+  const print = () => window.print()
 
   return (
     <div className="w-full">
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-        <div className="text-primary font-black text-4xl">Download & Share</div>
-        <div className="text-slate-200/90 mt-2">Step 3/3 — PDF, print, save, share, and high-quality export.</div>
+        <div className="flex items-center justify-between gap-4 flex-wrap mb-6">
+          <div>
+            <div className="text-primary font-black text-4xl">Download &amp; Share</div>
+            <div className="text-slate-400 mt-1 text-sm">Step 3/3 — PDF, print, save, share, and high-quality export.</div>
+          </div>
+          <button
+            onClick={() => navigate('/normal/preview')}
+            className="flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white rounded-xl bg-white/5 border border-white/10 hover:border-white/20 px-4 py-2.5 transition"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Preview
+          </button>
+        </div>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_320px]">
+        <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
           <div className="rounded-3xl border border-white/15 bg-black/10 p-5">
-            <div className="text-sm font-bold text-slate-100">Template preview</div>
-            <div className="mt-4">
-              <TemplateSelector template={templateId} setTemplate={setTemplateId} />
-            </div>
+            <div className="text-sm font-bold text-slate-100 mb-4">Template Preview</div>
+            <TemplateSelector template={templateId} setTemplate={setTemplateId} />
             <div className="mt-5 rounded-3xl border border-white/10 overflow-hidden bg-slate-950/90">
               <div
                 className="h-40 w-full bg-cover bg-center"
@@ -233,40 +261,64 @@ export default function NormalDownload() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/15 bg-black/10 p-5">
-            <div className="text-sm font-bold text-slate-100">Download options</div>
-            <div className="mt-3 text-sm text-slate-300 leading-relaxed">
-              Use the image preview and template selection above to verify your final resume style. Export a polished premium PDF or print-ready version in one click.
+          <div className="rounded-3xl border border-white/15 bg-black/10 p-5 flex flex-col gap-3">
+            <div className="text-sm font-bold text-slate-100">Export Options</div>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Your resume is rendered below. Click an action to export it.
+              The PDF will contain exactly as many pages as your content needs.
+            </p>
+
+            <div className="grid gap-2.5 mt-2">
+              <button
+                onClick={downloadPdf}
+                disabled={pdfLoading || exportLoading}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-bold bg-primary text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
+              >
+                {pdfLoading
+                  ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating PDF…</>
+                  : <><Download className="w-4 h-4" /> Download PDF</>}
+              </button>
+              <button
+                onClick={exportHighQualityPdf}
+                disabled={pdfLoading || exportLoading}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-amber-500/40 text-slate-200 transition disabled:opacity-60"
+              >
+                {exportLoading
+                  ? <><Loader2 className="w-4 h-4 animate-spin" /> Exporting…</>
+                  : <><FileText className="w-4 h-4" /> Export HQ PDF</>}
+              </button>
+              <button
+                onClick={print}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-white/20 text-slate-200 transition"
+              >
+                <Printer className="w-4 h-4" /> Print
+              </button>
+              <button
+                onClick={saveLocal}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-emerald-500/40 text-slate-200 transition"
+              >
+                <Save className="w-4 h-4" /> Save to Cloud
+              </button>
+              <button
+                onClick={share}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-blue-500/40 text-slate-200 transition"
+              >
+                <Share2 className="w-4 h-4" /> Share
+              </button>
             </div>
           </div>
         </div>
-
-        <div className="mt-6 grid md:grid-cols-5 gap-3">
-          <button onClick={downloadPdf} className="md:col-span-1 px-4 py-3 rounded-2xl font-bold bg-primary text-primary-foreground hover:brightness-110 transition inline-flex items-center justify-center gap-2">
-            <Download className="w-4 h-4" /> PDF
-          </button>
-          <button onClick={print} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
-            <Printer className="w-4 h-4" /> Print
-          </button>
-          <button onClick={saveLocal} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
-            <Save className="w-4 h-4" /> Save
-          </button>
-          <button onClick={share} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
-            <Share2 className="w-4 h-4" /> Share
-          </button>
-          <button onClick={exportHighQualityPdf} className="px-4 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 hover:border-primary transition inline-flex items-center justify-center gap-2">
-            <FileText className="w-4 h-4" /> Export
-          </button>
-        </div>
-
       </motion.div>
 
-      <div className="mt-7 flex justify-center">
-        <div className="w-[210mm] min-h-[297mm] bg-white overflow-hidden shadow-2xl" id="resume-preview-print">
+      {/* The A4 resume preview — overflow visible so content at natural height */}
+      <div className="mt-8 flex justify-center">
+        <div
+          className="w-[210mm] bg-white overflow-visible shadow-2xl"
+          id="resume-preview-print"
+        >
           <PreviewResumeMini data={data} templateId={templateId} />
         </div>
       </div>
     </div>
   )
 }
-

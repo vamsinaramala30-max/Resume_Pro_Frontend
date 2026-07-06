@@ -376,15 +376,6 @@ body.light::before {
   width: 95% !important;
 }
 
-.max-w-7xl,
-.max-w-6xl,
-.max-w-5xl,
-.max-w-4xl,
-.max-w-3xl {
-  max-width: 95% !important;
-  width: 95% !important;
-}
-
 /* Remove unnecessary whitespace for a spacious, modern, and premium feel */
 .py-16, .py-20, .py-24, .py-32 {
   padding-top: 3.5rem !important;

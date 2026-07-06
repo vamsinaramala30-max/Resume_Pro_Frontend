@@ -25,8 +25,8 @@ import {
 // Menu items for authenticated users
 const MENU_ITEMS = [
   { id: 'profile', label: 'Profile', icon: User, href: '/profile' },
-  { id: 'dashboard', label: 'Dashboard', icon: BarChart3, href: '/select' },
-  { id: 'resumes', label: 'My Resumes', icon: FileText, href: '/select' },
+  { id: 'dashboard', label: 'Dashboard', icon: BarChart3, href: '/premium/dashboard' },
+  { id: 'resumes', label: 'My Resumes', icon: FileText, href: '/resumes' },
   { id: 'templates', label: 'Templates', icon: FileText, href: '/templates' },
   { id: 'builder', label: 'New Resume', icon: Plus, href: '/builder' },
 ]

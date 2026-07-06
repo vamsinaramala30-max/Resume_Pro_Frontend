@@ -100,7 +100,7 @@ function NotificationPanel({ notifications = [], onMarkRead, onMarkAllRead }) {
 function UserMenuDropdown({ user, isPremium, onLogout, onClose }) {
   const menuItems = [
     { to: '/profile', label: 'Profile', icon: User },
-    { to: '/select', label: 'My Resumes', icon: FileSignature },
+    { to: '/resumes', label: 'My Resumes', icon: FileSignature },
   ]
 
   if (isPremium) {
@@ -244,7 +244,7 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
 
   const navLinks = user
     ? [
-      { to: '/select', label: 'My Resumes', icon: FileSignature },
+      { to: '/resumes', label: 'My Resumes', icon: FileSignature },
       { to: '/resume-builder', label: 'AI Builder', icon: Sparkles },
       { to: '/templates', label: 'Templates', icon: Layout },
     ]
@@ -259,7 +259,7 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-50 rounded-2xl border border-white/10 bg-slate-950/75 backdrop-blur-xl shadow-2xl transition-all duration-300">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5 group focus:outline-none">
+        <Link to={user ? '/select' : '/'} className="flex items-center gap-2.5 group focus:outline-none">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl text-amber-400 transition-all group-hover:bg-amber-500/20 group-hover:scale-105 ring-1 ring-amber-500/20 overflow-hidden p-1">
             <img src="/resumePro.png" alt="Resume PRO Icon" className="h-full w-full object-contain" />
           </div>

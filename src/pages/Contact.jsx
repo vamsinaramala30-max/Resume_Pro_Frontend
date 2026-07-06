@@ -204,7 +204,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
                 {/* Name */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-slate-200">
+                  <label htmlFor="name" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                     Full Name <span className="text-red-400">*</span>
                   </label>
                   <input
@@ -213,17 +213,17 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`mt-2 w-full rounded-2xl border bg-black/20 px-4 py-3 text-white placeholder:text-slate-500 outline-none transition ${
+                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
                       errors.name
-                        ? 'border-red-400 focus:border-red-400'
-                        : 'border-white/10 focus:border-royal-gold'
+                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
                     }`}
                     placeholder="John Doe"
                     aria-describedby={errors.name ? 'name-error' : undefined}
                     disabled={isSubmitting}
                   />
                   {errors.name && (
-                    <p id="name-error" className="mt-1 text-sm text-red-400" role="alert">
+                    <p id="name-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
                       {errors.name}
                     </p>
                   )}
@@ -231,7 +231,7 @@ export default function Contact() {
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-slate-200">
+                  <label htmlFor="email" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                     Email Address <span className="text-red-400">*</span>
                   </label>
                   <input
@@ -240,17 +240,17 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`mt-2 w-full rounded-2xl border bg-black/20 px-4 py-3 text-white placeholder:text-slate-500 outline-none transition ${
+                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
                       errors.email
-                        ? 'border-red-400 focus:border-red-400'
-                        : 'border-white/10 focus:border-royal-gold'
+                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
                     }`}
                     placeholder="john@example.com"
                     aria-describedby={errors.email ? 'email-error' : undefined}
                     disabled={isSubmitting}
                   />
                   {errors.email && (
-                    <p id="email-error" className="mt-1 text-sm text-red-400" role="alert">
+                    <p id="email-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
                       {errors.email}
                     </p>
                   )}
@@ -258,8 +258,8 @@ export default function Contact() {
 
                 {/* Phone */}
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-slate-200">
-                    Phone Number <span className="text-slate-400">(optional)</span>
+                  <label htmlFor="phone" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                    Phone Number <span className="text-slate-500">(optional)</span>
                   </label>
                   <input
                     type="tel"
@@ -267,17 +267,17 @@ export default function Contact() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`mt-2 w-full rounded-2xl border bg-black/20 px-4 py-3 text-white placeholder:text-slate-500 outline-none transition ${
+                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
                       errors.phone
-                        ? 'border-red-400 focus:border-red-400'
-                        : 'border-white/10 focus:border-royal-gold'
+                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
                     }`}
                     placeholder="+91 99899 89990"
                     aria-describedby={errors.phone ? 'phone-error' : undefined}
                     disabled={isSubmitting}
                   />
                   {errors.phone && (
-                    <p id="phone-error" className="mt-1 text-sm text-red-400" role="alert">
+                    <p id="phone-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
                       {errors.phone}
                     </p>
                   )}
@@ -285,7 +285,7 @@ export default function Contact() {
 
                 {/* Subject */}
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-semibold text-slate-200">
+                  <label htmlFor="subject" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                     Subject <span className="text-red-400">*</span>
                   </label>
                   <select
@@ -293,10 +293,10 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`mt-2 w-full rounded-2xl border bg-black/20 px-4 py-3 text-white outline-none transition ${
+                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white outline-none transition duration-200 appearance-none ${
                       errors.subject
-                        ? 'border-red-400 focus:border-red-400'
-                        : 'border-white/10 focus:border-royal-gold'
+                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
                     }`}
                     aria-describedby={errors.subject ? 'subject-error' : undefined}
                     disabled={isSubmitting}
@@ -310,7 +310,7 @@ export default function Contact() {
                     <option value="Other" className="bg-slate-900">Other</option>
                   </select>
                   {errors.subject && (
-                    <p id="subject-error" className="mt-1 text-sm text-red-400" role="alert">
+                    <p id="subject-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
                       {errors.subject}
                     </p>
                   )}
@@ -318,7 +318,7 @@ export default function Contact() {
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-slate-200">
+                  <label htmlFor="message" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                     Message <span className="text-red-400">*</span>
                   </label>
                   <textarea
@@ -327,17 +327,17 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    className={`mt-2 w-full rounded-2xl border bg-black/20 px-4 py-3 text-white placeholder:text-slate-500 outline-none transition resize-none ${
+                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 resize-none ${
                       errors.message
-                        ? 'border-red-400 focus:border-red-400'
-                        : 'border-white/10 focus:border-royal-gold'
+                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
                     }`}
                     placeholder="Write your message here..."
                     aria-describedby={errors.message ? 'message-error' : undefined}
                     disabled={isSubmitting}
                   />
                   {errors.message && (
-                    <p id="message-error" className="mt-1 text-sm text-red-400" role="alert">
+                    <p id="message-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
                       {errors.message}
                     </p>
                   )}

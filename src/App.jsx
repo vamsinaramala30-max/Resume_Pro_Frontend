@@ -52,6 +52,8 @@ const NormalDownload = lazy(() => import('./pages/normal/NormalDownload.jsx'))
 const PremiumDashboard = lazy(() => import('./pages/premium/PremiumDashboard.jsx'))
 const PremiumForm = lazy(() => import('./pages/premium/PremiumForm.jsx'))
 
+const MyResumes = lazy(() => import('./pages/MyResumes.jsx'))
+
 const Builder = lazy(() => import('./pages/Builder.jsx'))
 const ChatBotAIAssistant = lazy(() => import('./components/ai/ChatBotAIAssistant.jsx'))
 
@@ -278,6 +280,15 @@ function AppShell() {
                       element={
                         <AuthGuard>
                           <PremiumDashboard />
+                        </AuthGuard>
+                      }
+                    />
+
+                    <Route
+                      path="/resumes"
+                      element={
+                        <AuthGuard>
+                          <MyResumes />
                         </AuthGuard>
                       }
                     />

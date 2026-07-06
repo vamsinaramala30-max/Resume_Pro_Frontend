@@ -86,7 +86,7 @@ export const PDF_EXPORT_OPTIONS = {
   },
   // Smart page breaks
   pagebreak: {
-    mode: ['css', 'legacy'],
+    mode: ['avoid-all', 'css'],
     avoid: ['h1', 'h2', 'h3', 'h4', '.resume-section', '.resume-item'],
   },
 }
@@ -152,9 +152,8 @@ export function getPageStyle() {
   return {
     width: `${PAGE_WIDTH_MM}mm`,
     minHeight: `${PAGE_HEIGHT_MM}mm`,
-    maxHeight: `${PAGE_HEIGHT_MM}mm`,
     backgroundColor: COLORS.background,
-    overflow: 'hidden',
+    overflow: 'visible',
   }
 }
 
