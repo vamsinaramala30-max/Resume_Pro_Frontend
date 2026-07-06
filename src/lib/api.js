@@ -8,13 +8,13 @@ const isDev = import.meta.env.DEV
 
 function getBaseUrl() {
   // 1. Explicit API URL takes priority
-  const explicitUrl = import.meta.env.VITE_API_URL
+  const explicitUrl = import.meta.env.VITE_BACKEND_URL
   if (explicitUrl && explicitUrl !== 'null' && explicitUrl !== 'undefined' && explicitUrl.trim()) {
     return explicitUrl.replace(/\/$/, '') + '/api'
   }
 
-  // 2. VITE_API_BASE for backward compatibility
-  const baseUrl = import.meta.env.VITE_API_BASE
+  // 2. VITE_BACKEND_URL for backward compatibility
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
   if (baseUrl && baseUrl !== 'null' && baseUrl !== 'undefined' && baseUrl.trim()) {
     return baseUrl.replace(/\/$/, '') + '/api'
   }
@@ -264,4 +264,3 @@ export async function apiChangePassword(token, { currentPassword, newPassword })
     credentials: 'include',
   })
 }
-

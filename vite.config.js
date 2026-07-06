@@ -18,21 +18,8 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      external: ['jspdf'],
+    },
   },
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
