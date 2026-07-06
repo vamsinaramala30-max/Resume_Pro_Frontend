@@ -484,7 +484,7 @@ function AIAssistantMessenger() {
 // PRIMARY HOMEPAGE EXPORTED COMPONENT VIEW
 // ==========================================
 
-export default function Home() {
+export default function Home({ user }) {
   const floatingBadgeNodes = useMemo(() => FLOATING_BADGES, [])
 
   const resumeModes = useMemo(() => {
@@ -573,10 +573,10 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 sm:max-w-md">
                   <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }} className="flex-1">
                     <Link
-                      to="/auth"
+                      to={user ? "/select" : "/auth"}
                       className="w-full inline-flex items-center justify-center rounded-xl bg-[#F4C542] px-6 py-3.5 text-xs font-black text-slate-950 shadow-xl shadow-[#F4C542]/10 transition hover:brightness-110 focus:outline-none"
                     >
-                      <span>Get Started &rarr;</span>
+                      <span>{user ? "Go to Dashboard \u2192" : "Get Started \u2192"}</span>
                     </Link>
                   </motion.div>
 
@@ -1296,17 +1296,17 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="pt-6">
-                      <Link
-                        to={tier.highlight ? '/auth' : '/select'}
-                        className={`w-full inline-flex items-center justify-center rounded-xl px-5 py-3.5 text-xs font-black transition-all ${tier.highlight
-                          ? 'bg-[#F4C542] text-slate-950 shadow-xl shadow-[#F4C542]/10 hover:brightness-110'
-                          : 'border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
-                          }`}
-                      >
-                        {tier.highlight ? 'Deploy Professional Operations' : 'Initialize Choice Instance'}
-                      </Link>
-                    </div>
+                     <div className="pt-6">
+                       <Link
+                         to={user ? (tier.highlight ? '/plans' : '/select') : (tier.highlight ? '/auth' : '/select')}
+                         className={`w-full inline-flex items-center justify-center rounded-xl px-5 py-3.5 text-xs font-black transition-all ${tier.highlight
+                           ? 'bg-[#F4C542] text-slate-950 shadow-xl shadow-[#F4C542]/10 hover:brightness-110'
+                           : 'border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+                           }`}
+                       >
+                         {user ? (tier.highlight ? 'Upgrade to Pro' : 'Choose Free Plan') : (tier.highlight ? 'Deploy Professional Operations' : 'Initialize Choice Instance')}
+                       </Link>
+                     </div>
                   </motion.div>
                 )
               })}
@@ -1363,14 +1363,14 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 shrink-0 self-start lg:self-center w-full sm:w-auto">
-                <Link
-                  to="/auth"
-                  className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#F4C542] px-6 py-4 text-xs font-black text-slate-950 shadow-xl shadow-[#F4C542]/10 transition hover:brightness-110 overflow-hidden"
-                >
-                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.25)_40%,transparent_60%)] transition-opacity duration-500 pointer-events-none" />
-                  <span>Initialize Profile Construction</span>
-                  <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-                </Link>
+                 <Link
+                   to={user ? "/select" : "/auth"}
+                   className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-[#F4C542] px-6 py-4 text-xs font-black text-slate-950 shadow-xl shadow-[#F4C542]/10 transition hover:brightness-110 overflow-hidden"
+                 >
+                   <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.25)_40%,transparent_60%)] transition-opacity duration-500 pointer-events-none" />
+                   <span>{user ? "Go to Dashboard" : "Initialize Profile Construction"}</span>
+                   <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+                 </Link>
 
                 <Link
                   to="/select"

@@ -40,7 +40,7 @@
 
     /* Layout Tokens */
     --nav-height: 80px;
-    --page-max-width: 90%;
+    --page-max-width: 95%;
     --page-padding-inline: 24px;
 
     --section-spacing-desktop: 64px;
@@ -75,7 +75,7 @@
     --ring: #c5a059;
 
     --nav-height: 80px;
-    --page-max-width: 90%;
+    --page-max-width: 95%;
     --page-padding-inline: 24px;
 
     --section-spacing-desktop: 64px;
@@ -369,5 +369,31 @@ body.light::before {
   border: 2px solid transparent;
   background-clip: padding-box;
 }
+
+/* Layout Refactor: Ensure every page layout consistently utilizes ~95% viewport width */
+.layout-container {
+  max-width: 95% !important;
+  width: 95% !important;
+}
+
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl,
+.max-w-3xl {
+  max-width: 95% !important;
+  width: 95% !important;
+}
+
+/* Remove unnecessary whitespace for a spacious, modern, and premium feel */
+.py-16, .py-20, .py-24, .py-32 {
+  padding-top: 3.5rem !important;
+  padding-bottom: 3.5rem !important;
+}
+
+.pt-28, .pt-32 {
+  padding-top: 6.5rem !important;
+}
+
 
 

@@ -195,7 +195,7 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
         await onVerified(email, otpString)
       } else {
         // Default: call API
-        const API_BASE = (await import('../lib/api.js').then(m => m.getApiBase?.() || 'http://localhost:5000/api'))
+        const API_BASE = (await import('../lib/api.js').then(m => m.getApiBase?.() || 'http://localhost:5001/api'))
         const res = await fetch(`${API_BASE}/auth/email-login-verify`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -235,7 +235,7 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
         await onResend(email)
       } else {
         // Default: call API
-        const API_BASE = (await import('../lib/api.js').then(m => m.getApiBase?.() || 'http://localhost:5000/api'))
+        const API_BASE = (await import('../lib/api.js').then(m => m.getApiBase?.() || 'http://localhost:5001/api'))
         const res = await fetch(`${API_BASE}/auth/email-login-request`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -272,8 +272,8 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
         <GlassCard className="w-full max-w-md mx-auto">
           {/* Header */}
           <div className="mb-6 space-y-3 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-royal-gold/15">
-              <Sparkles className="h-7 w-7 text-royal-gold" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-royal-gold/15 overflow-hidden p-2">
+              <img src="/resumePro.png" alt="Resume PRO Logo" className="h-full w-full object-contain" />
             </div>
             <div className="text-2xl font-black text-white">Verify your email</div>
             <p className="text-sm text-slate-300">

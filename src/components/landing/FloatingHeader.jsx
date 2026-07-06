@@ -80,14 +80,7 @@ function FloatingHeader() {
 
             {/* Right */}
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={cycleTheme}
-                className="inline-flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300 border border-white/10 p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70"
-                aria-label="Toggle theme"
-              >
-                <ThemeIcon isDark={isDark} />
-              </button>
+
 
               <button
                 type="button"

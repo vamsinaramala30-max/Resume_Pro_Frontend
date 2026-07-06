@@ -101,7 +101,6 @@ function UserMenuDropdown({ user, isPremium, onLogout, onClose }) {
   const menuItems = [
     { to: '/profile', label: 'Profile', icon: User },
     { to: '/select', label: 'My Resumes', icon: FileSignature },
-    { to: '/settings', label: 'Settings', icon: Settings },
   ]
 
   if (isPremium) {
@@ -160,9 +159,8 @@ function UserAvatar({ user, onClick, active }) {
   return (
     <button
       onClick={onClick}
-      className={`group relative flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-slate-950 transition-all hover:scale-105 cursor-pointer ring-offset-2 ring-offset-slate-950 focus:outline-none ${
-        active ? 'ring-2 ring-amber-400' : 'hover:ring-2 hover:ring-amber-400/50'
-      }`}
+      className={`group relative flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-slate-950 transition-all hover:scale-105 cursor-pointer ring-offset-2 ring-offset-slate-950 focus:outline-none ${active ? 'ring-2 ring-amber-400' : 'hover:ring-2 hover:ring-amber-400/50'
+        }`}
       aria-label="Toggle user panel"
     >
       <span className="relative z-10">{initial}</span>
@@ -244,23 +242,28 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
     localStorage.setItem('royalNotifications', JSON.stringify(updated))
   }
 
-  const navLinks = [
-    { to: '/', label: 'Home', icon: Home },
-    { to: '/select', label: 'Builder', icon: FileSignature },
-    { to: '/templates', label: 'Templates', icon: Layout },
-    { to: '/plans', label: 'Plans', icon: Zap },
-  ]
+  const navLinks = user
+    ? [
+      { to: '/select', label: 'My Resumes', icon: FileSignature },
+      { to: '/resume-builder', label: 'AI Builder', icon: Sparkles },
+      { to: '/templates', label: 'Templates', icon: Layout },
+    ]
+    : [
+      { to: '/', label: 'Home', icon: Home },
+      { to: '/templates', label: 'Templates', icon: Layout },
+      { to: '/plans', label: 'Plans', icon: Zap },
+    ]
 
   const hasUnread = notifications.some(n => !n.read)
 
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[1400px] z-50 rounded-2xl border border-white/10 bg-slate-950/75 backdrop-blur-xl shadow-2xl transition-all duration-300">
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-50 rounded-2xl border border-white/10 bg-slate-950/75 backdrop-blur-xl shadow-2xl transition-all duration-300">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2.5 group focus:outline-none">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 transition-all group-hover:bg-amber-500/20 group-hover:scale-105 ring-1 ring-amber-500/20">
-            <Sparkles className="h-4 w-4 fill-amber-400/20" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl text-amber-400 transition-all group-hover:bg-amber-500/20 group-hover:scale-105 ring-1 ring-amber-500/20 overflow-hidden p-1">
+            <img src="/resumePro.png" alt="Resume PRO Icon" className="h-full w-full object-contain" />
           </div>
-          <span className="text-base font-bold tracking-tight text-white">
+          <span className="text-lg font-bold tracking-tight text-white">
             Resume <span className="bg-gradient-to-r from-amber-400 to-yellow-200 bg-clip-text text-transparent">PRO</span>
           </span>
         </Link>
@@ -272,14 +275,13 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`group relative rounded-xl px-4 py-2 text-sm font-medium transition-all focus:outline-none ${
-                  isActive ? 'text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`group relative rounded-xl px-4 py-2 text-sm font-medium transition-all focus:outline-none flex items-center gap-2 ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
+                <link.icon className={`h-4 w-4 transition-colors ${isActive ? 'text-amber-400' : 'text-slate-400 group-hover:text-white'}`} />
                 <span className="relative z-10">{link.label}</span>
-                <span className={`absolute bottom-0 left-1/2 h-[2px] -translate-x-1/2 bg-amber-400 transition-all duration-300 rounded-full ${
-                  isActive ? 'w-1/2' : 'w-0 group-hover:w-1/2'
-                }`} />
+                <span className={`absolute bottom-0 left-1/2 h-[2px] -translate-x-1/2 bg-amber-400 transition-all duration-300 rounded-full ${isActive ? 'w-1/2' : 'w-0 group-hover:w-1/2'
+                  }`} />
                 {isActive && (
                   <motion.span layoutId="desktop-nav-pill" className="absolute inset-0 rounded-xl bg-white/5" />
                 )}
@@ -292,28 +294,29 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
           {isPremium && (
             <Link
               to="/premium/dashboard"
-              className="hidden items-center gap-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-3 py-1 text-xs font-bold text-slate-950 shadow-md shadow-amber-500/10 hover:brightness-110 transition-all sm:flex"
+              className="hidden items-center gap-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-3.5 py-1.5 text-xs font-bold text-slate-950 shadow-md shadow-amber-500/10 hover:brightness-110 transition-all sm:flex"
             >
               <Crown className="h-3 w-3 fill-slate-950" />
               PRO
             </Link>
           )}
-          {toggleTheme && (
-            <button
-              onClick={toggleTheme}
-              className="rounded-xl p-2.5 text-slate-400 hover:bg-white/5 hover:text-white transition-all focus:outline-none"
-              aria-label="Toggle theme"
+
+          {!isPremium && user && (
+            <Link
+              to="/plans"
+              className="hidden items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 text-xs font-bold text-amber-400 transition-all sm:flex"
             >
-              {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </button>
+              <Zap className="h-3 w-3 fill-amber-400/20 animate-pulse text-amber-400" />
+              Upgrade to PRO
+            </Link>
           )}
+
 
           <div className="relative" ref={notifPanelRef}>
             <button
               onClick={() => { setNotifPanelOpen(!notifPanelOpen); setUserMenuOpen(false); }}
-              className={`relative rounded-xl p-2.5 text-slate-400 hover:bg-white/5 hover:text-white transition-all focus:outline-none ${
-                notifPanelOpen ? 'bg-white/5 text-white' : ''
-              }`}
+              className={`relative rounded-xl p-2.5 text-slate-400 hover:bg-white/5 hover:text-white transition-all focus:outline-none ${notifPanelOpen ? 'bg-white/5 text-white' : ''
+                }`}
               aria-label="View notifications"
               aria-expanded={notifPanelOpen}
               aria-haspopup="true"
@@ -395,11 +398,10 @@ export default function GlobalHeader({ user, onLogout, theme, toggleTheme }) {
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
-                      isActive
-                        ? 'bg-white/10 text-white font-semibold'
-                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
-                    }`}
+                    className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${isActive
+                      ? 'bg-white/10 text-white font-semibold'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                      }`}
                   >
                     <link.icon className={`h-4 w-4 ${isActive ? 'text-amber-400' : 'text-slate-400'}`} />
                     <span>{link.label}</span>

@@ -27,18 +27,34 @@ export default function AuthGuard({ children }) {
           return;
         }
 
+        // Optimistically set verified if cached user details exist
+        if (auth.user) {
+          if (mounted) setVerified(true);
+        }
+
         const response = await apiMe(auth.token);
         if (mounted) {
-          if (response?.ok && response?.user) {
+          if (response && response.user) {
             setVerified(true);
-          } else {
-            const { removeKey } = await import('../lib/storage');
-            removeKey(STORAGE_KEYS.auth);
           }
         }
       } catch (err) {
         console.error('Auth check failed:', err?.message || err);
-        if (mounted) setError(err?.message || 'Authentication failed');
+        const isAuthError = err.message && (
+          err.message.toLowerCase().includes('unauthorized') ||
+          err.message.toLowerCase().includes('expired') ||
+          err.message.toLowerCase().includes('invalid') ||
+          err.message.toLowerCase().includes('not authenticated') ||
+          err.message.toLowerCase().includes('jwt')
+        );
+        if (isAuthError) {
+          if (mounted) {
+            setVerified(false);
+            setError(err.message);
+          }
+          const { removeKey } = await import('../lib/storage');
+          removeKey(STORAGE_KEYS.auth);
+        }
       } finally {
         if (mounted) setChecking(false);
       }
@@ -48,6 +64,7 @@ export default function AuthGuard({ children }) {
 
     return () => {
       mounted = false;
+      verifyStarted.current = false;
     };
   }, []);
 

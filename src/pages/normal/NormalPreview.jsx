@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Check, User } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
@@ -183,6 +184,7 @@ function PreviewResume({ data, templateId }) {
 }
 
 export default function NormalPreview() {
+  const navigate = useNavigate()
   const [templateId, setTemplateId] = useState('modern')
   const [data, setData] = useState(() => {
     const saved = readJSON(DRAFT_KEY, null)

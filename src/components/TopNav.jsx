@@ -58,15 +58,7 @@ export default function TopNav({ user, onLogout, theme, toggleTheme }) {
                 ))}
               </div>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="rounded-full"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Moon className="h-5 w-5 text-foreground/80" /> : <Sun className="h-5 w-5 text-foreground/80" />}
-              </Button>
+
 
               <div className="relative" ref={profileRef}>
                 <Button

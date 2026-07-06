@@ -10,11 +10,14 @@ const ensureMetaTag = ({ name, property, content }) => {
   el.setAttribute('content', content)
 }
 
-const ensureLinkTag = ({ rel, href }) => {
-  let el = document.head.querySelector(`link[rel="${rel}"]`)
+const ensureLinkTag = ({ rel, href, sizes }) => {
+  let selector = `link[rel="${rel}"]`
+  if (sizes) selector += `[sizes="${sizes}"]`
+  let el = document.head.querySelector(selector)
   if (!el) {
     el = document.createElement('link')
     el.setAttribute('rel', rel)
+    if (sizes) el.setAttribute('sizes', sizes)
     document.head.appendChild(el)
   }
   el.setAttribute('href', href)
@@ -39,11 +42,19 @@ export function useSeo({
   canonicalUrl,
   openGraph,
   twitter,
+  favicon,
 }) {
   if (typeof document === 'undefined') return
 
   const t = title || 'Resume PRO'
   document.title = t
+
+  // Update favicon with premium branding
+  const defaultFavicon = '/resumePro.png'
+  const activeFavicon = favicon || defaultFavicon
+  ensureLinkTag({ rel: 'icon', href: activeFavicon, sizes: '32x32' })
+  ensureLinkTag({ rel: 'icon', href: activeFavicon, sizes: '16x16' })
+  ensureLinkTag({ rel: 'apple-touch-icon', href: activeFavicon, sizes: '180x180' })
 
   if (description) ensureMetaTag({ name: 'description', content: description })
 

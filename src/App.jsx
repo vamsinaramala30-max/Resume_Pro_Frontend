@@ -11,7 +11,7 @@ import NotFound from './pages/NotFound.jsx'
 
 import GlobalHeader from './components/GlobalHeader.jsx'
 
-import { readJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
+import { readJSON, writeJSON, removeKey, STORAGE_KEYS } from './lib/storage.js'
 import { apiMe, apiLogout } from './lib/api.js'
 
 import './index.css'
@@ -102,20 +102,34 @@ function AppShell() {
         return
       }
 
+      // Optimistically log the user in using cached details
+      if (auth.user) {
+        setUser(auth)
+      }
+
       try {
         const response = await apiMe(auth.token)
-        if (response.ok && response.user) {
-          setUser({
-            token: auth.token,
+        if (response && response.user) {
+          const updatedAuth = {
+            ...auth,
             user: response.user,
-            rememberMe: auth.rememberMe,
-            createdAt: auth.createdAt,
-          })
-        } else {
-          removeKey(STORAGE_KEYS.auth)
+          }
+          setUser(updatedAuth)
+          writeJSON(STORAGE_KEYS.auth, updatedAuth)
         }
       } catch (err) {
-        removeKey(STORAGE_KEYS.auth)
+        console.error('Verify auth connection or validation error:', err)
+        const isAuthError = err.message && (
+          err.message.toLowerCase().includes('unauthorized') ||
+          err.message.toLowerCase().includes('expired') ||
+          err.message.toLowerCase().includes('invalid') ||
+          err.message.toLowerCase().includes('not authenticated') ||
+          err.message.toLowerCase().includes('jwt')
+        )
+        if (isAuthError) {
+          removeKey(STORAGE_KEYS.auth)
+          setUser(null)
+        }
       } finally {
         setAuthLoading(false)
       }
@@ -194,7 +208,7 @@ function AppShell() {
               >
                 <ErrorBoundary>
                   <Routes location={location}>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home user={user?.user} />} />
 
                     <Route
                       path="/verify"
