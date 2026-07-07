@@ -109,6 +109,47 @@ export default function NormalForm() {
             subtitle="Identity, contact, and links"
           >
             <div className="grid md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <div className="flex items-center gap-4">
+                  <div className="w-20 h-20 rounded-2xl bg-surface-elevated border border-border overflow-hidden flex-shrink-0">
+                    {data.profileImageDataUrl ? (
+                      <img
+                        src={data.profileImageDataUrl}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-primary">
+                        <User className="w-6 h-6" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1">
+                    <label
+                      className="block w-full px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:border-primary transition text-sm font-bold text-center cursor-pointer"
+                    >
+                      Upload Profile Image
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (!f) return;
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            setData((p) => ({ ...p, profileImageDataUrl: String(reader.result || '') }));
+                          };
+                          reader.readAsDataURL(f);
+                        }}
+                      />
+                    </label>
+                    <div className="text-xs text-foreground/50 mt-2">Shown in preview & included in exported PDFs.</div>
+                  </div>
+                </div>
+              </div>
+
               <FloatingInput
                 label="Full Name"
                 value={data.fullName}

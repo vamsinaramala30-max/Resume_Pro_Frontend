@@ -51,6 +51,9 @@ const NormalDownload = lazy(() => import('./pages/normal/NormalDownload.jsx'))
 
 const PremiumDashboard = lazy(() => import('./pages/premium/PremiumDashboard.jsx'))
 const PremiumForm = lazy(() => import('./pages/premium/PremiumForm.jsx'))
+const PremiumPreview = lazy(() => import('./pages/premium/PremiumPreview.jsx'))
+const PremiumDownload = lazy(() => import('./pages/premium/PremiumDownload.jsx'))
+
 
 const MyResumes = lazy(() => import('./pages/MyResumes.jsx'))
 
@@ -280,6 +283,24 @@ function AppShell() {
                       element={
                         <AuthGuard>
                           <PremiumDashboard />
+                        </AuthGuard>
+                      }
+                    />
+
+                    <Route
+                      path="/premium/preview"
+                      element={
+                        <AuthGuard>
+                          <PremiumPreview />
+                        </AuthGuard>
+                      }
+                    />
+
+                    <Route
+                      path="/premium/download"
+                      element={
+                        <AuthGuard>
+                          <PremiumDownload />
                         </AuthGuard>
                       }
                     />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, memo } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Sparkles,
@@ -9,26 +9,26 @@ import {
   RefreshCw,
   Loader2,
   Bot,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react'
 
 import { getApiBase } from '../../lib/api.js'
 
-// Send message to AI with better error handling
+const STORAGE_KEY = 'resumepro_ai_chat_v1'
+
 async function sendToAI(messages, resumeContext = {}) {
   const API_BASE = await getApiBase()
 
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 30000) // 30s timeout
+  const timeoutId = setTimeout(() => controller.abort(), 30000)
 
   try {
-    const API_BASE = await getApiBase()
     const res = await fetch(API_BASE + '/ai/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages, resumeContext }),
       credentials: 'include',
-      signal: controller.signal
+      signal: controller.signal,
     })
 
     clearTimeout(timeoutId)
@@ -43,25 +43,21 @@ async function sendToAI(messages, resumeContext = {}) {
     return data.message || 'No response received'
   } catch (err) {
     clearTimeout(timeoutId)
-    if (err.name === 'AbortError') {
-      throw new Error('Request timed out. Please try again.')
-    }
+    if (err?.name === 'AbortError') throw new Error('Request timed out. Please try again.')
     throw err
   }
 }
 
-// Quick action prompts
 const QUICK_ACTIONS = [
   { text: 'Write a professional career objective for a software developer', label: 'Objective' },
   { text: 'How can I improve my ATS score? Give specific keywords.', label: 'ATS Score' },
   { text: 'Write a professional summary for my resume', label: 'Summary' },
-  { text: 'What skills should I include for a developer position?', label: 'Skills' }
+  { text: 'What skills should I include for a developer position?', label: 'Skills' },
 ]
 
-// Animation variants
 const buttonVariants = {
   hover: { scale: 1.1 },
-  tap: { scale: 0.95 }
+  tap: { scale: 0.95 },
 }
 
 const pulseVariants = {
@@ -69,32 +65,64 @@ const pulseVariants = {
     boxShadow: [
       '0 0 0 0 rgba(251, 191, 36, 0.4)',
       '0 0 0 15px rgba(251, 191, 36, 0)',
-      '0 0 0 30px rgba(251, 191, 36, 0)'
+      '0 0 0 30px rgba(251, 191, 36, 0)',
     ],
     transition: {
       duration: 2,
       repeat: Infinity,
-      ease: 'easeOut'
-    }
-  }
+      ease: 'easeOut',
+    },
+  },
+}
+
+const DEFAULT_WELCOME = {
+  id: 'welcome',
+  role: 'assistant',
+  text: "Hi! I'm ResumeCopilot, your AI resume assistant.\n\nI can help you with:\n• Resume writing & optimization\n• ATS score improvements\n• Career objectives & summaries\n• Skills & project descriptions\n• Cover letters & interview prep\n\n**Try a quick action below or ask your question!**",
+  timestamp: Date.now(),
 }
 
 const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
-  const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState(() => [
-    {
-      id: 'welcome',
-      role: 'assistant',
-      text: 'Hi! I\'m ResumeCopilot, your AI resume assistant.\n\nI can help you with:\n• Resume writing & optimization\n• ATS score improvements\n• Career objectives & summaries\n• Skills & project descriptions\n• Cover letters & interview prep\n\n**Try a quick action below or ask your question!**',
-      timestamp: Date.now()
-    }
-  ])
-  const [input, setInput] = useState('')
-  const [isThinking, setIsThinking] = useState(false)
-  const [error, setError] = useState(null)
   const abortControllerRef = useRef(null)
   const listRef = useRef(null)
   const inputRef = useRef(null)
+
+  const [open, setOpen] = useState(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (!raw) return false
+      const parsed = JSON.parse(raw)
+      return Boolean(parsed?.open)
+    } catch {
+      return false
+    }
+  })
+
+  const [messages, setMessages] = useState(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed?.messages) && parsed.messages.length > 0) return parsed.messages
+      }
+    } catch {
+      // ignore
+    }
+    return [DEFAULT_WELCOME]
+  })
+
+  const [input, setInput] = useState('')
+  const [isThinking, setIsThinking] = useState(false)
+  const [error, setError] = useState(null)
+
+  // Persist conversation
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ open, messages }))
+    } catch {
+      // ignore
+    }
+  }, [open, messages])
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -104,17 +132,13 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
 
   // Focus input when opened
   useEffect(() => {
-    if (open) {
-      inputRef.current?.focus()
-    }
+    if (open) inputRef.current?.focus()
   }, [open])
 
   // Escape key handler
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && open) {
-        setOpen(false)
-      }
+      if (e.key === 'Escape' && open) setOpen(false)
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
@@ -122,52 +146,47 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
 
   // Cleanup on unmount
   useEffect(() => {
-    return () => {
-      abortControllerRef.current?.abort()
-    }
+    return () => abortControllerRef.current?.abort()
   }, [])
 
   const send = async (text) => {
     const trimmed = String(text || '').trim()
     if (!trimmed || isThinking) return
 
-    // Cancel any pending request
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
+    if (abortControllerRef.current) abortControllerRef.current.abort()
     abortControllerRef.current = new AbortController()
 
     const userMsg = { id: 'u_' + Date.now(), role: 'user', text: trimmed, timestamp: Date.now() }
-    setMessages(m => [...m, userMsg])
+    setMessages((m) => [...m, userMsg])
     setInput('')
     setIsThinking(true)
     setError(null)
 
     try {
       const chatMessages = messages
-        .filter(m => m.id !== 'welcome')
-        .map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text }))
+        .filter((m) => m.id !== 'welcome')
+        .map((m) => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text }))
       chatMessages.push({ role: 'user', content: trimmed })
 
       const reply = await sendToAI(chatMessages)
-      setMessages(m => [...m, { id: 'a_' + Date.now(), role: 'assistant', text: reply, timestamp: Date.now() }])
+      setMessages((m) => [...m, { id: 'a_' + Date.now(), role: 'assistant', text: reply, timestamp: Date.now() }])
     } catch (err) {
-      // Ignore aborted requests
-      if (err.name === 'AbortError') return
+      if (err?.name === 'AbortError') return
 
       console.error('AI Error:', err)
-      const userMessage = err.message?.includes('unavailable')
+      const userMessage = err?.message?.includes('unavailable')
         ? 'AI service is temporarily unavailable. Please try again later.'
-        : err.message || 'Failed to connect to AI service'
+        : err?.message || 'Failed to connect to AI service'
+
       setError(userMessage)
-      setMessages(m => [
+      setMessages((m) => [
         ...m,
         {
           id: 'a_' + Date.now() + '_error',
           role: 'assistant',
           text: 'Sorry, I encountered an error. Please try again.',
-          timestamp: Date.now()
-        }
+          timestamp: Date.now(),
+        },
       ])
     } finally {
       setIsThinking(false)
@@ -190,21 +209,18 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
         id: 'welcome',
         role: 'assistant',
         text: 'Conversation cleared. How can I help you with your resume?',
-        timestamp: Date.now()
-      }
+        timestamp: Date.now(),
+      },
     ])
   }
 
   const retryLastMessage = () => {
-    const lastUserMessage = messages.filter(m => m.role === 'user').pop()
-    if (lastUserMessage) {
-      send(lastUserMessage.text)
-    }
+    const lastUserMessage = messages.filter((m) => m.role === 'user').pop()
+    if (lastUserMessage) send(lastUserMessage.text)
   }
 
   return (
     <div className="fixed bottom-6 right-6 z-[999]">
-      {/* Floating Chat Window */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -215,7 +231,6 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
             className="absolute bottom-16 right-0 w-[380px] max-w-[92vw] rounded-3xl border border-white/15 bg-slate-950/95 backdrop-blur-2xl shadow-2xl overflow-hidden flex flex-col"
             style={{ height: '550px' }}
           >
-            {/* Header */}
             <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10 flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
@@ -244,9 +259,8 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
               </div>
             </div>
 
-            {/* Messages */}
             <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 custom-scrollbar">
-              {messages.map(m => (
+              {messages.map((m) => (
                 <div key={m.id} className={m.role === 'user' ? 'flex justify-end' : 'flex justify-start'}>
                   {!m.role.startsWith('a_') && m.role !== 'user' && (
                     <button
@@ -269,6 +283,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                   </div>
                 </div>
               ))}
+
               {isThinking && (
                 <div className="flex justify-start">
                   <div className="max-w-[85%] rounded-2xl px-4 py-2 bg-white/5 border border-white/10 text-sm text-slate-400 flex items-center gap-2">
@@ -277,6 +292,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                   </div>
                 </div>
               )}
+
               {error && (
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                   <AlertCircle className="h-4 w-4" />
@@ -288,7 +304,6 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
               )}
             </div>
 
-            {/* Quick Actions - Show only at start */}
             {messages.length <= 1 && !isThinking && (
               <div className="px-4 pb-2 flex-shrink-0">
                 <div className="flex flex-wrap gap-2">
@@ -306,7 +321,6 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
               </div>
             )}
 
-            {/* Input */}
             <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-white/10 flex-shrink-0">
               <div className="flex items-end gap-2">
                 <textarea
@@ -321,13 +335,9 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                 <button
                   type="submit"
                   disabled={isThinking || !input.trim()}
- className="h-10 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 font-semibold text-slate-900 transition hover:brightness-110 disabled:opacity-50 flex items-center justify-center min-w-[40px]"
+                  className="h-10 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 font-semibold text-slate-900 transition hover:brightness-110 disabled:opacity-50 flex items-center justify-center min-w-[40px]"
                 >
-                  {isThinking ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
+                  {isThinking ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </button>
               </div>
             </form>
@@ -335,7 +345,6 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
         )}
       </AnimatePresence>
 
-      {/* Floating Button */}
       <motion.button
         type="button"
         onClick={() => setOpen(!open)}
@@ -344,19 +353,12 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
         aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
         className="relative w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-slate-900 shadow-xl shadow-amber-500/25 flex items-center justify-center"
       >
-        <motion.div
-          variants={pulseVariants}
-          animate="pulse"
-          className="absolute inset-0 rounded-full"
-        />
-        {open ? (
-          <X className="w-6 h-6" />
-        ) : (
-          <Bot className="w-6 h-6" />
-        )}
+        <motion.div variants={pulseVariants} animate="pulse" className="absolute inset-0 rounded-full" />
+        {open ? <X className="w-6 h-6" /> : <Bot className="w-6 h-6" />}
       </motion.button>
     </div>
   )
 })
 
 export default ChatBotAIAssistant
+
