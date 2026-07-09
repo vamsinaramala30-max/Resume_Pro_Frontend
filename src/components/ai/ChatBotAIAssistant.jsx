@@ -228,31 +228,31 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-16 right-0 w-[380px] max-w-[92vw] rounded-3xl border border-white/15 bg-slate-950/95 backdrop-blur-2xl shadow-2xl overflow-hidden flex flex-col"
+            className="absolute bottom-16 right-0 w-[380px] max-w-[92vw] rounded-3xl border border-border bg-card shadow-card-hover overflow-hidden flex flex-col"
             style={{ height: '550px' }}
           >
-            <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10 flex-shrink-0">
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-slate-900" />
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-white">ResumeCopilot</div>
-                  <div className="text-xs text-slate-400">AI Resume Assistant</div>
+                  <div className="text-sm font-bold text-foreground">ResumeCopilot</div>
+                  <div className="text-xs text-muted-foreground">AI Resume Assistant</div>
                 </div>
               </div>
               <div className="flex gap-1">
                 <button
                   onClick={clearConversation}
                   title="Clear conversation"
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition"
+                  className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => setOpen(false)}
                   aria-label="Close chat"
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition"
+                  className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -275,7 +275,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                     className={
                       m.role === 'user'
                         ? 'max-w-[85%] rounded-2xl px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 text-slate-900 font-semibold text-sm'
-                        : 'max-w-[85%] rounded-2xl px-4 py-2 bg-white/5 border border-white/10 text-slate-100 text-sm'
+                        : 'max-w-[85%] rounded-2xl px-4 py-2 bg-surface-elevated border border-border text-foreground text-sm'
                     }
                     style={{ whiteSpace: 'pre-wrap' }}
                   >
@@ -286,7 +286,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
 
               {isThinking && (
                 <div className="flex justify-start">
-                  <div className="max-w-[85%] rounded-2xl px-4 py-2 bg-white/5 border border-white/10 text-sm text-slate-400 flex items-center gap-2">
+                  <div className="max-w-[85%] rounded-2xl px-4 py-2 bg-surface-elevated border border-border text-sm text-muted-foreground flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Thinking...</span>
                   </div>
@@ -312,7 +312,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                       key={i}
                       type="button"
                       onClick={() => send(p.text)}
-                      className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-amber-400/30 hover:bg-white/10"
+                      className="rounded-xl border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground transition hover:border-primary/30 hover:bg-surface-hover"
                     >
                       {p.label}
                     </button>
@@ -321,7 +321,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-white/10 flex-shrink-0">
+            <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-border flex-shrink-0">
               <div className="flex items-end gap-2">
                 <textarea
                   ref={inputRef}
@@ -330,7 +330,7 @@ const ChatBotAIAssistant = memo(function ChatBotAIAssistant() {
                   rows={1}
                   placeholder="Ask me anything about your resume..."
                   disabled={isThinking}
-                  className="flex-1 resize-none rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50"
+                  className="flex-1 resize-none rounded-2xl border border-border bg-surface-elevated px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50"
                 />
                 <button
                   type="submit"

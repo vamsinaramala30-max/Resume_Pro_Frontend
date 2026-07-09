@@ -1,4 +1,4 @@
-﻿import { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import { clsx } from 'clsx'
 import { motion } from 'framer-motion'
@@ -7,52 +7,52 @@ import { Loader2 } from 'lucide-react'
 // Button variant configurations
 const VARIANTS = {
   primary: {
-    base: 'bg-gradient-to-r from-royal-gold via-royal-gold-2 to-royal-gold text-royal-navy font-semibold shadow-lg shadow-royal-gold/25 hover:shadow-2xl hover:shadow-royal-gold/40 hover:brightness-110',
-    focus: 'focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    disabled: 'disabled:bg-slate-700/60 disabled:text-slate-200 disabled:cursor-not-allowed disabled:shadow-none',
-    icon: 'text-royal-navy',
+    base: 'bg-gradient-to-r from-primary to-amber-500 text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-2xl hover:shadow-primary/40 hover:brightness-110',
+    focus: 'focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    disabled: 'disabled:bg-surface-elevated disabled:text-muted disabled:cursor-not-allowed disabled:shadow-none',
+    icon: 'text-primary-foreground',
   },
   secondary: {
-    base: 'bg-white/5 border border-white/10 text-white backdrop-blur-sm hover:bg-white/10 hover:border-white/20',
-    focus: 'focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    disabled: 'disabled:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed',
-    icon: 'text-white',
+    base: 'bg-surface-elevated border border-border text-foreground hover:bg-surface-hover hover:border-border-muted transition-all duration-200',
+    focus: 'focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    disabled: 'disabled:bg-surface-elevated disabled:opacity-50 disabled:cursor-not-allowed',
+    icon: 'text-foreground',
   },
   outline: {
-    base: 'border-2 border-white/20 text-white bg-transparent hover:bg-white/5 hover:border-white/40',
-    focus: 'focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
+    base: 'border border-border text-foreground bg-transparent hover:bg-surface-hover hover:border-border-muted',
+    focus: 'focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     disabled: 'disabled:opacity-50 disabled:cursor-not-allowed',
-    icon: 'text-white',
+    icon: 'text-foreground',
   },
   ghost: {
-    base: 'bg-transparent text-slate-200 hover:bg-white/5 hover:text-white',
-    focus: 'focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
+    base: 'bg-transparent text-muted hover:bg-surface-hover hover:text-foreground',
+    focus: 'focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     disabled: 'disabled:opacity-50 disabled:cursor-not-allowed',
-    icon: 'text-slate-200',
+    icon: 'text-muted',
   },
   danger: {
     base: 'bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40 hover:brightness-110',
-    focus: 'focus-visible:ring-2 focus-visible:ring-red-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    disabled: 'disabled:bg-slate-700/60 disabled:text-slate-200 disabled:cursor-not-allowed disabled:shadow-none',
+    focus: 'focus-visible:ring-2 focus-visible:ring-red-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    disabled: 'disabled:bg-surface-elevated disabled:text-muted disabled:cursor-not-allowed disabled:shadow-none',
     icon: 'text-white',
   },
   success: {
     base: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 hover:brightness-110',
-    focus: 'focus-visible:ring-2 focus-visible:ring-emerald-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    disabled: 'disabled:bg-slate-700/60 disabled:text-slate-200 disabled:cursor-not-allowed disabled:shadow-none',
+    focus: 'focus-visible:ring-2 focus-visible:ring-emerald-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    disabled: 'disabled:bg-surface-elevated disabled:text-muted disabled:cursor-not-allowed disabled:shadow-none',
     icon: 'text-white',
   },
   premium: {
-    base: 'bg-gradient-to-r from-royal-gold via-yellow-300 to-royal-gold text-royal-navy font-bold shadow-xl shadow-royal-gold/30 animate-gradient hover:shadow-2xl hover:shadow-royal-gold/50',
-    focus: 'focus-visible:ring-2 focus-visible:ring-yellow-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    disabled: 'disabled:bg-slate-700/60 disabled:text-slate-200 disabled:cursor-not-allowed disabled:shadow-none disabled:animate-none',
-    icon: 'text-royal-navy',
+    base: 'bg-gradient-to-r from-primary via-yellow-300 to-primary text-primary-foreground font-bold shadow-xl shadow-primary/30 animate-gradient hover:shadow-2xl hover:shadow-primary/50',
+    focus: 'focus-visible:ring-2 focus-visible:ring-yellow-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    disabled: 'disabled:bg-surface-elevated disabled:text-muted disabled:cursor-not-allowed disabled:shadow-none disabled:animate-none',
+    icon: 'text-primary-foreground',
   },
   icon: {
-    base: 'bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/30 hover:text-white backdrop-blur-sm',
-    focus: 'focus-visible:ring-2 focus-visible:ring-royal-gold/70',
+    base: 'bg-surface-elevated border border-border text-muted hover:bg-surface-hover hover:border-border-muted hover:text-foreground transition-all duration-200',
+    focus: 'focus-visible:ring-2 focus-visible:ring-primary/70',
     disabled: 'disabled:opacity-50 disabled:cursor-not-allowed',
-    icon: 'text-slate-200',
+    icon: 'text-muted',
   },
 }
 

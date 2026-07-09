@@ -80,19 +80,19 @@ export default function MyResumes() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
           <div>
-            <div className="text-royal-gold font-black text-sm uppercase tracking-wider flex items-center gap-2 mb-2">
+            <div className="text-primary font-black text-sm uppercase tracking-wider flex items-center gap-2 mb-2">
               <FileText className="h-4 w-4" />
               Document Vault
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tight">My Resumes</h1>
-            <p className="text-slate-400 text-sm mt-1.5 leading-relaxed">
+            <h1 className="text-4xl font-black text-foreground tracking-tight">My Resumes</h1>
+            <p className="text-muted text-sm mt-1.5 leading-relaxed">
               Access, update, and manage your cloud-synchronized resumes.
             </p>
           </div>
 
           <button
             onClick={() => navigate('/select')}
-            className="flex items-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 px-5 py-3 font-bold text-sm transition-all shadow-lg shadow-amber-500/10"
+            className="flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground px-5 py-3 font-bold text-sm transition-all shadow-lg shadow-primary/10"
           >
             <Plus className="h-4 w-4" />
             Create New Resume
@@ -102,7 +102,7 @@ export default function MyResumes() {
         {loading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="rounded-3xl border border-white/5 bg-slate-900/30 p-5 space-y-4 animate-pulse h-48" />
+              <div key={i} className="rounded-3xl border border-border bg-card/30 p-5 space-y-4 animate-pulse h-48" />
             ))}
           </div>
         ) : error ? (
@@ -110,13 +110,13 @@ export default function MyResumes() {
             {error}
           </div>
         ) : resumes.length === 0 ? (
-          <Card className="bg-slate-900/40 border-white/10 p-10 text-center rounded-3xl backdrop-blur-xl">
-            <FileText className="h-16 w-16 text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">No resumes found</h3>
-            <p className="text-slate-400 text-sm max-w-md mx-auto mb-6">
+          <Card className="bg-card border-border p-10 text-center rounded-3xl backdrop-blur-xl">
+            <FileText className="h-16 w-16 text-muted mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-foreground mb-2">No resumes found</h3>
+            <p className="text-muted text-sm max-w-md mx-auto mb-6">
               You haven't saved any resumes to the cloud yet. Choose a template to create your first resume.
             </p>
-            <Button onClick={() => navigate('/select')} variant="default">
+            <Button onClick={() => navigate('/select')} variant="primary">
               Choose a Template
             </Button>
           </Card>
@@ -128,20 +128,20 @@ export default function MyResumes() {
                 <motion.div
                   key={resume.id || resume._id}
                   whileHover={{ y: -6 }}
-                  className="rounded-3xl border border-white/10 bg-slate-900/40 p-5 flex flex-col justify-between shadow-2xl backdrop-blur-xl hover:border-amber-500/40 transition duration-300 min-h-[220px]"
+                  className="rounded-3xl border border-border bg-card p-5 flex flex-col justify-between shadow-2xl backdrop-blur-xl hover:border-primary/40 transition duration-300 min-h-[220px]"
                 >
                   <div>
                     <div className="flex justify-between items-start gap-4 mb-3">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${
                           resume.premium
-                            ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                            : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
+                            ? 'bg-primary/10 text-primary border border-primary/20'
+                            : 'bg-surface-elevated text-muted border border-border'
                         }`}
                       >
                         {resume.premium ? (
                           <>
-                            <Crown className="h-2.5 w-2.5 fill-amber-400/20" /> Premium
+                            <Crown className="h-2.5 w-2.5 fill-primary/20" /> Premium
                           </>
                         ) : 'Standard'}
                       </span>
@@ -154,19 +154,19 @@ export default function MyResumes() {
                       </div>
                     </div>
 
-                    <h3 className="text-lg font-black text-white truncate mb-1">
+                    <h3 className="text-lg font-black text-foreground truncate mb-1">
                       {resume.title || 'Untitled Resume'}
                     </h3>
-                    <p className="text-xs text-slate-400 flex items-center gap-1">
+                    <p className="text-xs text-muted flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       Updated {new Date(resume.updatedAt || resume.savedAt || Date.now()).toLocaleDateString()}
                     </p>
                   </div>
 
-                  <div className="flex gap-2.5 mt-6 pt-4 border-t border-white/5">
+                  <div className="flex gap-2.5 mt-6 pt-4 border-t border-border">
                     <button
                       onClick={() => handleEdit(resume)}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-slate-300 py-2.5 hover:bg-white/10 hover:text-white transition duration-200"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-surface-elevated border border-border text-xs font-bold text-foreground py-2.5 hover:bg-surface-hover hover:text-foreground transition duration-200"
                     >
                       <Edit className="h-3.5 w-3.5" />
                       Edit

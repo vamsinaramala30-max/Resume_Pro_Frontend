@@ -1,4 +1,4 @@
-﻿import { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { clsx } from 'clsx'
 import { motion } from 'framer-motion'
 
@@ -20,16 +20,16 @@ const GlassCard = forwardRef(function GlassCard(
   ref,
 ) {
   const variants = {
-    default: 'bg-white/5 border border-white/10',
-    gold: 'bg-royal-gold/5 border border-royal-gold/20',
+    default: 'bg-card border border-border shadow-card',
+    gold: 'bg-primary/5 border border-primary/20',
     blue: 'bg-sky-500/5 border border-sky-400/20',
     purple: 'bg-purple-500/5 border border-purple-400/20',
     emerald: 'bg-emerald-500/5 border border-emerald-400/20',
   }
 
   const hoverStyles = {
-    default: 'hover:bg-white/10 hover:border-white/20',
-    gold: 'hover:bg-royal-gold/10 hover:border-royal-gold/30',
+    default: 'hover:bg-surface-elevated hover:border-border-muted hover:shadow-card-hover',
+    gold: 'hover:bg-primary/10 hover:border-primary/30',
     blue: 'hover:bg-sky-500/10 hover:border-sky-400/30',
     purple: 'hover:bg-purple-500/10 hover:border-purple-400/30',
     emerald: 'hover:bg-emerald-500/10 hover:border-emerald-400/30',

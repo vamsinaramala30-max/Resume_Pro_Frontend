@@ -186,10 +186,10 @@ export default function Contact() {
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-black text-white sm:text-5xl">
-            Contact <span className="text-royal-gold">Us</span>
+          <h1 className="text-4xl font-black text-foreground sm:text-5xl">
+            Contact <span className="text-primary">Us</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             Have questions? We'd love to hear from you. Send us a message or reach out on WhatsApp.
           </p>
         </div>
@@ -198,13 +198,13 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="relative">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-royal-gold/20 to-transparent opacity-30 blur-3xl" />
-            <div className="relative rounded-3xl border border-white/10 bg-black/40 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Send us a Message</h2>
+            <div className="relative rounded-3xl border border-border bg-card shadow-card p-6 sm:p-8">
+              <h2 className="text-2xl font-bold text-foreground">Send us a Message</h2>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
                 {/* Name */}
                 <div>
-                  <label htmlFor="name" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                  <label htmlFor="name" className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                     Full Name <span className="text-red-400">*</span>
                   </label>
                   <input
@@ -213,10 +213,10 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
+                    className={`w-full rounded-xl bg-surface-elevated border px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition duration-200 ${
                       errors.name
-                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
-                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+                        ? 'border-error focus:border-error focus:ring-1 focus:ring-error/20'
+                        : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
                     }`}
                     placeholder="John Doe"
                     aria-describedby={errors.name ? 'name-error' : undefined}
@@ -240,10 +240,10 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
+                    className={`w-full rounded-xl bg-surface-elevated border px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition duration-200 ${
                       errors.email
-                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
-                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+                        ? 'border-error focus:border-error focus:ring-1 focus:ring-error/20'
+                        : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
                     }`}
                     placeholder="john@example.com"
                     aria-describedby={errors.email ? 'email-error' : undefined}
@@ -259,7 +259,7 @@ export default function Contact() {
                 {/* Phone */}
                 <div>
                   <label htmlFor="phone" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    Phone Number <span className="text-slate-500">(optional)</span>
+                    Phone Number <span className="text-muted-foreground">(optional)</span>
                   </label>
                   <input
                     type="tel"
@@ -267,10 +267,10 @@ export default function Contact() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
+                    className={`w-full rounded-xl bg-surface-elevated border px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition duration-200 ${
                       errors.phone
-                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
-                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+                        ? 'border-error focus:border-error focus:ring-1 focus:ring-error/20'
+                        : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
                     }`}
                     placeholder="+91 99899 89990"
                     aria-describedby={errors.phone ? 'phone-error' : undefined}
@@ -293,21 +293,21 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white outline-none transition duration-200 appearance-none ${
+                    className={`w-full rounded-xl bg-surface-elevated border px-4 py-3 text-sm text-foreground outline-none transition duration-200 appearance-none ${
                       errors.subject
-                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
-                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+                        ? 'border-error focus:border-error focus:ring-1 focus:ring-error/20'
+                        : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
                     }`}
                     aria-describedby={errors.subject ? 'subject-error' : undefined}
                     disabled={isSubmitting}
                   >
-                    <option value="" className="bg-slate-900">Select a subject</option>
-                    <option value="General Inquiry" className="bg-slate-900">General Inquiry</option>
-                    <option value="Technical Support" className="bg-slate-900">Technical Support</option>
-                    <option value="Billing Question" className="bg-slate-900">Billing Question</option>
-                    <option value="Feature Request" className="bg-slate-900">Feature Request</option>
-                    <option value="Partnership" className="bg-slate-900">Partnership</option>
-                    <option value="Other" className="bg-slate-900">Other</option>
+                    <option value="">Select a subject</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Technical Support">Technical Support</option>
+                    <option value="Billing Question">Billing Question</option>
+                    <option value="Feature Request">Feature Request</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Other">Other</option>
                   </select>
                   {errors.subject && (
                     <p id="subject-error" className="mt-1.5 text-xs text-red-400 font-medium" role="alert">
@@ -327,10 +327,10 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    className={`w-full rounded-xl bg-slate-950/80 border px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 resize-none ${
+                    className={`w-full rounded-xl bg-surface-elevated border px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition duration-200 resize-none ${
                       errors.message
-                        ? 'border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
-                        : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+                        ? 'border-error focus:border-error focus:ring-1 focus:ring-error/20'
+                        : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
                     }`}
                     placeholder="Write your message here..."
                     aria-describedby={errors.message ? 'message-error' : undefined}
@@ -347,7 +347,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-royal-gold px-6 py-4 font-bold text-slate-950 transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 font-bold text-primary-foreground transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <>
@@ -383,9 +383,9 @@ export default function Contact() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contact Info Card */}
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Contact Information</h2>
-              <p className="mt-2 text-slate-300">
+            <div className="rounded-3xl border border-border bg-card shadow-card p-6 sm:p-8">
+              <h2 className="text-2xl font-bold text-foreground">Contact Information</h2>
+              <p className="mt-2 text-muted-foreground">
                 Prefer to reach out directly? Here's how you can contact us.
               </p>
 
@@ -393,24 +393,24 @@ export default function Contact() {
                 {contactInfo.map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-royal-gold/30"
+                    className="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-4 transition hover:border-primary/30"
                   >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <item.icon className="h-5 w-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-slate-300">{item.label}</p>
+                      <p className="text-sm font-semibold text-muted-foreground">{item.label}</p>
                       {item.href ? (
                         <a
                           href={item.href}
                           target={item.href.startsWith('http') ? '_blank' : undefined}
                           rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="text-white hover:text-royal-gold transition"
+                          className="text-foreground hover:text-primary transition"
                         >
                           {item.value}
                         </a>
                       ) : (
-                        <p className="text-white">{item.value}</p>
+                        <p className="text-foreground">{item.value}</p>
                       )}
                     </div>
                   </div>
@@ -419,34 +419,34 @@ export default function Contact() {
             </div>
 
             {/* WhatsApp Button */}
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Chat on WhatsApp</h2>
-              <p className="mt-2 text-slate-300">
+            <div className="rounded-3xl border border-border bg-card shadow-card p-6 sm:p-8">
+              <h2 className="text-2xl font-bold text-foreground">Chat on WhatsApp</h2>
+              <p className="mt-2 text-muted-foreground">
                 Get quick responses during business hours.
               </p>
 
               <button
                 onClick={openWhatsApp}
-                className="group mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-6 py-4 font-bold text-white transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                className="group mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-6 py-4 font-bold text-white transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/70 focus-visible:ring-offset-2"
               >
                 <MessageCircle className="h-5 w-5 transition group-hover:scale-110" />
                 Chat on WhatsApp
               </button>
 
-              <p className="mt-3 text-center text-sm text-slate-400">
+              <p className="mt-3 text-center text-sm text-muted-foreground">
                 Usually replies within 1-2 hours
               </p>
             </div>
 
             {/* Response Time */}
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+            <div className="rounded-3xl border border-border bg-card shadow-card p-6 sm:p-8">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-royal-gold/10 text-royal-gold">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <AlertTriangle className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Response Time</h3>
-                  <p className="mt-1 text-slate-300">
+                  <h3 className="text-lg font-semibold text-foreground">Response Time</h3>
+                  <p className="mt-1 text-muted-foreground">
                     We typically respond within 24 hours during business days (Monday - Saturday, 9 AM - 6 PM IST).
                   </p>
                 </div>

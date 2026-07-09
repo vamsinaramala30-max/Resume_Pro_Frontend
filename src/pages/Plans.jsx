@@ -98,94 +98,70 @@ const TESTIMONIALS = [
   },
 ]
 
-// Floating particles component
+// Animated background — theme-aware opacity
 function AnimatedBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       {/* Gradient orbs */}
       <motion.div
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-          scale: [1, 1.1, 1],
-        }}
+        animate={{ x: [0, 30, 0], y: [0, -20, 0], scale: [1, 1.1, 1] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-royal-gold/10 blur-3xl"
+        className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-primary/8 dark:bg-primary/10 blur-3xl"
       />
       <motion.div
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.2, 1],
-        }}
+        animate={{ x: [0, -40, 0], y: [0, 30, 0], scale: [1, 1.2, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        className="absolute top-1/3 right-[-10%] h-80 w-80 rounded-full bg-sky-500/10 blur-3xl"
+        className="absolute top-1/3 right-[-10%] h-80 w-80 rounded-full bg-sky-500/6 dark:bg-sky-500/10 blur-3xl"
       />
       <motion.div
-        animate={{
-          x: [0, 20, 0],
-          y: [0, -30, 0],
-        }}
+        animate={{ x: [0, 20, 0], y: [0, -30, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-        className="absolute bottom-[-10%] left-1/4 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl"
+        className="absolute bottom-[-10%] left-1/4 h-64 w-64 rounded-full bg-violet-500/6 dark:bg-violet-500/10 blur-3xl"
       />
 
       {/* Floating particles */}
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          animate={{
-            y: [0, -150, 0],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 6 + i,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: i * 0.8,
-          }}
-          className="absolute bottom-0 h-1.5 w-1.5 rounded-full bg-royal-gold/40"
+          animate={{ y: [0, -150, 0], opacity: [0, 1, 0] }}
+          transition={{ duration: 6 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.8 }}
+          className="absolute bottom-0 h-1.5 w-1.5 rounded-full bg-primary/30 dark:bg-primary/40"
           style={{ left: `${10 + i * 12}%` }}
         />
       ))}
-
-      {/* Grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
     </div>
   )
 }
 
-// Pricing toggle component
+// Pricing toggle
 function PricingToggle({ isYearly, onToggle }) {
   return (
     <div className="flex items-center justify-center gap-4">
-      <span className={`text-sm font-medium transition ${!isYearly ? 'text-white' : 'text-slate-400'}`}>
-        Monthly
-      </span>
+      <span>Monthly</span>
+
       <button
         onClick={onToggle}
-        className="relative h-7 w-14 rounded-full bg-white/10 p-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold"
-        role="switch"
-        aria-checked={isYearly}
-        aria-label="Toggle yearly pricing"
+        className="relative flex h-7 w-14 items-center rounded-full bg-gray-300 p-1"
       >
         <motion.div
-          className="absolute h-5 w-5 rounded-full bg-royal-gold shadow-lg"
-          animate={{ left: isYearly ? '28px' : '2px' }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+          className="h-5 w-5 rounded-full bg-yellow-500"
+          animate={{
+            x: isYearly ? 28 : 0,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 30,
+          }}
         />
       </button>
-      <span className={`text-sm font-medium transition ${isYearly ? 'text-white' : 'text-slate-400'}`}>
-        Yearly
-        <span className="ml-2 rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs text-emerald-400">
-          Save 20%
-        </span>
-      </span>
+
+      <span>Yearly</span>
     </div>
-  )
+  );
 }
 
-// Pricing card component
+// Pricing card
 function PricingCard({ plan, isYearly, index }) {
   const Icon = plan.icon
   const price = isYearly ? plan.yearlyPrice : plan.price
@@ -197,16 +173,15 @@ function PricingCard({ plan, isYearly, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className={`relative rounded-3xl border p-6 transition-all hover:scale-[1.02] ${
-        plan.highlight
-          ? 'border-royal-gold/40 bg-gradient-to-b from-royal-gold/10 to-transparent shadow-2xl shadow-royal-gold/20'
-          : 'border-white/10 bg-slate-900/40 hover:border-white/20'
-      }`}
+      className={`relative rounded-3xl border p-6 transition-all hover:scale-[1.02] ${plan.highlight
+          ? 'border-primary/40 bg-gradient-to-b from-primary/8 dark:from-primary/10 to-transparent shadow-elevation-3'
+          : 'border-border bg-card shadow-card hover:shadow-card-hover hover:border-border-muted'
+        }`}
     >
-      {/* Glow effect for popular plan */}
+      {/* Popular badge */}
       {plan.popular && (
         <div className="absolute -top-px left-1/2 -translate-x-1/2">
-          <div className="flex items-center gap-2 rounded-full bg-royal-gold px-4 py-1 text-sm font-bold text-slate-900">
+          <div className="flex items-center gap-2 rounded-full bg-primary px-4 py-1 text-sm font-bold text-primary-foreground">
             <Crown className="h-4 w-4" />
             Most Popular
           </div>
@@ -215,30 +190,28 @@ function PricingCard({ plan, isYearly, index }) {
 
       <div className="mt-4">
         <div className="flex items-center gap-3">
-          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-            plan.highlight ? 'bg-royal-gold text-slate-900' : 'bg-white/10 text-royal-gold'
-          }`}>
+          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${plan.highlight ? 'bg-primary text-primary-foreground' : 'bg-surface-elevated text-primary'
+            }`}>
             <Icon className="h-6 w-6" />
           </div>
-          <h3 className="text-xl font-black text-white">{plan.name}</h3>
+          <h3 className="text-xl font-black text-foreground">{plan.name}</h3>
         </div>
 
         <div className="mt-4 flex items-baseline gap-1">
-          <span className="text-5xl font-black text-white">
+          <span className="text-5xl font-black text-foreground">
             ${price === 0 ? 'Free' : price}
           </span>
-          {price > 0 && <span className="text-slate-400">{period}</span>}
+          {price > 0 && <span className="text-muted-foreground">{period}</span>}
         </div>
 
-        <p className="mt-3 text-slate-300">{plan.desc}</p>
+        <p className="mt-3 text-muted-foreground">{plan.desc}</p>
       </div>
 
       <ul className="mt-6 space-y-3">
         {plan.features.map((feature) => (
-          <li key={feature} className="flex items-center gap-3 text-sm text-slate-200">
-            <div className={`flex h-5 w-5 items-center justify-center rounded-full ${
-              plan.highlight ? 'bg-royal-gold text-slate-900' : 'bg-white/10 text-royal-gold'
-            }`}>
+          <li key={feature} className="flex items-center gap-3 text-sm text-foreground/80">
+            <div className={`flex h-5 w-5 items-center justify-center rounded-full shrink-0 ${plan.highlight ? 'bg-primary text-primary-foreground' : 'bg-surface-elevated text-primary'
+              }`}>
               <Check className="h-3 w-3" />
             </div>
             {feature}
@@ -248,11 +221,10 @@ function PricingCard({ plan, isYearly, index }) {
 
       <Link
         to={plan.cta.to}
-        className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
-          plan.highlight
-            ? 'bg-royal-gold text-slate-950 hover:brightness-110 hover:shadow-lg hover:shadow-royal-gold/30'
-            : 'border border-white/10 bg-white/5 text-white hover:bg-white/10'
-        }`}
+        className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 ${plan.highlight
+            ? 'bg-primary text-primary-foreground hover:brightness-110 hover:shadow-lg hover:shadow-primary/30'
+            : 'border border-border bg-surface-elevated text-foreground hover:bg-surface-hover hover:border-primary/30'
+          }`}
       >
         {plan.cta.label}
         <ArrowRight className="h-4 w-4" />
@@ -261,28 +233,27 @@ function PricingCard({ plan, isYearly, index }) {
   )
 }
 
-// FAQ accordion component
+// FAQ accordion
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
     <section className="mx-auto max-w-3xl">
-      <h2 className="mb-8 text-center text-3xl font-black text-white">Frequently Asked Questions</h2>
+      <h2 className="mb-8 text-center text-3xl font-black text-foreground">Frequently Asked Questions</h2>
       <div className="space-y-3">
         {FAQS.map((faq, i) => (
           <div
             key={i}
-            className="rounded-2xl border border-white/10 bg-white/5 transition-colors"
+            className="rounded-2xl border border-border bg-card shadow-card overflow-hidden"
           >
             <button
               onClick={() => setOpenIndex(openIndex === i ? -1 : i)}
-              className="flex w-full items-center justify-between p-5 text-left"
+              className="flex w-full items-center justify-between p-5 text-left hover:bg-surface-elevated transition"
               aria-expanded={openIndex === i}
             >
-              <span className="font-medium text-white">{faq.q}</span>
-              <span className={`flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-white transition-transform ${
-                openIndex === i ? 'rotate-180' : ''
-              }`}>
+              <span className="font-medium text-foreground">{faq.q}</span>
+              <span className={`flex h-6 w-6 items-center justify-center rounded-full bg-surface-elevated border border-border text-muted-foreground transition-transform ${openIndex === i ? 'rotate-180' : ''
+                }`}>
                 <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -296,7 +267,7 @@ function FAQSection() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <p className="px-5 pb-5 text-slate-300">{faq.a}</p>
+                  <p className="px-5 pb-5 text-muted-foreground">{faq.a}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -307,11 +278,11 @@ function FAQSection() {
   )
 }
 
-// Testimonials component
+// Testimonials
 function TestimonialsSection() {
   return (
     <section>
-      <h2 className="mb-8 text-center text-3xl font-black text-white">Loved by Professionals</h2>
+      <h2 className="mb-8 text-center text-3xl font-black text-foreground">Loved by Professionals</h2>
       <div className="grid gap-6 md:grid-cols-3">
         {TESTIMONIALS.map((t, i) => (
           <motion.div
@@ -320,20 +291,20 @@ function TestimonialsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
-            className="rounded-3xl border border-white/10 bg-white/5 p-6"
+            className="rounded-3xl border border-border bg-card shadow-card p-6"
           >
-            <Quote className="h-8 w-8 text-royal-gold/30" />
-            <p className="mt-4 text-slate-200">"{t.quote}"</p>
+            <Quote className="h-8 w-8 text-primary/30" />
+            <p className="mt-4 text-foreground/80">"{t.quote}"</p>
             <div className="mt-6 flex items-center gap-3">
               <img
                 src={t.image}
                 alt={t.name}
-                className="h-12 w-12 rounded-full object-cover"
+                className="h-12 w-12 rounded-full object-cover border-2 border-border"
                 loading="lazy"
               />
               <div>
-                <div className="font-medium text-white">{t.name}</div>
-                <div className="text-sm text-slate-400">{t.role}</div>
+                <div className="font-medium text-foreground">{t.name}</div>
+                <div className="text-sm text-muted-foreground">{t.role}</div>
               </div>
             </div>
           </motion.div>
@@ -343,17 +314,17 @@ function TestimonialsSection() {
   )
 }
 
-// CTA Section component
+// CTA Section
 function CTASection() {
   return (
-    <section className="relative rounded-3xl border border-royal-gold/30 bg-gradient-to-b from-royal-gold/10 to-transparent p-12 text-center">
-      <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.2),transparent_70%)]" />
+    <section className="relative rounded-3xl border border-primary/30 bg-gradient-to-b from-primary/8 dark:from-primary/10 to-transparent p-12 text-center overflow-hidden">
+      <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.15),transparent_70%)]" />
       <div className="relative">
-        <h2 className="text-3xl font-black text-white">Ready to stand out?</h2>
-        <p className="mt-4 text-slate-300">Join thousands of professionals who landed their dream jobs.</p>
+        <h2 className="text-3xl font-black text-foreground">Ready to stand out?</h2>
+        <p className="mt-4 text-muted-foreground">Join thousands of professionals who landed their dream jobs.</p>
         <Link
           to="/select?plan=premium"
-          className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-royal-gold px-8 py-4 text-lg font-bold text-slate-950 transition-all hover:brightness-110 hover:shadow-lg hover:shadow-royal-gold/30"
+          className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-primary px-8 py-4 text-lg font-bold text-primary-foreground transition-all hover:brightness-110 hover:shadow-lg hover:shadow-primary/30"
         >
           Start Free Trial
           <ArrowRight className="h-5 w-5" />
@@ -405,19 +376,19 @@ export default function Plans() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-royal-gold"
+            className="inline-flex rounded-full bg-surface-elevated border border-border px-4 py-2 text-xs uppercase tracking-[0.28em] text-primary"
           >
             <Sparkles className="mr-2 h-4 w-4" />
             Pricing Plans
           </motion.div>
-          <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-black tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Choose your{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-royal-gold via-yellow-300 to-royal-gold">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-400 to-primary">
               perfect
             </span>{' '}
             plan
           </h1>
-          <p className="mx-auto max-w-2xl text-slate-300">
+          <p className="mx-auto max-w-2xl text-muted-foreground">
             Start free, then upgrade to unlock premium templates, AI-powered suggestions, and unlimited exports.
           </p>
         </div>
@@ -433,8 +404,6 @@ export default function Plans() {
             <PricingCard key={plan.name} plan={plan} isYearly={isYearly} index={i} />
           ))}
         </div>
-
-        {/* Feature Comparison could go here */}
 
         {/* Testimonials */}
         <div className="mt-24">

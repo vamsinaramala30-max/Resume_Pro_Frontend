@@ -1,4 +1,4 @@
-﻿import { clsx } from 'clsx'
+import { clsx } from 'clsx'
 
 /**
  * Badge Component
@@ -16,13 +16,13 @@ export function Badge({
   ...props
 }) {
   const variants = {
-    default: 'bg-white/10 text-slate-200 border-white/15',
-    gold: 'bg-royal-gold/15 text-royal-gold border-royal-gold/30',
+    default: 'bg-surface-elevated text-foreground border-border',
+    gold: 'bg-primary/10 text-primary border-primary/20',
     blue: 'bg-sky-500/15 text-sky-200 border-sky-400/30',
     purple: 'bg-purple-500/15 text-purple-200 border-purple-400/30',
     emerald: 'bg-emerald-500/15 text-emerald-200 border-emerald-400/30',
     red: 'bg-red-500/15 text-red-200 border-red-400/30',
-    outline: 'bg-transparent text-slate-300 border-white/20',
+    outline: 'bg-transparent text-muted border-border',
   }
 
   const sizes = {
@@ -80,7 +80,7 @@ export function StatusBadge({ status = 'online', size = 'md' }) {
         )}
         aria-hidden="true"
       />
-      <span className="text-xs text-slate-400">{label}</span>
+      <span className="text-xs text-muted">{label}</span>
     </span>
   )
 }

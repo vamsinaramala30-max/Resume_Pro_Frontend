@@ -30,14 +30,14 @@ export default function HelpCenter() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 pt-28 pb-20">
       <div className="mx-auto max-w-4xl">
-        <h1 className="text-4xl font-black">Help Center</h1>
-        <p className="mt-3 text-slate-300">Quick answers to common questions.</p>
+        <h1 className="text-4xl font-black text-foreground">Help Center</h1>
+        <p className="mt-3 text-muted-foreground">Quick answers to common questions.</p>
 
         <section className="mt-8 space-y-4">
           {items.map((f) => (
-            <article key={f.q} className="rounded-3xl border border-white/10 bg-slate-900/40 p-6 shadow-2xl backdrop-blur-xl">
-              <h2 className="text-lg font-bold">{f.q}</h2>
-              <p className="mt-2 text-slate-300">{f.a}</p>
+            <article key={f.q} className="rounded-3xl border border-border bg-card shadow-card p-6">
+              <h2 className="text-lg font-bold text-foreground">{f.q}</h2>
+              <p className="mt-2 text-muted-foreground">{f.a}</p>
             </article>
           ))}
         </section>
@@ -45,4 +45,3 @@ export default function HelpCenter() {
     </div>
   )
 }
-

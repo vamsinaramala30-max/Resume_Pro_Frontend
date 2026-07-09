@@ -19,15 +19,24 @@ export default {
       colors: {
         background: withOpacity('--background'),
         foreground: withOpacity('--foreground'),
-        surface: withOpacity('--surface'),
-        'surface-elevated': withOpacity('--surface-elevated'),
+        card: {
+          DEFAULT: withOpacity('--card'),
+          foreground: withOpacity('--card-foreground'),
+        },
+        surface: {
+          DEFAULT: withOpacity('--surface'),
+          elevated: withOpacity('--surface-elevated'),
+          hover: withOpacity('--surface-hover'),
+        },
         primary: {
           DEFAULT: withOpacity('--primary'),
           foreground: withOpacity('--primary-foreground'),
+          hover: withOpacity('--primary-hover'),
         },
         secondary: {
           DEFAULT: withOpacity('--secondary'),
           foreground: withOpacity('--secondary-foreground'),
+          hover: withOpacity('--secondary-hover'),
         },
         accent: {
           DEFAULT: withOpacity('--accent'),
@@ -38,8 +47,11 @@ export default {
         error: withOpacity('--error'),
         info: withOpacity('--info'),
         border: withOpacity('--border'),
+        'border-muted': withOpacity('--border-muted'),
         input: withOpacity('--input'),
         ring: withOpacity('--ring'),
+        muted: withOpacity('--muted'),
+        'muted-foreground': withOpacity('--muted-foreground'),
         'royal-gold': '#c5a059',
         'royal-navy': '#0a192f',
       },
@@ -73,6 +85,8 @@ export default {
         'elevation-3': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         'elevation-4': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'elevation-5': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        'card': 'var(--shadow-card)',
+        'card-hover': 'var(--shadow-card-hover)',
       },
       transitionDuration: {
         'fast': '150ms',

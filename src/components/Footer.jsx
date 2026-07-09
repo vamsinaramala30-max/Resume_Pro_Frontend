@@ -87,7 +87,7 @@ function FooterListColumn({ title, items }) {
     <section aria-labelledby={`footer-col-${title}`} className="flex flex-col">
       <h3
         id={`footer-col-${title}`}
-        className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400/80 mb-4"
+        className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted/85 mb-4"
       >
         {title}
       </h3>
@@ -99,14 +99,14 @@ function FooterListColumn({ title, items }) {
                 href={l.to}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-royal-gold hover:translate-x-1 inline-flex items-center transition-all duration-300 ease-out focus:outline-none focus-visible:text-royal-gold"
+                className="text-muted hover:text-primary hover:translate-x-1 inline-flex items-center transition-all duration-300 ease-out focus:outline-none focus-visible:text-primary"
               >
                 {l.label}
               </a>
             ) : (
               <Link
                 to={l.to}
-                className="text-slate-400 hover:text-royal-gold hover:translate-x-1 inline-flex items-center transition-all duration-300 ease-out focus:outline-none focus-visible:text-royal-gold"
+                className="text-muted hover:text-primary hover:translate-x-1 inline-flex items-center transition-all duration-300 ease-out focus:outline-none focus-visible:text-primary"
               >
                 {l.label}
               </Link>
@@ -120,9 +120,9 @@ function FooterListColumn({ title, items }) {
 
 export default function Footer() {
   return (
-    <footer className="relative mt-24 border-t border-white/5 bg-slate-950/80 backdrop-blur-md overflow-hidden">
+    <footer className="relative mt-24 border-t border-border bg-card/85 backdrop-blur-md overflow-hidden">
       {/* Decorative premium gradient glow */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[150px] bg-[radial-gradient(ellipse_60%_70%_at_50%_0%,rgba(197,160,89,0.12),transparent_70%)]" />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[150px] bg-[radial-gradient(ellipse_60%_70%_at_50%_0%,rgba(197,160,89,0.08),transparent_70%)]" />
 
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 relative z-10">
         {/* Top Section: Brand + Newsletter */}
@@ -132,23 +132,23 @@ export default function Footer() {
               {/* Brand Logo */}
               <div className="flex items-center gap-3">
                 <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-royal-gold to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-55 transition duration-500"></div>
-                  <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 border border-white/10 text-royal-gold font-bold text-lg shadow-inner">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-amber-500 rounded-xl blur opacity-30 group-hover:opacity-55 transition duration-500"></div>
+                  <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface border border-border text-primary font-bold text-lg shadow-inner">
                     R
                   </div>
                 </div>
                 <div>
-                  <div className="text-lg font-extrabold tracking-tight text-white bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  <div className="text-lg font-extrabold tracking-tight text-foreground">
                     {BRAND.name}
                   </div>
-                  <div className="text-[9px] font-bold tracking-[0.25em] text-royal-gold uppercase">
+                  <div className="text-[9px] font-bold tracking-[0.25em] text-primary uppercase">
                     Premium Builder
                   </div>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-400">
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-muted">
                 {BRAND.description}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default function Footer() {
                   href={to}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-royal-gold hover:border-royal-gold/30 hover:bg-royal-gold/5 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-royal-gold"
+                  className="group inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-elevated text-muted hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-primary"
                   aria-label={ariaLabel}
                 >
                   <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
@@ -170,13 +170,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Box */}
           <div className="lg:col-span-6">
-            <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/30 p-6 sm:p-8 backdrop-blur-xl">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-royal-gold/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card/30 p-6 sm:p-8 backdrop-blur-xl">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
               
-              <h3 className="text-sm font-bold text-white tracking-tight">Stay updated</h3>
-              <p className="mt-1.5 text-xs text-slate-400 leading-relaxed max-w-md">
+              <h3 className="text-sm font-bold text-foreground tracking-tight">Stay updated</h3>
+              <p className="mt-1.5 text-xs text-muted leading-relaxed max-w-md">
                 Get the latest resume templates, ATS optimization tips, and feature updates directly in your inbox.
               </p>
 
@@ -197,18 +196,18 @@ export default function Footer() {
                     inputMode="email"
                     autoComplete="email"
                     placeholder="Enter your email"
-                    className="w-full rounded-xl border border-white/5 bg-slate-950/50 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none focus:border-royal-gold/40 focus:ring-1 focus:ring-royal-gold/30 transition-all duration-300"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted/80 outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/30 transition-all duration-300"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-royal-gold to-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-royal-gold/15 focus:outline-none focus-visible:ring-1 focus-visible:ring-royal-gold"
+                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary to-amber-500 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-primary/15 focus:outline-none focus-visible:ring-1 focus-visible:ring-primary"
                 >
                   Subscribe
                 </button>
               </form>
 
-              <div className="mt-3 text-[10px] text-slate-500">
+              <div className="mt-3 text-[10px] text-muted">
                 We respect your inbox. Unsubscribe anytime.
               </div>
             </div>
@@ -216,7 +215,7 @@ export default function Footer() {
         </div>
 
         {/* Middle Section: Links Grid */}
-        <div className="border-t border-white/5 py-12">
+        <div className="border-t border-border py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {FOOTER_SECTIONS.map((sec) => (
               <FooterListColumn key={sec.title} title={sec.title} items={sec.items} />
@@ -225,7 +224,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section: Security Badges & Legal Info */}
-        <div className="border-t border-white/5 py-8 pb-12">
+        <div className="border-t border-border py-8 pb-12">
           {/* Trust Badges */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -236,35 +235,35 @@ export default function Footer() {
             ].map((t) => (
               <div
                 key={t.label}
-                className="flex items-center gap-3.5 rounded-xl border border-white/5 bg-slate-900/20 p-3.5 backdrop-blur-sm hover:border-white/10 hover:bg-slate-900/40 transition-all duration-300"
+                className="flex items-center gap-3.5 rounded-xl border border-border bg-card/20 p-3.5 backdrop-blur-sm hover:border-border hover:bg-surface-elevated transition-all duration-300"
               >
-                <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-royal-gold/5 text-royal-gold">
+                <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/5 text-primary">
                   <t.Icon className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-200">{t.label}</div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">{t.desc}</div>
+                  <div className="text-xs font-semibold text-foreground">{t.label}</div>
+                  <div className="text-[10px] text-muted mt-0.5">{t.desc}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Copyright & Meta Links */}
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-white/5 pt-6">
-            <div className="text-xs text-slate-500">
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-border pt-6">
+            <div className="text-xs text-muted">
               © {new Date().getFullYear()} Resume PRO. All Rights Reserved.
             </div>
-            <nav aria-label="Footer bottom links" className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
-              <Link className="hover:text-royal-gold transition-colors duration-300 focus:outline-none" to="/">
+            <nav aria-label="Footer bottom links" className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted">
+              <Link className="hover:text-primary transition-colors duration-300 focus:outline-none" to="/">
                 Home
               </Link>
-              <Link className="hover:text-royal-gold transition-colors duration-300 focus:outline-none" to="/plans">
+              <Link className="hover:text-primary transition-colors duration-300 focus:outline-none" to="/plans">
                 Plans
               </Link>
-              <Link className="hover:text-royal-gold transition-colors duration-300 focus:outline-none" to="/faq">
+              <Link className="hover:text-primary transition-colors duration-300 focus:outline-none" to="/faq">
                 FAQ
               </Link>
-              <Link className="hover:text-royal-gold transition-colors duration-300 focus:outline-none" to="/contact">
+              <Link className="hover:text-primary transition-colors duration-300 focus:outline-none" to="/contact">
                 Contact
               </Link>
             </nav>

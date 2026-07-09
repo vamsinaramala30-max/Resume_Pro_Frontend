@@ -141,11 +141,11 @@ function PremiumInput({
   return (
     <div className="space-y-1.5 w-full">
       <div className="flex justify-between items-center px-0.5">
-        <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{label}</label>
+        <label className="text-[11px] font-semibold text-muted uppercase tracking-wider">{label}</label>
       </div>
       <div className="relative group">
         {Icon && (
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-500 transition duration-200">
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-primary transition duration-200">
             <Icon className="h-4 w-4" />
           </div>
         )}
@@ -159,12 +159,12 @@ function PremiumInput({
           autoComplete={autoComplete}
           disabled={disabled}
           maxLength={maxLength}
-          className={`w-full rounded-xl bg-slate-950/80 border py-3 px-4 text-sm text-white placeholder-slate-600 outline-none transition duration-200 ${
+          className={`w-full rounded-xl bg-background border py-3 px-4 text-sm text-foreground placeholder:text-muted/65 outline-none transition duration-200 ${
             Icon ? 'pl-10' : 'pl-4'
           } ${showPasswordToggle ? 'pr-10' : 'pr-4'} ${
             error
               ? 'border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20'
-              : 'border-slate-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20'
+              : 'border-border focus:border-primary focus:ring-1 focus:ring-primary/20'
           } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         />
         {showPasswordToggle && (
@@ -172,7 +172,7 @@ function PremiumInput({
             type="button"
             onClick={onTogglePassword}
             disabled={disabled}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition duration-200"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition duration-200"
           >
             {showPasswordState ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -478,12 +478,12 @@ export default function Auth({ onAuthed }) {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(197,160,89,0.06),transparent_45%),radial-gradient(circle_at_bottom_right,_rgba(10,25,47,0.8),transparent_50%),linear-gradient(180deg,#020617,#030712)] text-white relative flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 selection:bg-amber-500/20 selection:text-amber-300">
+    <div className="min-h-screen bg-background text-foreground relative flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 selection:bg-primary/20 selection:text-primary">
       
       {/* Decorative Blur Spheres */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-amber-500/5 blur-[120px] animate-pulse duration-[8000ms]" />
-        <div className="absolute top-1/3 -right-40 h-[600px] w-[600px] rounded-full bg-slate-900/50 blur-[150px]" />
+        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px] animate-pulse duration-[8000ms]" />
+        <div className="absolute top-1/3 -right-40 h-[600px] w-[600px] rounded-full bg-surface-elevated/50 blur-[150px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-5xl mx-auto">
@@ -494,28 +494,28 @@ export default function Auth({ onAuthed }) {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/5 px-4.5 py-1.5 text-xs font-semibold text-amber-500 tracking-wider w-fit"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-4.5 py-1.5 text-xs font-semibold text-primary tracking-wider w-fit"
             >
               <Sparkles className="h-3.5 w-3.5" />
               INTELLIGENT ATS RESUME WORKSPACE
             </motion.div>
 
             <div className="space-y-4">
-              <h1 className="text-4xl xl:text-5xl font-extrabold tracking-tight leading-[1.15] text-white">
+              <h1 className="text-4xl xl:text-5xl font-extrabold tracking-tight leading-[1.15] text-foreground">
                 Create a resume that gets you{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-amber-400 to-primary-hover">
                   hired.
                 </span>
               </h1>
-              <p className="text-slate-400 text-sm leading-relaxed max-w-md">
+              <p className="text-muted text-sm leading-relaxed max-w-md">
                 Build structurally optimal, high-converting designer resumes aligned directly with industry ATS criteria.
               </p>
             </div>
 
             {/* Premium Simulated UI Illustration */}
-            <div className="relative rounded-2xl border border-white/5 bg-slate-950/80 p-5 shadow-2xl overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent opacity-50 pointer-events-none" />
-              <div className="flex items-center justify-between border-b border-white/5 pb-3.5 mb-4">
+            <div className="relative rounded-2xl border border-border bg-card p-5 shadow-2xl overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-50 pointer-events-none" />
+              <div className="flex items-center justify-between border-b border-border pb-3.5 mb-4">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 rounded-full bg-rose-500/60" />
                   <div className="h-3 w-3 rounded-full bg-amber-500/60" />
@@ -567,24 +567,24 @@ export default function Auth({ onAuthed }) {
             </div>
           </div>
 
-          {/* Right Column: Form Control Panel */}
+           {/* Right Column: Form Control Panel */}
           <div className="col-span-12 lg:col-span-6 flex flex-col w-full max-w-md mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-2xl backdrop-blur-xl"
+              className="relative rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-2xl backdrop-blur-xl"
             >
               {/* Top Card Header */}
               <div className="mb-6">
-                <h2 className="text-xl font-bold tracking-tight text-white mb-1.5 flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-foreground mb-1.5 flex items-center gap-2">
                   {mode === 'login' && 'Sign in to Resume PRO'}
                   {mode === 'register' && 'Get Started Free'}
                   {mode === 'email-otp' && 'Verify Security Code'}
                   {mode === 'forgot' && 'Reset Password'}
                   {mode === 'reset-password' && 'Configure New Password'}
                 </h2>
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed">
                   {mode === 'login' && 'Enter your security parameters to access dashboard options.'}
                   {mode === 'register' && 'Create your account to unlock instant AI resume scoring.'}
                   {mode === 'email-otp' && `Input the secure 6-digit confirmation key dispatched to ${email}`}
@@ -595,7 +595,7 @@ export default function Auth({ onAuthed }) {
 
               {/* Login / Register Navigation Tabs */}
               {(mode === 'login' || mode === 'register') && (
-                <div className="flex gap-1 rounded-xl bg-slate-950 p-1 mb-6 border border-slate-900">
+                <div className="flex gap-1 rounded-xl bg-background p-1 mb-6 border border-border">
                   <AuthTab active={mode === 'login'} onClick={() => changeMode('login')} icon={Lock}>Login</AuthTab>
                   <AuthTab active={mode === 'register'} onClick={() => changeMode('register')} icon={User}>Register</AuthTab>
                 </div>
@@ -900,7 +900,7 @@ export default function Auth({ onAuthed }) {
                           type="submit"
                           loading={loading}
                           disabled={loading}
-                          className="w-full bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition duration-200 py-3 rounded-xl flex items-center justify-center text-xs tracking-wider uppercase"
+                          className="w-full bg-primary text-primary-foreground font-bold hover:bg-primary-hover transition duration-200 py-3 rounded-xl flex items-center justify-center text-xs tracking-wider uppercase"
                         >
                           {mode === 'register' ? 'Complete Onboarding' : 'Secure Entry'}
                           <ArrowRight className="ml-2 h-4 w-4" />
@@ -908,10 +908,10 @@ export default function Auth({ onAuthed }) {
 
                         <div className="relative my-6">
                           <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-800" />
+                            <div className="w-full border-t border-border" />
                           </div>
                           <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-                            <span className="bg-slate-900 px-3 text-slate-500 font-bold">Or continue with</span>
+                            <span className="bg-card px-3 text-muted font-bold">Or continue with</span>
                           </div>
                         </div>
 
@@ -919,14 +919,14 @@ export default function Auth({ onAuthed }) {
                           <button
                             type="button"
                             disabled={loading}
-                            className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/40 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-950 hover:text-white transition duration-200"
+                            className="flex items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated py-2.5 text-xs font-bold text-foreground hover:bg-surface-hover hover:text-foreground transition duration-200"
                           >
                             <GoogleIcon className="h-4 w-4" /> Google
                           </button>
                           <button
                             type="button"
                             disabled={loading}
-                            className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/40 py-2.5 text-xs font-bold text-slate-300 hover:bg-slate-950 hover:text-white transition duration-200"
+                            className="flex items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated py-2.5 text-xs font-bold text-foreground hover:bg-surface-hover hover:text-foreground transition duration-200"
                           >
                             <AppleIcon className="h-4 w-4" /> Apple
                           </button>
@@ -939,7 +939,7 @@ export default function Auth({ onAuthed }) {
                         type="submit"
                         loading={loading}
                         disabled={loading}
-                        className="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-xl text-xs tracking-wider uppercase hover:bg-amber-400 transition duration-200"
+                        className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl text-xs tracking-wider uppercase hover:bg-primary-hover transition duration-200"
                       >
                         Verify & Synchronize
                         <ArrowRight className="ml-2 h-4 w-4" />

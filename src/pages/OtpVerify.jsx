@@ -12,9 +12,8 @@ function GlassCard({ children, className = '' }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`relative rounded-[2rem] border border-white/10 bg-slate-950/60 p-6 shadow-2xl backdrop-blur-2xl ${className}`}
+      className={`relative rounded-[2rem] border border-border bg-card shadow-card p-6 ${className}`}
     >
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
       {children}
     </motion.div>
   )
@@ -95,13 +94,13 @@ function AuthMessage({ type, title, message, onClose }) {
         <Sparkles className="h-5 w-5 flex-shrink-0 text-sky-400" />
       )}
       <div className="flex-1">
-        <div className={`font-semibold ${type === 'error' ? 'text-red-300' : type === 'success' ? 'text-emerald-300' : 'text-sky-300'}`}>
+        <div className={`font-semibold ${type === 'error' ? 'text-error' : type === 'success' ? 'text-success' : 'text-info'}`}>
           {title}
         </div>
-        <div className="text-sm text-slate-300">{message}</div>
+        <div className="text-sm text-muted-foreground">{message}</div>
       </div>
       {onClose && (
-        <button onClick={onClose} className="text-slate-400 hover:text-white">
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
           <XCircle className="h-5 w-5" />
         </button>
       )}
@@ -123,7 +122,7 @@ function OtpInput({ value, onChange, onKeyDown, index, inputRef }) {
         onChange(index, val)
       }}
       onKeyDown={(e) => onKeyDown(e, index)}
-      className="h-14 w-12 rounded-2xl border border-white/15 bg-white/5 text-center text-xl font-bold text-white placeholder:text-slate-600 focus:border-royal-gold focus:outline-none focus:ring-2 focus:ring-royal-gold/30 transition-all"
+      className="h-14 w-12 rounded-2xl border border-border bg-surface-elevated text-center text-xl font-bold text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
       placeholder="*"
       aria-label={`OTP digit ${index + 1}`}
       autoComplete="one-time-code"
@@ -263,7 +262,7 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(197,160,89,0.15),transparent_40%),radial-gradient(circle_at_20%_30%,rgba(96,165,250,0.12),transparent_25%),radial-gradient(circle_at_80%_70%,rgba(167,139,250,0.1),transparent_30%),linear-gradient(180deg,#020617,#050b17)] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Animated Background */}
       <FloatingShapes />
 
@@ -275,10 +274,10 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-royal-gold/15 overflow-hidden p-2">
               <img src="/resumePro.png" alt="Resume PRO Logo" className="h-full w-full object-contain" />
             </div>
-            <div className="text-2xl font-black text-white">Verify your email</div>
-            <p className="text-sm text-slate-300">
+            <div className="text-2xl font-black text-foreground">Verify your email</div>
+            <p className="text-sm text-muted-foreground">
               We sent a verification code to<br />
-              <span className="font-medium text-royal-gold">{email}</span>
+              <span className="font-medium text-primary">{email}</span>
             </p>
           </div>
 
@@ -314,13 +313,13 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
           <div className="mt-6 flex items-center justify-between text-sm">
             <button
               onClick={handleBackClick}
-              className="flex items-center gap-1 text-slate-300 hover:text-white transition"
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition"
             >
               <ChevronLeft className="h-4 w-4" />
               Back to Sign In
             </button>
             {otpCountdown > 0 ? (
-              <div className="flex items-center gap-1 text-slate-400">
+              <div className="flex items-center gap-1 text-muted-foreground">
                 <Timer className="h-4 w-4" />
                 Resend in {otpCountdown}s
               </div>
@@ -328,7 +327,7 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
               <button
                 onClick={handleResend}
                 disabled={loading}
-                className="flex items-center gap-1 text-royal-gold hover:text-white transition disabled:opacity-50"
+                className="flex items-center gap-1 text-primary hover:text-foreground transition disabled:opacity-50"
               >
                 <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                 Resend code
@@ -350,7 +349,7 @@ export default function OtpVerify({ onVerified, email: propEmail, onResend, onBa
           </div>
 
           {/* Note */}
-          <p className="mt-4 text-center text-xs text-slate-400">
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             Code expires in 10 minutes
           </p>
         </GlassCard>

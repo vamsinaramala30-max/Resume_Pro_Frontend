@@ -12,94 +12,122 @@
 
 :root {
   /* Light Mode Tokens */
-    --background: #f8fafc;
-    --foreground: #020617;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 
-    --surface: #ffffff;
-    --surface-elevated: #f1f5f9;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
 
-    --primary: #c5a059; /* Royal Gold */
-    --primary-foreground: #020617;
+  --surface: #f8fafc;
+  --surface-elevated: #f1f5f9;
+  --surface-hover: #e8edf3;
 
-    --secondary: #0a192f; /* Royal Navy */
-    --secondary-foreground: #ffffff;
+  --primary: #c5a059;
+  /* Royal Gold */
+  --primary-foreground: #020617;
+  --primary-hover: #b38e4b;
 
-    --accent: #3b82f6;
-    --accent-foreground: #ffffff;
+  --secondary: #0a192f;
+  /* Royal Navy */
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #112240;
 
-    --success: #10b981;
-    --warning: #f59e0b;
-    --error: #ef4444;
-    --info: #3b82f6;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
 
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #c5a059;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
 
-    --radius: 0.5rem;
+  --border: #dde3ec;
+  --border-muted: #e8edf3;
+  --input: #dde3ec;
+  --ring: #c5a059;
+  --muted: #64748b;
+  --muted-foreground: #64748b;
 
-    /* Layout Tokens */
-    --nav-height: 80px;
-    --page-max-width: 95%;
-    --page-padding-inline: 24px;
+  /* Card shadow for light mode elevation */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.06);
 
-    --section-spacing-desktop: 64px;
-    --section-spacing-tablet: 48px;
-    --section-spacing-mobile: 32px;
-  }
+  --radius: 0.5rem;
 
-  .dark {
-    /* Dark Mode Tokens */
-    --background: #020617;
-    --foreground: #f8fafc;
+  /* Layout Tokens */
+  --nav-height: 80px;
+  --page-max-width: 95%;
+  --page-padding-inline: 24px;
 
-    --surface: #0f172a;
-    --surface-elevated: #1e293b;
+  --section-spacing-desktop: 64px;
+  --section-spacing-tablet: 48px;
+  --section-spacing-mobile: 32px;
+}
 
-    --primary: #c5a059;
-    --primary-foreground: #020617;
+.dark {
+  /* Dark Mode Tokens */
+  --background: #020617;
+  --foreground: #f8fafc;
 
-    --secondary: #0a192f;
-    --secondary-foreground: #ffffff;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
 
-    --accent: #3b82f6;
-    --accent-foreground: #ffffff;
+  --surface: #0f172a;
+  --surface-elevated: #1e293b;
+  --surface-hover: #283548;
 
-    --success: #10b981;
-    --warning: #f59e0b;
-    --error: #ef4444;
-    --info: #3b82f6;
+  --primary: #c5a059;
+  --primary-foreground: #020617;
+  --primary-hover: #b38e4b;
 
-    --border: #1e293b;
-    --input: #1e293b;
-    --ring: #c5a059;
+  --secondary: #0a192f;
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #112240;
 
-    --nav-height: 80px;
-    --page-max-width: 95%;
-    --page-padding-inline: 24px;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
 
-    --section-spacing-desktop: 64px;
-    --section-spacing-tablet: 48px;
-    --section-spacing-mobile: 32px;
-  }
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
 
-  * {
-    border-color: var(--border);
-  }
+  --border: #1e293b;
+  --border-muted: #0f172a;
+  --input: #1e293b;
+  --ring: #c5a059;
+  --muted: #94a3b8;
+  --muted-foreground: #94a3b8;
 
-  body {
-    background-color: var(--background);
-    color: var(--foreground);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-x: hidden;
-  }
+  /* Card shadow — subtle in dark mode */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
 
-  ::selection {
-    background-color: rgba(197, 160, 89, 0.2);
-    color: var(--primary);
-  }
+  --nav-height: 80px;
+  --page-max-width: 95%;
+  --page-padding-inline: 24px;
+
+  --section-spacing-desktop: 64px;
+  --section-spacing-tablet: 48px;
+  --section-spacing-mobile: 32px;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: rgba(197, 160, 89, 0.2);
+  color: var(--primary);
+}
 
 html {
   scroll-behavior: smooth;
@@ -138,10 +166,12 @@ body {
     transform: translate3d(calc(var(--px) * 14px), calc(var(--py) * 10px), 0) scale(1);
     filter: saturate(1.1);
   }
+
   50% {
     transform: translate3d(calc(var(--px) * -10px), calc(var(--py) * 12px), 0) scale(1.02);
     filter: saturate(1.25);
   }
+
   100% {
     transform: translate3d(calc(var(--px) * 14px), calc(var(--py) * 10px), 0) scale(1);
     filter: saturate(1.1);
@@ -149,11 +179,13 @@ body {
 }
 
 @keyframes bb-glow-breathe {
+
   0%,
   100% {
     opacity: 0.72;
     transform: translate3d(0, 0, 0) scale(1);
   }
+
   50% {
     opacity: 0.98;
     transform: translate3d(0, 0, 0) scale(1.06);
@@ -165,10 +197,12 @@ body {
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.35;
   }
+
   50% {
     transform: translate3d(calc(var(--px) * 6px), calc(var(--py) * -6px), 0) scale(1.12);
     opacity: 0.95;
   }
+
   100% {
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.35;
@@ -179,9 +213,11 @@ body {
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   50% {
     transform: translate3d(-20px, 18px, 0);
   }
+
   100% {
     transform: translate3d(0, 0, 0);
   }
@@ -193,11 +229,13 @@ body {
     transform: translate3d(0, 0, 0);
     filter: blur(0px);
   }
+
   50% {
     opacity: 0.55;
     transform: translate3d(calc(var(--px) * 6px), calc(var(--py) * -4px), 0);
     filter: blur(0.3px);
   }
+
   100% {
     opacity: 0.25;
     transform: translate3d(0, 0, 0);
@@ -218,10 +256,12 @@ body {
     opacity: 0.45;
     transform: translate3d(-4%, -2%, 0) rotate(0deg);
   }
+
   50% {
     opacity: 0.75;
     transform: translate3d(4%, 2%, 0) rotate(2deg);
   }
+
   100% {
     opacity: 0.45;
     transform: translate3d(-4%, -2%, 0) rotate(0deg);
@@ -230,6 +270,7 @@ body {
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   .bb-orbit-shimmer,
   .bb-glass-sweep,
   .bb-particles,
@@ -289,6 +330,7 @@ body {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   .back-to-top,
   .skip-link,
   * {
@@ -298,36 +340,36 @@ body {
 }
 
 .glass-panel {
+  @apply bg-card backdrop-blur-xl border border-border;
+  opacity: 0.8;
+}
 
-    @apply bg-surface/70 backdrop-blur-xl border border-white/10;
-  }
 
+.layout-container {
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-inline);
+}
 
-  .layout-container {
-    width: 100%;
-    max-width: var(--page-max-width);
-    margin-inline: auto;
-    padding-inline: var(--page-padding-inline);
-  }
+.section-spacing-y {
+  padding-top: var(--section-spacing-mobile);
+  padding-bottom: var(--section-spacing-mobile);
+}
 
+@media (min-width: 768px) {
   .section-spacing-y {
-    padding-top: var(--section-spacing-mobile);
-    padding-bottom: var(--section-spacing-mobile);
+    padding-top: var(--section-spacing-tablet);
+    padding-bottom: var(--section-spacing-tablet);
   }
+}
 
-  @media (min-width: 768px) {
-    .section-spacing-y {
-      padding-top: var(--section-spacing-tablet);
-      padding-bottom: var(--section-spacing-tablet);
-    }
+@media (min-width: 1024px) {
+  .section-spacing-y {
+    padding-top: var(--section-spacing-desktop);
+    padding-bottom: var(--section-spacing-desktop);
   }
-
-  @media (min-width: 1024px) {
-    .section-spacing-y {
-      padding-top: var(--section-spacing-desktop);
-      padding-bottom: var(--section-spacing-desktop);
-    }
-  }
+}
 
 /* Base gradients to keep the original aesthetic but less intrusive */
 body::before {
@@ -377,14 +419,15 @@ body.light::before {
 }
 
 /* Remove unnecessary whitespace for a spacious, modern, and premium feel */
-.py-16, .py-20, .py-24, .py-32 {
+.py-16,
+.py-20,
+.py-24,
+.py-32 {
   padding-top: 3.5rem !important;
   padding-bottom: 3.5rem !important;
 }
 
-.pt-28, .pt-32 {
+.pt-28,
+.pt-32 {
   padding-top: 6.5rem !important;
 }
-
-
-

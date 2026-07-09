@@ -92,7 +92,7 @@ function ResumePreview({ data, templateId }) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-white">
+                <div className="w-full h-full flex items-center justify-center text-foreground">
                   <User className="w-8 h-8" />
                 </div>
               )}
@@ -100,10 +100,10 @@ function ResumePreview({ data, templateId }) {
 
             <div className="min-w-0">
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-2xl md:text-3xl font-black text-white">
+                <h1 className="text-2xl md:text-3xl font-black text-foreground">
                   {sanitizeText(data.fullName) || "Your Name"}
                 </h1>
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/5 border border-white/10 text-slate-200">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-surface-elevated border border-border text-foreground">
                   Royal Resume
                 </span>
               </div>
@@ -592,14 +592,14 @@ function BuilderForm({ data, setData, templateId, setTemplateId, showToast }) {
               Save to Cloud
             </LoadingButton>
 
-            <LoadingButton onClick={exportPdf} loading={false} type="button" className="bg-white/5 border border-white/10 text-white hover:border-primary">
+            <LoadingButton onClick={exportPdf} loading={false} type="button" className="bg-surface-elevated border border-border text-foreground hover:border-primary">
               <Download className="w-5 h-5" /> Download PDF
             </LoadingButton>
 
             <button
               type="button"
               onClick={() => window.print()}
-              className="px-6 py-3 rounded-2xl font-bold bg-white/5 border border-white/10 text-white hover:border-primary transition"
+              className="px-6 py-3 rounded-2xl font-bold bg-surface-elevated border border-border text-foreground hover:border-primary transition"
             >
               Print Resume
             </button>

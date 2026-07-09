@@ -86,14 +86,14 @@ export default function UserMenu({ user, onLogout }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-11 items-center gap-2 rounded-2xl bg-white/5 border border-white/10 px-3 text-slate-200 transition hover:border-royal-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-royal-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+        className="inline-flex h-11 items-center gap-2 rounded-2xl bg-surface-elevated border border-border px-3 text-foreground transition hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2"
         aria-label="User menu"
         aria-expanded={open}
       >
-        <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-royal-gold/15 text-royal-gold font-bold">
+        <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/15 text-primary font-bold">
           {user ? initial : <User className="h-4 w-4" />}
         </span>
-        <span className="hidden lg:inline text-sm font-semibold">Account</span>
+        <span className="hidden lg:inline text-sm font-semibold text-foreground">Account</span>
       </button>
 
       <AnimatePresence>
@@ -103,7 +103,7 @@ export default function UserMenu({ user, onLogout }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 mt-2 w-72 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 backdrop-blur-3xl shadow-2xl"
+            className="absolute right-0 mt-2 w-72 overflow-hidden rounded-3xl border border-border bg-card shadow-card-hover"
           >
             {/* User Info Header */}
             <div className="p-4">
@@ -119,25 +119,25 @@ export default function UserMenu({ user, onLogout }) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white truncate">
+                  <p className="font-bold text-foreground truncate">
                     {user?.name || user?.email || 'User'}
                   </p>
-                  <p className="text-xs text-slate-400 truncate">
+                  <p className="text-xs text-muted-foreground truncate">
                     {user?.email || ''}
                   </p>
                   {isPremium ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
                       <Crown className="h-3 w-3" />
                       Premium
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-500">Free Plan</span>
+                    <span className="text-xs text-muted-foreground">Free Plan</span>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-white/10" />
+            <div className="h-px bg-border" />
 
             {/* Main Menu Items */}
             <div className="p-2">
@@ -150,13 +150,13 @@ export default function UserMenu({ user, onLogout }) {
                         key={item.id}
                         to={item.href}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-slate-200 hover:bg-white/5 transition"
+                        className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-foreground hover:bg-surface-elevated transition"
                       >
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-amber-400">
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-surface-elevated text-primary">
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="flex-1">{item.label}</span>
-                        <ChevronRight className="h-4 w-4 text-slate-600" />
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </Link>
                     )
                   })}
@@ -175,7 +175,7 @@ export default function UserMenu({ user, onLogout }) {
               )}
             </div>
 
-            <div className="h-px bg-white/10" />
+            <div className="h-px bg-border" />
 
             {/* Settings Section */}
             <div className="p-2">
@@ -188,13 +188,13 @@ export default function UserMenu({ user, onLogout }) {
                         key={item.id}
                         to={item.href}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-slate-200 hover:bg-white/5 transition"
+                        className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-foreground hover:bg-surface-elevated transition"
                       >
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-slate-400">
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-surface-elevated text-muted-foreground">
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="flex-1">{item.label}</span>
-                        <ChevronRight className="h-4 w-4 text-slate-600" />
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </Link>
                     )
                   })}
